@@ -1,5 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -35,5 +36,15 @@ public class ProfessorController {
     @GetMapping("/{id}")
     public ProfessorDTO findById(@PathVariable Long id) throws ProfessorNotFoundException {
         return professorService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid ProfessorDTO professorDTO) throws ProfessorNotFoundException {
+        return professorService.updateById(id, professorDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public MessageResponseDTO delete (@PathVariable Long id) throws ProfessorNotFoundException, DeleteException {
+        return professorService.delete(id);
     }
 }

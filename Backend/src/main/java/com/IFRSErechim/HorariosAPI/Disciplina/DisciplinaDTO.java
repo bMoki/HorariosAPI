@@ -33,7 +33,11 @@ public class DisciplinaDTO implements Serializable {
         professores = entity.getProfessores().stream().map(x -> new ProfessorDTO(x)).collect(Collectors.toList());
     }
 
+    public DisciplinaDTO(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 
-//    @Valid
+    //    @Valid
 //    private List<Professor> professores;
 }

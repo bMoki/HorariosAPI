@@ -39,6 +39,11 @@ public class Disciplina {
         professores = entity.getProfessores().stream().map(x-> new Professor(x)).collect(Collectors.toList());
     }
 
+    public Disciplina(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     public void Professores(Professor professor) {
         professores.add(professor);
     }

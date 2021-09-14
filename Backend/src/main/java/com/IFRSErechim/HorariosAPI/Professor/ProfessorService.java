@@ -1,5 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,25 @@ public class ProfessorService {
         ProfessorDTO professorDTO = new ProfessorDTO(professor);
 
         return professorDTO;
+    }
+
+    public MessageResponseDTO updateById(Long id, ProfessorDTO professorDTO) throws ProfessorNotFoundException {
+
+        verifyIfExists(id);
+        Professor professorToUpdate = new Professor(professorDTO);
+
+        Professor updatedProfessor = professorRepository.save(professorToUpdate);
+        return criaMessageResponse(updatedProfessor.getId(), "Professor atualizado com ID ");
+    }
+
+    public MessageResponseDTO delete(Long id) throws ProfessorNotFoundException, DeleteException {
+        verifyIfExists(id);
+        if(professorRepository.ProfessorHasReference(id) == 1){
+            throw new DeleteException(id,"Professor");
+        }
+
+        professorRepository.deleteById(id);
+        return criaMessageResponse(id,"Professor excluido com ID ");
     }
 
     private Professor verifyIfExists(Long id) throws ProfessorNotFoundException {

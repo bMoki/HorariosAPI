@@ -1,5 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
@@ -44,5 +45,14 @@ public class DisciplinaController {
     public DisciplinaDTO findById(@PathVariable Long id) throws DisciplinaNotFoundException {
         return disciplinaService.findById(id);
     }
+    @PutMapping("/{id}")
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid DisciplinaDTO disciplinaDTO) throws DisciplinaNotFoundException{
+        return disciplinaService.UpdateById(id, disciplinaDTO);
+    }
+
+    @DeleteMapping("/{id}")
+        public MessageResponseDTO delete (@PathVariable Long id) throws DisciplinaNotFoundException, DeleteException {
+            return disciplinaService.delete(id);
+        }
 
 }

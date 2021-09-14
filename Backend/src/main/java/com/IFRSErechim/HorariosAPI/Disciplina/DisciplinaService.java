@@ -1,5 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
@@ -47,6 +48,15 @@ public class DisciplinaService {
 
         return criaMessageResponse(DisciplinaSalva.getId(), "Disciplina criada com ID ");
     }
+    public MessageResponseDTO UpdateById(Long id,DisciplinaDTO disciplinaDTO) throws DisciplinaNotFoundException{
+        verifyIfExists(id);
+
+        Disciplina disciplinaToUpdate = new Disciplina(disciplinaDTO);
+        //disciplinaToUpdate.setProfessores(disciplina.getProfessores());
+
+        Disciplina updatedDisciplina = disciplinaRepository.save(disciplinaToUpdate);
+        return criaMessageResponse(updatedDisciplina.getId(), "Disciplina atualizada com ID ");
+    }
 
     private Disciplina verifyIfExists(Long id) throws DisciplinaNotFoundException {
         return disciplinaRepository.findById(id)
@@ -59,6 +69,16 @@ public class DisciplinaService {
 
         return disciplinaDTO;
     }
+
+      public MessageResponseDTO delete(Long id) throws DisciplinaNotFoundException, DeleteException {
+            verifyIfExists(id);
+            if(disciplinaRepository.DisciplinaHasReference(id) == 1){
+                throw new DeleteException(id,"Disciplina");
+            }
+
+            disciplinaRepository.deleteById(id);
+            return criaMessageResponse(id,"Disciplina excluida com ID ");
+        }
 
     private MessageResponseDTO criaMessageResponse(Long id, String message) {
         return MessageResponseDTO
