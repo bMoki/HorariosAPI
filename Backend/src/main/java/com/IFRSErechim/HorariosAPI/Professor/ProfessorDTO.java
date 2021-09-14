@@ -60,8 +60,5 @@ public class ProfessorDTO implements Serializable {
         //disciplinas = entity.getDisciplinas().stream().map(x -> new DisciplinaDTO(x)).collect(Collectors.toList());
 
     }
-    //    @Valid
-//    private List<Disciplina> Disciplinas;
-
 
 }

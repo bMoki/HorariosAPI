@@ -56,16 +56,4 @@ public class Professor {
         //disciplinas = entity.getDisciplinas().stream().map(x->new Disciplina(x)).collect(Collectors.toList());
     }
 
-    @Override
-    public String toString() {
-        return "Professor{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", sobrenome='" + sobrenome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", SIAPE='" + SIAPE + '\'' +
-                '}';
-    }
 }

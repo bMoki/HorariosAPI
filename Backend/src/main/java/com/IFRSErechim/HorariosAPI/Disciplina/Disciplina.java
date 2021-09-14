@@ -1,7 +1,9 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
+import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,15 +35,14 @@ public class Disciplina {
     )
     private List<Professor> professores = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "disciplinas")
+    private  List<Curso> cursos = new ArrayList<>();
+
     public Disciplina(DisciplinaDTO entity) {
         id = entity.getId();
         nome = entity.getNome();
         professores = entity.getProfessores().stream().map(x-> new Professor(x)).collect(Collectors.toList());
-    }
-
-    public Disciplina(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
     }
 
     public void Professores(Professor professor) {

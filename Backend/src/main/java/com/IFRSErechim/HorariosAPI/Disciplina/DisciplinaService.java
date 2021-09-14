@@ -58,11 +58,6 @@ public class DisciplinaService {
         return criaMessageResponse(updatedDisciplina.getId(), "Disciplina atualizada com ID ");
     }
 
-    private Disciplina verifyIfExists(Long id) throws DisciplinaNotFoundException {
-        return disciplinaRepository.findById(id)
-                .orElseThrow(() -> new DisciplinaNotFoundException(id));
-    }
-
     public DisciplinaDTO findById(Long id) throws DisciplinaNotFoundException {
         Disciplina disciplina = verifyIfExists(id);
         DisciplinaDTO disciplinaDTO = new DisciplinaDTO(disciplina);
@@ -72,13 +67,19 @@ public class DisciplinaService {
 
       public MessageResponseDTO delete(Long id) throws DisciplinaNotFoundException, DeleteException {
             verifyIfExists(id);
-            if(disciplinaRepository.DisciplinaHasReference(id) == 1){
+            if(disciplinaRepository.DisciplinaHasReference(id) > 0){
                 throw new DeleteException(id,"Disciplina");
             }
 
             disciplinaRepository.deleteById(id);
             return criaMessageResponse(id,"Disciplina excluida com ID ");
         }
+
+
+    private Disciplina verifyIfExists(Long id) throws DisciplinaNotFoundException {
+        return disciplinaRepository.findById(id)
+                .orElseThrow(() -> new DisciplinaNotFoundException(id));
+    }
 
     private MessageResponseDTO criaMessageResponse(Long id, String message) {
         return MessageResponseDTO

@@ -51,8 +51,8 @@ public class DisciplinaController {
     }
 
     @DeleteMapping("/{id}")
-        public MessageResponseDTO delete (@PathVariable Long id) throws DisciplinaNotFoundException, DeleteException {
-            return disciplinaService.delete(id);
-        }
+    public MessageResponseDTO delete (@PathVariable Long id) throws DisciplinaNotFoundException, DeleteException {
+        return disciplinaService.delete(id);
+    }
 
 }

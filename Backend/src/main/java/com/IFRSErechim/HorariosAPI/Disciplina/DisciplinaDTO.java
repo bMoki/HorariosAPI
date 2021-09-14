@@ -1,6 +1,9 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
+import com.IFRSErechim.HorariosAPI.Curso.Curso;
+import com.IFRSErechim.HorariosAPI.Curso.CursoDTO;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,17 +30,13 @@ public class DisciplinaDTO implements Serializable {
 
     private List<ProfessorDTO> professores = new ArrayList<>();
 
+    @JsonIgnore
+    private List<CursoDTO> cursos = new ArrayList<>();
+
     public DisciplinaDTO(Disciplina entity) {
         id = entity.getId();
         nome = entity.getNome();
         professores = entity.getProfessores().stream().map(x -> new ProfessorDTO(x)).collect(Collectors.toList());
     }
 
-    public DisciplinaDTO(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
-    //    @Valid
-//    private List<Professor> professores;
 }
