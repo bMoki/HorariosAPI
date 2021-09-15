@@ -29,11 +29,19 @@ public class Horario {
     @ManyToOne
     private Curso curso;
 
+    @ManyToOne
+    private Disciplina disciplina;
+
+    @ManyToOne
+    private Professor professor;
+
 
     public Horario(HorarioDTO entity) {
         id = entity.getId();
         semestre = entity.getSemestre();
         periodo = entity.getPeriodo();
         curso = entity.getCurso();
+        disciplina = entity.getDisciplina();
+        professor = entity.getProfessor();
     }
 }

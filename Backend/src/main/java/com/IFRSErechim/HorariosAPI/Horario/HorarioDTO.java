@@ -26,10 +26,18 @@ public class HorarioDTO implements Serializable {
     @OneToMany
     private Curso curso;
 
+    @OneToMany
+    private Disciplina disciplina;
+
+    @OneToMany
+    private Professor professor;
+
     public HorarioDTO(Horario entity) {
         id = entity.getId();
         semestre = entity.getSemestre();
         periodo = entity.getPeriodo();
         curso = entity.getCurso();
+        disciplina = entity.getDisciplina();
+        professor = entity.getProfessor();
     }
 }
