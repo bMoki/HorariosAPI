@@ -2,6 +2,6 @@
 Projeto de serviço web de horarios para o IFRS
 
 > To do
-  > - Add Horario e suas relações
+  > - Verificar redundancia com o request put
   > - Ajeitar exceptions
   > - Ajeitar messages responses
