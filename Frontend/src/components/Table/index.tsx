@@ -1,64 +1,56 @@
+import axios from "axios";
 import Pagination from "components/Pagination";
+import { useEffect, useState } from "react";
+import { ProfPage } from "types/prof";
+import { BASE_URL } from "utils/requests";
 
 function TableProf() {
+    
+    const [page, setPage] = useState<ProfPage>({
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    });
+
+    useEffect(()=> {
+        axios.get(`${BASE_URL}/professor`)
+            .then(response => {
+                setPage(response.data);
+                //console.log(response.data);
+            });
+    },[])
+
     return (
         <>
-            <table className="table table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Sobrenome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">SIAPE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td >1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                </tbody>
-            </table>
-            <Pagination/>
+            <div className="table-responsive">
+                <table className="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Sobrenome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">SIAPE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {page.content?.map(item => (
+                            <tr key={item.id}>
+                            <td >{item.nome}</td>
+                            <td>{item.sobrenome}</td>
+                            <td>{item.email}</td>
+                            <td>{item.cpf}</td>
+                            <td>{item.siape}</td>
+                        </tr>
+                        ))}
+                      
+                      
+                    </tbody>
+                </table>
+            </div>
+            
         </>
     );
 }

@@ -2,37 +2,33 @@ function Form() {
     return (
         <>
             <form className="row g-3">
-            <div className="col-4">
-                    <label htmlFor="inputAddress" className="form-label">Nome</label>
-                    <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
+                <div className="col-6">
+                    <label htmlFor="inputName" className="form-label">Nome</label>
+                    <input type="text" className="form-control" id="inputName" />
                 </div>
-                <div className="col-4">
-                    <label htmlFor="inputAddress2" className="form-label">Sobrenome</label>
-                    <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
-                </div>
-                <div className="col-4">
-                    <label htmlFor="inputAddress2" className="form-label">Data de Nascimento</label>
-                    <input type="text" className="form-control" id="inputAddress2" placeholder="dd/mm/yyyy" />
+                <div className="col-6">
+                    <label htmlFor="inputSobrenome" className="form-label">Sobrenome</label>
+                    <input type="text" className="form-control" id="inputSobrenome" />
                 </div>
                 <div className="col-md-6">
-                    <label htmlFor="inputEmail4" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="inputEmail4" />
+                    <label htmlFor="inputCPF" className="form-label">CPF</label>
+                    <input type="text" className="form-control" id="inputCPF" />
                 </div>
-               
-                <div className="col-md-3">
-                    <label htmlFor="inputCity" className="form-label">CPF</label>
-                    <input type="text" className="form-control" id="inputCity" />
+                <div className="col-md-6">
+                    <label htmlFor="inputSIAPE" className="form-label">SIAPE</label>
+                    <input type="text" className="form-control" id="inputSIAPE" />
+                </div>
+                <div className="col-md-12">
+                    <label htmlFor="inputEmail" className="form-label">Email</label>
+                    <input type="email" className="form-control" id="inputEmail" />
+                </div>
+                
+                <div className="col-7">
+                    <label htmlFor="inputData" className="form-label">Data de Nascimento</label>
+                    <input type="text" className="form-control" id="inputData" placeholder="dd/mm/yyyy" />
                 </div>
                 <div className="col-12">
-                    <div className="form-check">
-                        <input className="form-check-input" type="checkbox" id="gridCheck" />
-                        <label className="form-check-label" htmlFor="gridCheck">
-                            Check me out
-                        </label>
-                    </div>
-                </div>
-                <div className="col-12">
-                    <button type="submit" className="btn btn-primary">Sign in</button>
+                    <button type="submit" className="btn btn-primary" id="submit">Sign in</button>
                 </div>
             </form>
         </>

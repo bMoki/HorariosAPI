@@ -5,7 +5,10 @@ import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +20,10 @@ public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<ProfessorDTO> findAll(){
-        List<Professor> result = professorRepository.findAll();
-        return result.stream().map(x -> new ProfessorDTO(x)).collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<ProfessorDTO> findAll(Pageable pageable){
+        Page<Professor> result = professorRepository.findAll(pageable);
+        return result.map(x -> new ProfessorDTO(x));
     }
 
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) {

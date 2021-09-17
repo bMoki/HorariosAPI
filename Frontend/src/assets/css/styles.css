@@ -2,7 +2,7 @@
 */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,700;1,200&display=swap');
 :root {
-    --color-primary: #18cf18;
+    --color-primary: #1861cf;
 }
 
 html, body {
@@ -31,4 +31,8 @@ html, body {
 
 .text-primary {
     color: var(--color-primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-primary) !important;
 }
