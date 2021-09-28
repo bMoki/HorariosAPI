@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,700;1,200&display=swap');
 :root {
     --color-primary: #1861cf;
+    --color-success: #3cb331;
 }
 
 html, body {
@@ -36,3 +37,9 @@ html, body {
 .btn-primary {
     background-color: var(--color-primary) !important;
 }
+
+.btn-success {
+    background-color: var(--color-success) !important;
+    border: none;
+}
+

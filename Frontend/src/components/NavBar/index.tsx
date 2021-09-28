@@ -24,9 +24,6 @@ function NavBar() {
                                 <Link to="/CadastroProf" className="nav-link">Professor</Link>
 
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link disabled">Disabled</a>
-                            </li>
                         </ul>
 
                     </div>

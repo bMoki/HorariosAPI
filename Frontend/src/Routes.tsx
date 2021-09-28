@@ -10,7 +10,9 @@ function Routes() {
                     <Home />
                 </Route>
                 <Route path="/CadastroProf">
-                    <CadastroProf />
+                    
+                        <CadastroProf />
+                    
                 </Route>
             </Switch>
        </BrowserRouter>

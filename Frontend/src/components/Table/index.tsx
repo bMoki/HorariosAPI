@@ -1,10 +1,15 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { ProfPage } from "types/prof";
+import { ProfessorContext } from "contexts/ProfessorContext";
+import { useContext, useEffect, useState} from "react";
+import { ProfPage} from "types/prof";
 import { BASE_URL } from "utils/requests";
+
+
 
 function TableProf() {
     
+    const {handleClick} = useContext(ProfessorContext);
+
     const [page, setPage] = useState<ProfPage>({
         first: true,
         last: true,
@@ -17,12 +22,12 @@ function TableProf() {
         axios.get(`${BASE_URL}/professor`)
             .then(response => {
                 setPage(response.data);
-                //console.log(response.data);
             });
     },[])
 
     return (
         <>
+        
             <div className="table-responsive">
                 <table className="table table-hover ">
                     <thead>
@@ -36,7 +41,7 @@ function TableProf() {
                     </thead>
                     <tbody>
                         {page.content?.map(item => (
-                            <tr key={item.id}>
+                            <tr key={item.id} onClick={()=>handleClick(item)}>
                             <td >{item.nome}</td>
                             <td>{item.sobrenome}</td>
                             <td>{item.email}</td>
