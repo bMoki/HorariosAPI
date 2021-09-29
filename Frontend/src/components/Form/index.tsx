@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { ProfessorContext } from "contexts/ProfessorContext";
-//import { VscTrash } from "react-icons/vsc";
 import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 
@@ -9,7 +8,7 @@ function Form() {
 
     const { nome, cpf, email, sobrenome,
         nomeHandler, sobrenomeHandler, cpfHandler, emailHandler,
-        handleSubmit, btnOperation, handleClear
+        handleSubmit, btnOperation, handleClear,
     } = useContext(ProfessorContext);
 
     return (
@@ -45,13 +44,14 @@ function Form() {
                         <button type="submit" className="btn btn-success" id="submit" title="Salvar">{btnOperation ? "Alterar" : "Cadastrar"} </button>
                     </div>
                     <div className="col-2">
-                        <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir"><FiTrash2 /></button>
+                        <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>
                     </div>
                     <div className="col-2">
-                        <button type="button" className={btnOperation ? "btn btn-primary" : "invisible"} title="Limpar" onClick={handleClear}><AiOutlineClear/></button>
+                        <button type="button" className={btnOperation ? "btn btn-primary" : "invisible"} title="Limpar" onClick={ handleClear }><AiOutlineClear/></button>
                     </div>
                 </div>
             </form>
+          
         </>
     );
 };

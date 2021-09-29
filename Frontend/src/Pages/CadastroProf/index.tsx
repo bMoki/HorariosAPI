@@ -1,4 +1,5 @@
 import Form from "components/Form";
+import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import Pagination from "components/Pagination";
 import TableProf from "components/Table";
@@ -35,6 +36,7 @@ function Cadastro_Prof() {
                 </div>
 
             </div>
+            <Modal/>
         </ProfessorContextProvider>
         </>
     );
