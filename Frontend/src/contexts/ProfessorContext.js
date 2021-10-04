@@ -31,7 +31,7 @@ export function ProfessorContextProvider({ children }) {
             Ok = false;
         }
 
-        if (cpf.length !== 14) {
+        if (cpf.length < 14) {
             Ok = false;
         }
 
@@ -43,9 +43,9 @@ export function ProfessorContextProvider({ children }) {
             Ok = false;
         }
 
-        // if(dataNascimento === ""){
-        //     Ok = false;
-        // }
+        if(dataNascimento.length < 10){
+            Ok = false;
+        }
 
         if (siape === "") {
             Ok = false;
@@ -134,7 +134,7 @@ export function ProfessorContextProvider({ children }) {
     }
 
     function siapeHandler(event) {
-        setSiape(event.target.value);
+        setSiape(mask(event.target.value , ['9999999']));
     }
     function handleClick(item) {
         setNome(item.nome);

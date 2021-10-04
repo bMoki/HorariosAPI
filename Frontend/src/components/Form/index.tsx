@@ -30,7 +30,7 @@ function Form() {
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputCPF" className="form-label">CPF</label>
-                    <input type="text" className={ formIsOk ? "form-control" : cpf!== "" ? "form-control" : "form-control is-invalid"} id="inputCPF" value={cpf} onChange={cpfHandler} />
+                    <input type="text" className={ formIsOk ? "form-control" : cpf.length > 13 ? "form-control" : "form-control is-invalid"} id="inputCPF" value={cpf} onChange={cpfHandler} />
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputSIAPE" className="form-label">SIAPE</label>
@@ -43,7 +43,7 @@ function Form() {
 
                 <div className="col-7">
                     <label htmlFor="inputData" className="form-label">Data de Nascimento</label>
-                    <input  type="text" className="form-control" id="inputData"  value = {dataNascimento} onChange={dataNascimentoHandler}/>
+                    <input  type="text" className={ formIsOk ? "form-control" : dataNascimento.length > 9 ? "form-control" : "form-control is-invalid"} id="inputData"  value = {dataNascimento} onChange={dataNascimentoHandler}/>
                 </div>
                 <div className="row mt-3">
                     <div className="col-8 ">
