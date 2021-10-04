@@ -43,3 +43,7 @@ html, body {
     border: none;
 }
 
+.error-toast{
+    background-color: var(--color-success) ;
+}
+

@@ -23,6 +23,7 @@ function TableProf() {
             .then(response => {
                 setPage(response.data);
             });
+           
     },[])
 
     return (
