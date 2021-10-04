@@ -152,6 +152,8 @@ export function ProfessorContextProvider({ children }) {
         const Ok = FormValidation();
 
         if (Ok) {
+            const data = dataNascimento.slice(6, 10)+'-'+dataNascimento.slice(3, 5)+'-'+ dataNascimento.slice(0, 2);
+
             if (btnOperation) {
                 const profe = {
                     id: id,
@@ -159,7 +161,7 @@ export function ProfessorContextProvider({ children }) {
                     sobrenome: sobrenome,
                     cpf: cpf,
                     email: email,
-                    dataNascimento: dataNascimento,
+                    dataNascimento: data,
                     siape: siape
                 }
                 myStorage.setItem("toast", "PUT");
@@ -184,7 +186,7 @@ export function ProfessorContextProvider({ children }) {
                     sobrenome: sobrenome,
                     cpf: cpf,
                     email: email,
-                    dataNascimento: dataNascimento,
+                    dataNascimento: data,
                     siape: siape
                 }
 
