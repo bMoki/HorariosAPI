@@ -31,7 +31,7 @@ public class ProfessorService {
 //        }
 
         if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
-            throw new ProfessorAlreadyExistsException("CPF "+professorDTO.getCpf()+" já existe!");
+            throw new ProfessorAlreadyExistsException("CPF já cadastrado!");
         }
 
         Professor salvarProfessor = new Professor(professorDTO);

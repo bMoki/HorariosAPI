@@ -67,7 +67,7 @@ export function ProfessorContextProvider({ children }) {
 
                     } else {
                         if (myStorage.getItem("postSuccess") === '0') {
-                            toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
+                            toast.error(myStorage.getItem("errorMessage"));
                             myStorage.removeItem("errorMessage");
                         }
                     }
