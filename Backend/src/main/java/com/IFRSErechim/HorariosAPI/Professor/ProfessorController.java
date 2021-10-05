@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.ProfessorAlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/professor")
@@ -31,7 +31,7 @@ public class ProfessorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaProfessor(@RequestBody @Valid ProfessorDTO professorDTO){
+    public MessageResponseDTO criaProfessor(@RequestBody @Valid ProfessorDTO professorDTO) throws ProfessorAlreadyExistsException {
         return professorService.criaProfessor(professorDTO);
     }
 

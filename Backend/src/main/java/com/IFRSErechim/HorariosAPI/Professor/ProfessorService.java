@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.ProfessorAlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -23,15 +24,22 @@ public class ProfessorService {
         return result.map(x -> new ProfessorDTO(x));
     }
 
-    public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) {
+    public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws ProfessorAlreadyExistsException{
+
+//        if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
+//            return criaMessageResponse(professorDTO.getCpf(), "Professor já cadastrado com CPF ");
+//        }
+
+        if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
+            throw new ProfessorAlreadyExistsException("CPF "+professorDTO.getCpf()+" já existe!");
+        }
 
         Professor salvarProfessor = new Professor(professorDTO);
-
         Professor ProfessorSalvo = professorRepository.save(salvarProfessor);
         return criaMessageResponse(ProfessorSalvo.getId(), "Professor criado com ID ");
     }
     public ProfessorDTO findById(Long id) throws ProfessorNotFoundException {
-        Professor professor = verifyIfExists(id);
+        Professor professor = verifyIfExistsById(id);
         ProfessorDTO professorDTO = new ProfessorDTO(professor);
 
         return professorDTO;
@@ -39,7 +47,7 @@ public class ProfessorService {
 
     public MessageResponseDTO updateById(Long id, ProfessorDTO professorDTO) throws ProfessorNotFoundException {
 
-        verifyIfExists(id);
+        verifyIfExistsById(id);
         Professor professorToUpdate = new Professor(professorDTO);
 
         Professor updatedProfessor = professorRepository.save(professorToUpdate);
@@ -47,7 +55,7 @@ public class ProfessorService {
     }
 
     public MessageResponseDTO delete(Long id) throws ProfessorNotFoundException, DeleteException {
-        verifyIfExists(id);
+        verifyIfExistsById(id);
         if(professorRepository.ProfessorHasReference(id) > 0){
             throw new DeleteException(id,"Professor");
         }
@@ -56,15 +64,26 @@ public class ProfessorService {
         return criaMessageResponse(id,"Professor excluido com ID ");
     }
 
-    private Professor verifyIfExists(Long id) throws ProfessorNotFoundException {
+    private Professor verifyIfExistsById(Long id) throws ProfessorNotFoundException {
         return professorRepository.findById(id)
                 .orElseThrow(() -> new ProfessorNotFoundException(id));
+    }
+
+    private Integer verifyIfExistsByCPF(String cpf) {
+        return professorRepository.findByCpf(cpf);
     }
 
     private MessageResponseDTO criaMessageResponse(Long id, String message) {
         return MessageResponseDTO
                 .builder()
                 .message(message + id)
+                .build();
+    }
+
+    private MessageResponseDTO criaMessageResponse(String cpf, String message) {
+        return MessageResponseDTO
+                .builder()
+                .message(message + cpf)
                 .build();
     }
 }

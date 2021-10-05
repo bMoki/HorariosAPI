@@ -43,7 +43,7 @@ export function ProfessorContextProvider({ children }) {
             Ok = false;
         }
 
-        if(dataNascimento.length < 10){
+        if (dataNascimento.length < 10) {
             Ok = false;
         }
 
@@ -56,65 +56,62 @@ export function ProfessorContextProvider({ children }) {
 
     }
 
-    if (myStorage.getItem("toast")) {
-        switch (myStorage.getItem("toast")) {
-            case "POST":
+    window.onload = function () {
+        if (myStorage.getItem("toast")) {
+            switch (myStorage.getItem("toast")) {
+                case "POST":
 
-                if (myStorage.getItem("postSuccess") === '1') {
-                    toast.success(myStorage.getItem("res"));
-                    myStorage.removeItem("res");
-                    myStorage.removeItem("toast");
-                } else {
-                    if (myStorage.getItem("postSuccess") === '0') {
-                        toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
-                        myStorage.removeItem("errorMessage");
-                        myStorage.removeItem("toast");
+                    if (myStorage.getItem("postSuccess") === '1') {
+                        toast.success(myStorage.getItem("res"));
+                        myStorage.removeItem("res");
+
+                    } else {
+                        if (myStorage.getItem("postSuccess") === '0') {
+                            toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
+                            myStorage.removeItem("errorMessage");
+                        }
                     }
-                }
 
-                myStorage.removeItem("postSuccess");
-                break;
+                    myStorage.removeItem("postSuccess");
+                    break;
 
-            case "PUT":
+                case "PUT":
 
-                if (myStorage.getItem("putSuccess") === '1') {
-                    toast.success(myStorage.getItem("res"));
-                    myStorage.removeItem("res");
-                    myStorage.removeItem("toast");
-                } else {
-                    if (myStorage.getItem("putSuccess") === '0') {
-                        toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
-                        myStorage.removeItem("errorMessage");
-                        myStorage.removeItem("toast");
+                    if (myStorage.getItem("putSuccess") === '1') {
+                        toast.success(myStorage.getItem("res"));
+                        myStorage.removeItem("res");
+                    } else {
+                        if (myStorage.getItem("putSuccess") === '0') {
+                            toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
+                            myStorage.removeItem("errorMessage");
+                        }
                     }
-                }
 
-                myStorage.removeItem("putSuccess");
-                break;
+                    myStorage.removeItem("putSuccess");
+                    break;
 
-            case "DELETE":
+                case "DELETE":
 
-                if (myStorage.getItem("deleteSuccess") === '1') {
-                    toast.success(myStorage.getItem("res"));
-                    myStorage.removeItem("res");
-                    myStorage.removeItem("toast");
-                } else {
-                    if (myStorage.getItem("deleteSuccess") === '0') {
-                        toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
-                        myStorage.removeItem("errorMessage");
-                        myStorage.removeItem("toast");
+                    if (myStorage.getItem("deleteSuccess") === '1') {
+                        toast.success(myStorage.getItem("res"));
+                        myStorage.removeItem("res");
+                    } else {
+                        if (myStorage.getItem("deleteSuccess") === '0') {
+                            toast.error("Ocorreu um erro " + myStorage.getItem("errorMessage"));
+                            myStorage.removeItem("errorMessage");
+                        }
                     }
-                }
 
-                myStorage.removeItem("deleteSuccess");
-                break;
-            default:
+                    myStorage.removeItem("deleteSuccess");
+                    break;
+                default:
+
+            }
+            myStorage.removeItem("toast");
 
         }
-
-
-
     }
+
 
     function nomeHandler(event) {
         setNome(event.target.value);
@@ -134,17 +131,20 @@ export function ProfessorContextProvider({ children }) {
     }
 
     function siapeHandler(event) {
-        setSiape(mask(event.target.value , ['9999999']));
+        setSiape(mask(event.target.value, ['9999999']));
     }
     function handleClick(item) {
+        const data = item.dataNascimento.slice(8, 10) + "/" + item.dataNascimento.slice(5, 7) + "/" + item.dataNascimento.slice(0, 4);
         setNome(item.nome);
         setSobrenome(item.sobrenome);
         setCPF(item.cpf);
         setEmail(item.email);
+        setDataNascimento(data);
+        setSiape(item.siape);
         setId(item.id);
         setBtnOperation(true)
     }
-    
+
 
     //Buttons---------------------------------------------------
     function handleSubmit() {
@@ -152,10 +152,11 @@ export function ProfessorContextProvider({ children }) {
         const Ok = FormValidation();
 
         if (Ok) {
-            const data = dataNascimento.slice(6, 10)+'-'+dataNascimento.slice(3, 5)+'-'+ dataNascimento.slice(0, 2);
+            const data = dataNascimento.slice(6, 10) + '-' + dataNascimento.slice(3, 5) + '-' + dataNascimento.slice(0, 2);
 
             if (btnOperation) {
-                const profe = {
+
+                const profeForPutMethod = {
                     id: id,
                     nome: nome,
                     sobrenome: sobrenome,
@@ -164,21 +165,13 @@ export function ProfessorContextProvider({ children }) {
                     dataNascimento: data,
                     siape: siape
                 }
+
                 myStorage.setItem("toast", "PUT");
 
-                axios.put(`${BASE_URL}/professor/${id}`, profe)
-                    .then((res) => {
-                        myStorage.setItem("putSuccess", 1);
-                        myStorage.setItem("res", res.data.message);
-                    })
-                    .catch((err) => {
-                        myStorage.setItem("putSuccess", 0);
-                        myStorage.setItem("errorMessage", err.message);
-                    });
 
-                setTimeout(function () {
+                PutRequest(profeForPutMethod).then(go => {
                     window.location.reload();
-                }, 100);
+                })
 
             } else {
                 const profe = {
@@ -192,45 +185,20 @@ export function ProfessorContextProvider({ children }) {
 
                 myStorage.setItem("toast", "POST");
 
-                axios.post(`${BASE_URL}/professor`, profe)
-                    .then((res) => {
-                        myStorage.setItem("postSuccess", 1);
-                        myStorage.setItem("res", res.data.message);
-                    })
-                    .catch((err) => {
-                        myStorage.setItem("postSuccess", 0);
-                        myStorage.setItem("errorMessage", err.message);
-                    });
-
-                setTimeout(function () {
+                PostRequest(profe).then(go => {
                     window.location.reload();
-                }, 100);
-
+                });
             }
-
-
         }
-
     }
+
 
     function handleDelete() {
         myStorage.setItem("toast", "DELETE");
 
-        axios.delete(`${BASE_URL}/professor/${id}`)
-            .then((res) => {
-                console.log("entro");
-                myStorage.setItem("deleteSuccess", 1);
-                myStorage.setItem("res", res.data.message);
-            })
-            .catch((err) => {
-                myStorage.setItem("deleteSuccess", 0);
-                myStorage.setItem("errorMessage", err.message);
-            });
-
-
-        setTimeout(function () {
+        DeleteRequest().then(go => {
             window.location.reload();
-        }, 150);
+        });
     }
 
     function handleClear() {
@@ -238,10 +206,54 @@ export function ProfessorContextProvider({ children }) {
         setSobrenome("");
         setCPF("");
         setEmail("");
+        setDataNascimento("");
+        setSiape("");
         setId(0);
         setBtnOperation(false);
     }
-    //-----------------------------------------------------------
+    //ASYNC FUNCTIONS------------------------------------------------Esperam o resultado para seguir em frente
+    async function PostRequest(profe) {
+        try {
+            const res = await axios.post(`${BASE_URL}/professor`, profe);
+            myStorage.setItem("postSuccess", 1);
+            myStorage.setItem("res", res.data.message);
+        } catch (err) {
+            myStorage.setItem("postSuccess", 0);
+            myStorage.setItem("errorMessage", err.response.data.message);
+        }
+
+        return true;
+
+    }
+
+    async function PutRequest(profeForPutMethod) {
+        try {
+            const res = await axios.put(`${BASE_URL}/professor/${profeForPutMethod.id}`, profeForPutMethod);
+            myStorage.setItem("putSuccess", 1);
+            myStorage.setItem("res", res.data.message);
+        } catch (err) {
+            myStorage.setItem("putSuccess", 0);
+            myStorage.setItem("errorMessage", profeForPutMethod.data);
+        }
+
+        return true;
+    }
+
+    async function DeleteRequest() {
+        try {
+            const res = await axios.delete(`${BASE_URL}/professor/${id}`);
+            myStorage.setItem("deleteSuccess", 1);
+            myStorage.setItem("res", res.data.message);
+        } catch (err) {
+            myStorage.setItem("deleteSuccess", 0);
+            myStorage.setItem("errorMessage", err.response.data.message);
+        }
+
+        return true;
+    }
+
+    //---------------------------------------------------------------------------
+
     return (
         <ProfessorContext.Provider value={{
             nome, setNome,

@@ -53,7 +53,7 @@ function Form() {
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>
                     </div>
                     <div className="col-2">
-                        <button type="submit" className={btnOperation ? "btn btn-primary" : "invisible"} title="Limpar" onClick={ handleClear }><AiOutlineClear/></button>
+                        <button type="button" className={btnOperation ? "btn btn-primary" : "invisible"} title="Limpar" onClick={ handleClear }><AiOutlineClear/></button>
                     </div>
                 </div>
             </form>
