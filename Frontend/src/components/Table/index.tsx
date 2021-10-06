@@ -1,30 +1,30 @@
 import axios from "axios";
 import { ProfessorContext } from "contexts/ProfessorContext";
 import { useContext, useEffect, useState} from "react";
-import { ProfPage} from "types/prof";
+import { ProfPage, Prof} from "types/prof";
 import { BASE_URL } from "utils/requests";
 
 
 
 function TableProf() {
     
-    const {handleClick} = useContext(ProfessorContext);
+    const {handleClick,page} = useContext(ProfessorContext);
 
-    const [page, setPage] = useState<ProfPage>({
-        first: true,
-        last: true,
-        number: 0,
-        totalElements: 0,
-        totalPages: 0
-    });
+    // const [page, setPage] = useState<ProfPage>({
+    //     first: true,
+    //     last: true,
+    //     number: 0,
+    //     totalElements: 0,
+    //     totalPages: 0
+    // });
 
-    useEffect(()=> {
-        axios.get(`${BASE_URL}/professor`)
-            .then(response => {
-                setPage(response.data);
-            });
+    // useEffect(()=> {
+    //     axios.get(`${BASE_URL}/professor`)
+    //         .then(response => {
+    //             setPage(response.data);
+    //         });
            
-    },[])
+    // },[])
 
     return (
         <>
@@ -42,7 +42,7 @@ function TableProf() {
                     </thead>
                     <tbody>
                         {page.content?.map(item => (
-                            <tr key={item.id} onClick={()=>handleClick(item)}>
+                            <tr key={item.id} onClick={()=>handleClick!(item)}>
                             <td >{item.nome}</td>
                             <td>{item.sobrenome}</td>
                             <td>{item.email}</td>

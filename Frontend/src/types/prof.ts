@@ -5,7 +5,7 @@ export type Prof =  {
     cpf?: string;
     email?: string;
     dataNascimento?: string;
-    siape?: number;
+    siape?: string;
 }
 
 export type ProfPage = {

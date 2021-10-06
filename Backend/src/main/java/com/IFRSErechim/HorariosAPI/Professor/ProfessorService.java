@@ -26,10 +26,6 @@ public class ProfessorService {
 
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws ProfessorAlreadyExistsException{
 
-//        if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
-//            return criaMessageResponse(professorDTO.getCpf(), "Professor já cadastrado com CPF ");
-//        }
-
         if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
             throw new ProfessorAlreadyExistsException("CPF já cadastrado!");
         }
@@ -69,21 +65,14 @@ public class ProfessorService {
                 .orElseThrow(() -> new ProfessorNotFoundException(id));
     }
 
-    private Integer verifyIfExistsByCPF(String cpf) {
-        return professorRepository.findByCpf(cpf);
-    }
+//    private Integer verifyIfExistsByCPF(String cpf) {
+//        return professorRepository.findByCpf(cpf);
+//    }
 
     private MessageResponseDTO criaMessageResponse(Long id, String message) {
         return MessageResponseDTO
                 .builder()
                 .message(message + id)
-                .build();
-    }
-
-    private MessageResponseDTO criaMessageResponse(String cpf, String message) {
-        return MessageResponseDTO
-                .builder()
-                .message(message + cpf)
                 .build();
     }
 }

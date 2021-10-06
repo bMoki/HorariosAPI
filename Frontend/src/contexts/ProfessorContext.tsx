@@ -1,16 +1,96 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useState, ChangeEvent, FC, useEffect} from "react";
 import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
 import { toast } from "react-toastify";
+import { Prof, ProfPage } from "types/prof";
 
+interface IProfessorContext {
+    nome:               string,
+    sobrenome:          string,
+    cpf:                string,
+    dataNascimento:     string,
+    siape:              string,
+    email:              string,
+    id:                 number,
+    btnOperation:       boolean,
+    formIsOk:           boolean,
+    searchNome:         string,
+    searchSobrenome:    string,
+    searchCpf:          string,
+    searchSiape:        string,
+    myStorage:          Storage,
+    page:               ProfPage,
 
-export const ProfessorContext = createContext();
+    nomeHandler?:                   (event: ChangeEvent<HTMLInputElement>) => void,
+    sobrenomeHandler?:              (event: ChangeEvent<HTMLInputElement>) => void,
+    cpfHandler?:                    (event: ChangeEvent<HTMLInputElement>) => void,
+    emailHandler?:                  (event: ChangeEvent<HTMLInputElement>) => void,
+    siapeHandler?:                  (event: ChangeEvent<HTMLInputElement>) => void,
+    dataNascimentoHandler?:         (event: ChangeEvent<HTMLInputElement>) => void,
+    searchNomeHandler?:             (event: ChangeEvent<HTMLInputElement>) => void,
+    searchSobrenomeHandler?:        (event: ChangeEvent<HTMLInputElement>) => void,
+    searchCpfHandler?:              (event: ChangeEvent<HTMLInputElement>) => void,
+    searchSiapeHandler?:            (event: ChangeEvent<HTMLInputElement>) => void,
+    searchDataNascimentoHandler?:   (event: ChangeEvent<HTMLInputElement>) => void,
 
-export function ProfessorContextProvider({ children }) {
+    handleSubmit?:          () => void,
+    handleClear?:           () => void,
+    handleDelete?:          () => void,
+    handleSearch?:          () => void,
+    handleClick?:           (item:Prof) => void,
+   
+
+    
+    
+}
+
+const defaultState = {
+    nome: "",
+    sobrenome: "",
+    cpf: "",
+    dataNascimento: "",
+    siape:"",
+    email:"",
+    id:0,
+    btnOperation:false,
+    formIsOk:true,
+    searchNome:"",
+    searchSobrenome:"",
+    searchCpf:"",
+    searchSiape:"",
+    page: {
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    },
+    myStorage: sessionStorage
+}
+
+export const ProfessorContext = createContext<IProfessorContext>(defaultState);
+
+const ProfessorContextProvider:FC =({ children }) => {
 
     var myStorage = window.sessionStorage;
 
+
+    const [page, setPage] = useState<ProfPage>({
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    });
+
+    useEffect(()=> {
+            axios.get(`${BASE_URL}/professor`)
+                .then(response => {
+                    setPage(response.data);
+                });
+               
+        },[])
 
     const [nome, setNome] = useState("");
     const [cpf, setCPF] = useState("");
@@ -21,6 +101,47 @@ export function ProfessorContextProvider({ children }) {
     const [id, setId] = useState(0);
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
+
+    function nomeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setNome(event.target.value);
+    }
+    function cpfHandler(event:ChangeEvent<HTMLInputElement>) {
+        setCPF(mask(event.target.value, ['999.999.999-99']));
+    }
+    function sobrenomeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSobrenome(event.target.value);
+    }
+    function emailHandler(event:ChangeEvent<HTMLInputElement>) {
+        setEmail(event.target.value);
+    }
+    function dataNascimentoHandler(event:ChangeEvent<HTMLInputElement>) {
+        setDataNascimento(mask(event.target.value, ['99/99/9999']));
+    }
+    function siapeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSiape(mask(event.target.value, ['9999999']));
+    }
+
+    //Search----
+    const [searchNome,setSearchNome] = useState("");
+    const [searchSobrenome,setSearchSobrenome] = useState("");
+    const [searchCpf,setSearchCpf] = useState("");
+    const [searchSiape,setSearchSiape] = useState("");
+
+    function searchNomeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSearchNome(event.target.value);
+    }
+    function searchSobrenomeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSearchSobrenome(event.target.value);
+    }
+    function searchCpfHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSearchCpf(event.target.value);
+    }
+    function searchSiapeHandler(event:ChangeEvent<HTMLInputElement>) {
+        setSearchSiape(event.target.value);
+    }
+
+
+    //----------
 
 
 
@@ -57,6 +178,7 @@ export function ProfessorContextProvider({ children }) {
     }
 
     window.onload = function () {
+
         if (myStorage.getItem("toast")) {
             switch (myStorage.getItem("toast")) {
                 case "POST":
@@ -112,39 +234,17 @@ export function ProfessorContextProvider({ children }) {
         }
     }
 
-
-    function nomeHandler(event) {
-        setNome(event.target.value);
-    }
-    function cpfHandler(event) {
-        setCPF(mask(event.target.value, ['999.999.999-99']));
-    }
-    function sobrenomeHandler(event) {
-        setSobrenome(event.target.value);
-    }
-    function emailHandler(event) {
-        setEmail(event.target.value);
-    }
-
-    function dataNascimentoHandler(event) {
-        setDataNascimento(mask(event.target.value, ['99/99/9999']));
-    }
-
-    function siapeHandler(event) {
-        setSiape(mask(event.target.value, ['9999999']));
-    }
-    function handleClick(item) {
-        const data = item.dataNascimento.slice(8, 10) + "/" + item.dataNascimento.slice(5, 7) + "/" + item.dataNascimento.slice(0, 4);
-        setNome(item.nome);
-        setSobrenome(item.sobrenome);
-        setCPF(item.cpf);
-        setEmail(item.email);
+    function handleClick(item:Prof) {
+        const data = item?.dataNascimento?.slice(8, 10) + "/" + item?.dataNascimento?.slice(5, 7) + "/" + item?.dataNascimento?.slice(0, 4);
+        setNome(item?.nome === undefined ? "" : item.nome);
+        setSobrenome(item?.sobrenome === undefined ? "" : item.sobrenome);
+        setCPF(item?.cpf === undefined ? "" : item.cpf);
+        setEmail(item?.email === undefined ? "" : item.email);
         setDataNascimento(data);
-        setSiape(item.siape);
-        setId(item.id);
+        setSiape(item?.siape === undefined ? "" : item.siape);
+        setId(item?.id === undefined ? 0 : item.id);
         setBtnOperation(true)
     }
-
 
     //Buttons---------------------------------------------------
     function handleSubmit() {
@@ -192,7 +292,6 @@ export function ProfessorContextProvider({ children }) {
         }
     }
 
-
     function handleDelete() {
         myStorage.setItem("toast", "DELETE");
 
@@ -200,6 +299,9 @@ export function ProfessorContextProvider({ children }) {
             window.location.reload();
         });
     }
+
+    
+
 
     function handleClear() {
         setNome("");
@@ -211,14 +313,18 @@ export function ProfessorContextProvider({ children }) {
         setId(0);
         setBtnOperation(false);
     }
+
+    function handleSearch(){
+
+    }
     //ASYNC FUNCTIONS------------------------------------------------Esperam o resultado para seguir em frente
-    async function PostRequest(profe) {
+    async function PostRequest(profe:Prof) {
         try {
             const res = await axios.post(`${BASE_URL}/professor`, profe);
-            myStorage.setItem("postSuccess", 1);
+            myStorage.setItem("postSuccess", '1');
             myStorage.setItem("res", res.data.message);
-        } catch (err) {
-            myStorage.setItem("postSuccess", 0);
+        } catch (err:any) {
+            myStorage.setItem("postSuccess", '0');
             myStorage.setItem("errorMessage", err.response.data.message);
         }
 
@@ -226,14 +332,14 @@ export function ProfessorContextProvider({ children }) {
 
     }
 
-    async function PutRequest(profeForPutMethod) {
+    async function PutRequest(profeForPutMethod:Prof) {
         try {
             const res = await axios.put(`${BASE_URL}/professor/${profeForPutMethod.id}`, profeForPutMethod);
-            myStorage.setItem("putSuccess", 1);
+            myStorage.setItem("putSuccess", '1');
             myStorage.setItem("res", res.data.message);
-        } catch (err) {
-            myStorage.setItem("putSuccess", 0);
-            myStorage.setItem("errorMessage", profeForPutMethod.data);
+        } catch (err:any) {
+            myStorage.setItem("putSuccess", '0');
+            myStorage.setItem("errorMessage", err.response.data.message);
         }
 
         return true;
@@ -242,10 +348,10 @@ export function ProfessorContextProvider({ children }) {
     async function DeleteRequest() {
         try {
             const res = await axios.delete(`${BASE_URL}/professor/${id}`);
-            myStorage.setItem("deleteSuccess", 1);
+            myStorage.setItem("deleteSuccess", '1');
             myStorage.setItem("res", res.data.message);
-        } catch (err) {
-            myStorage.setItem("deleteSuccess", 0);
+        } catch (err:any) {
+            myStorage.setItem("deleteSuccess", '0');
             myStorage.setItem("errorMessage", err.response.data.message);
         }
 
@@ -256,12 +362,22 @@ export function ProfessorContextProvider({ children }) {
 
     return (
         <ProfessorContext.Provider value={{
-            nome, setNome,
-            cpf, setCPF,
-            sobrenome, setSobrenome,
-            email, setEmail,
-            dataNascimento, setDataNascimento,
-            siape, setSiape,
+            id,
+            nome,
+            cpf, 
+            sobrenome, 
+            email, 
+            dataNascimento, 
+            siape, 
+            searchNome,
+            searchCpf,
+            searchSiape,
+            searchSobrenome,
+            searchNomeHandler,
+            searchCpfHandler,
+            searchSiapeHandler,
+            searchSobrenomeHandler,
+            handleSearch,
             nomeHandler,
             cpfHandler,
             sobrenomeHandler,
@@ -270,12 +386,11 @@ export function ProfessorContextProvider({ children }) {
             siapeHandler,
             handleClick,
             handleSubmit,
-            setBtnOperation,
             btnOperation,
             handleClear,
             handleDelete,
-            id, setId,
-            myStorage, formIsOk
+            myStorage, formIsOk,
+            page
         }
         }>
 
@@ -283,4 +398,6 @@ export function ProfessorContextProvider({ children }) {
 
         </ProfessorContext.Provider>
     )
-}
+};
+
+export default ProfessorContextProvider;
