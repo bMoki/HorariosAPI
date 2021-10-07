@@ -6,10 +6,14 @@ import SearchProf from "components/Search/Professor";
 import TableProf from "components/Table/Professor";
 import  ProfessorContextProvider  from "contexts/ProfessorContext";
 import { ToastContainer, Zoom } from "react-toastify";
+import Toast from "utils/toasts";
 
 
 
 function Cadastro_Prof() {
+    window.onload = function () {
+        Toast();
+    }
 
     return (
         <>

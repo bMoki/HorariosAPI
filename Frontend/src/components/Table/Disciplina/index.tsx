@@ -1,37 +1,25 @@
-import axios from "axios";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
-import { useContext, useEffect, useState } from "react";
-import { Disciplina } from "types/disciplina";
-import { BASE_URL } from "utils/requests";
+import { useContext } from "react";
+
 
 function TableDisciplina() {
 
     const { disciplina, isLoading, fetchError, handleClick } = useContext(DisciplinaContext);
 
-    //    const [disciplina, setDisciplina] = useState<Disciplina[]>([]);
-
-    //     useEffect(() => {
-    //         axios.get(`${BASE_URL}/disciplina`)
-    //             .then(response => {
-    //                 setDisciplina(response.data);
-
-    //                 console.log(response.data);
-    //             });
-
-    //     }, [])
-
-    // useEffect(()=>{
-    //     console.log(disciplina)
-    // },[disciplina])
-
     return (
         <>
 
-            <div className="table-responsive">
 
-                {isLoading && <p>Loading...</p>}
-                {fetchError && <p>{fetchError}</p>}
-                {!isLoading && !fetchError && (disciplina.length ?
+
+            {isLoading &&
+                <div className="d-flex justify-content-center mt-5 mb-5">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>}
+            {fetchError && <p>{fetchError}</p>}
+            {!isLoading && !fetchError && (disciplina.length ?
+                <div className="table-responsive">
                     <table className="table table-hover ">
                         <thead>
                             <tr>
@@ -40,7 +28,7 @@ function TableDisciplina() {
                         </thead>
                         <tbody>
                             {disciplina?.map(item => (
-                                <tr key={item.id} onClick={()=>handleClick!(item)}>
+                                <tr key={item.id} onClick={() => handleClick!(item)}>
                                     <td >{item.nome}</td>
                                 </tr>
                             ))}
@@ -48,14 +36,15 @@ function TableDisciplina() {
 
                         </tbody>
                     </table>
+                </div>
 
-                    : <p>Sem disciplina para mostrar</p>)}
-
-
-
+                : <p>Sem disciplina para mostrar</p>)}
 
 
-            </div>
+
+
+
+
 
         </>
     );

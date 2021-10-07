@@ -1,6 +1,4 @@
 import { useContext } from "react";
-
-import { ProfessorContext } from "contexts/ProfessorContext";
 import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
