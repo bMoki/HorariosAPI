@@ -39,7 +39,7 @@ function Cadastro_Disciplina() {
 
 
                 </div>
-                <Modal />
+                <Modal message="Tem certeza que deseja excluir a disciplina?" context="disciplina"/>
             </DisciplinaContextProvider>
 
         </>

@@ -42,7 +42,7 @@ function Cadastro_Prof() {
 
 
                 </div>
-                <Modal />
+                <Modal message="Tem certeza que deseja excluir o professor?" context="professor"/>
             </ProfessorContextProvider>
         </>
     );

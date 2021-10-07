@@ -36,7 +36,7 @@ interface IProfessorContext {
 
     handleSubmit?:          () => void,
     handleClear?:           () => void,
-    handleDelete?:          () => void,
+    handleDeleteProfessor?: () => void,
     handleSearch?:          () => void,
     handleClick?:           (item:Prof) => void,
    
@@ -293,7 +293,7 @@ const ProfessorContextProvider:FC =({ children }) => {
         }
     }
 
-    function handleDelete() {
+    function handleDeleteProfessor() {
         myStorage.setItem("toast", "DELETE");
 
         DeleteRequest().then(go => {
@@ -389,7 +389,7 @@ const ProfessorContextProvider:FC =({ children }) => {
             handleSubmit,
             btnOperation,
             handleClear,
-            handleDelete,
+            handleDeleteProfessor,
             myStorage, formIsOk,
             page
         }

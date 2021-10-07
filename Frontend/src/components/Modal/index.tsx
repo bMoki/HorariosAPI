@@ -1,10 +1,26 @@
 import { ProfessorContext } from "contexts/ProfessorContext";
+import { DisciplinaContext } from "contexts/DisciplinaContext";
 import { useContext } from "react";
 
+interface IProps {
+    message: string;
+    context: string;
+}
 
+function Modal({ message, context }: IProps) {
+    const { handleDeleteProfessor } = useContext(ProfessorContext);
+    const { handleDeleteDisciplina } = useContext(DisciplinaContext);
 
-function Modal() {
-    const { handleDelete } = useContext(ProfessorContext);
+    const onClickFunction = (context: string) => {
+        switch (context) {
+            case "professor":
+                handleDeleteProfessor!();
+                break;
+            case "disciplina":
+                handleDeleteDisciplina!();
+                break;
+        }
+    }
 
     return (
         <>
@@ -16,11 +32,11 @@ function Modal() {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                           <h5>Tem certeza que deseja excluir o professor?</h5>
+                            <h5>{message}</h5>
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
                             <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Não</button>
-                            <button type="button" className="btn btn-danger" onClick={handleDelete}>Sim</button>
+                            <button type="button" className="btn btn-danger" onClick={() => onClickFunction(context)}>Sim</button>
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ interface IDisciplinaContext {
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void
     handleClick?:(item:Disciplina) => void,
     handleClear?:()=>void,
+    handleDeleteDisciplina?:()=>void,
    
 }
 
@@ -60,7 +61,9 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         setBtnOperation(false);
     }
 
-
+    function handleDeleteDisciplina(){
+        console.log("delete");
+    }
 
 
 
@@ -70,7 +73,8 @@ const DisciplinaContextProvider: FC = ({ children }) => {
             fetchError,isLoading,
             nomeHandler,handleClick,
             btnOperation,
-            handleClear
+            handleClear,
+            handleDeleteDisciplina
         }}>
             {children}
         </DisciplinaContext.Provider>
