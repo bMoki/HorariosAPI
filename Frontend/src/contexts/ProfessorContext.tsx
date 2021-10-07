@@ -1,9 +1,9 @@
-import axios from "axios";
 import { createContext, useState, ChangeEvent, FC, useEffect } from "react";
 import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
 import { Prof, ProfPage } from "types/prof";
 import {PostRequest,PutRequest,DeleteRequest} from "hooks/useAxios";
+import {useAxiosFetchPage} from "hooks/useAxiosFetch";
 
 interface IProfessorContext {
     nome: string,
@@ -20,6 +20,8 @@ interface IProfessorContext {
     searchCpf: string,
     searchSiape: string,
     page: ProfPage,
+    fetchError:string | null,
+    isLoading: boolean,
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     sobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -65,15 +67,15 @@ const defaultState = {
         totalElements: 0,
         totalPages: 0
     },
+    fetchError: null,
+    isLoading:false,
 }
 
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
 
 const ProfessorContextProvider: FC = ({ children }) => {
 
-    //let myStorage = window.sessionStorage;
-
-
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
     const [page, setPage] = useState<ProfPage>({
         first: true,
         last: true,
@@ -83,13 +85,8 @@ const ProfessorContextProvider: FC = ({ children }) => {
     });
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/professor`)
-            .then(response => {
-                setPage(response.data);
-                console.log(response.data);
-            });
-
-    }, [])
+        setPage(data);
+    }, [data])
 
     const [nome, setNome] = useState("");
     const [cpf, setCPF] = useState("");
@@ -285,7 +282,8 @@ const ProfessorContextProvider: FC = ({ children }) => {
             handleClear,
             handleDeleteProfessor,
             formIsOk,
-            page
+            page,  fetchError,
+            isLoading,
         }
         }>
 

@@ -1,8 +1,7 @@
-import axios from "axios";
 import { createContext, useState, FC, useEffect, ChangeEvent } from "react";
 import { Disciplina } from "types/disciplina";
 import { BASE_URL } from "utils/requests";
-import useAxiosFetch from "hooks/useAxiosFetch";
+import {useAxiosFetchArray} from "hooks/useAxiosFetch";
 
 
 
@@ -43,7 +42,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     const [nome, setNome] = useState("");
     const [btnOperation, setBtnOperation] = useState(false);
 
-    const { data, fetchError, isLoading } = useAxiosFetch(`${BASE_URL}/disciplina`);
+    const { data, fetchError, isLoading } = useAxiosFetchArray(`${BASE_URL}/disciplina`);
     
 
     useEffect(() => {
@@ -56,11 +55,13 @@ const DisciplinaContextProvider: FC = ({ children }) => {
 
     function handleClick(item:Disciplina){
         setNome(item?.nome === undefined? "" : item.nome);
+        setId(item?.id === undefined? 0 : item.id);
         setBtnOperation(true);
     }
 
     function handleClear(){
         setNome("");
+        setId(0);
         setBtnOperation(false);
     }
 
