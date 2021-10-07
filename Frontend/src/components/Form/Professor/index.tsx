@@ -8,7 +8,7 @@ import { AiOutlineClear } from "react-icons/ai";
 
 
 
-function Form() {
+function FormProf() {
 
     const { nome, cpf, email, sobrenome, dataNascimento, siape,
         nomeHandler, sobrenomeHandler, cpfHandler, emailHandler, dataNascimentoHandler, siapeHandler,
@@ -61,4 +61,4 @@ function Form() {
         </>
     );
 };
-export default Form;
+export default FormProf;

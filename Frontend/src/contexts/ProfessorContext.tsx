@@ -88,6 +88,7 @@ const ProfessorContextProvider:FC =({ children }) => {
             axios.get(`${BASE_URL}/professor`)
                 .then(response => {
                     setPage(response.data);
+                    console.log(response.data);
                 });
                
         },[])

@@ -24,6 +24,10 @@ function NavBar() {
                                 <Link to="/CadastroProf" className="nav-link">Professor</Link>
 
                             </li>
+                            <li className="nav-item">
+                                <Link to="/CadastroDisciplina" className="nav-link">Disciplina</Link>
+
+                            </li>
                         </ul>
 
                     </div>

@@ -1,51 +1,49 @@
-import FormProf from "components/Form/Professor";
+import FormDisciplina from "components/Form/Disciplina";
+
 import Modal from "components/Modal";
 import NavBar from "components/NavBar";
-import Pagination from "components/Pagination";
-import SearchProf from "components/Search/Professor";
-import TableProf from "components/Table/Professor";
-import  ProfessorContextProvider  from "contexts/ProfessorContext";
+
+import TableDisciplina from "components/Table/Disciplina";
+
+import DisciplinaContextProvider from "contexts/DisciplinaContext";
 import { ToastContainer, Zoom } from "react-toastify";
 
 
 
-function Cadastro_Prof() {
+function Cadastro_Disciplina() {
 
     return (
         <>
-            <ProfessorContextProvider>
-
+            <DisciplinaContextProvider>
                 <NavBar />
                 <div className="container">
                     <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
-                    
+
                     <div className="row">
-                        <div className="col-md-8 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
+                        <div className="col-md-6 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
                             <div className="row">
-                                <TableProf />
-                            </div>
-                            <div className="row mt-auto">
-                                <Pagination />
+                                <TableDisciplina />
                             </div>
                         </div>
 
                         <div className="col border shadow-sm p-3  mt-4 m-2">
-                            <FormProf />
+                            <FormDisciplina />
                         </div>
 
                     </div>
                     <div className="row">
                         <div className="col-md-8  border shadow-sm p-3 m-2">
-                            <SearchProf />
+
                         </div>
                     </div>
 
 
                 </div>
                 <Modal />
-            </ProfessorContextProvider>
+            </DisciplinaContextProvider>
+
         </>
     );
 }
 
-export default Cadastro_Prof;
+export default Cadastro_Disciplina;

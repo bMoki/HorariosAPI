@@ -1,30 +1,9 @@
-import axios from "axios";
 import { ProfessorContext } from "contexts/ProfessorContext";
-import { useContext, useEffect, useState} from "react";
-import { ProfPage, Prof} from "types/prof";
-import { BASE_URL } from "utils/requests";
-
-
+import { useContext} from "react";
 
 function TableProf() {
     
     const {handleClick,page} = useContext(ProfessorContext);
-
-    // const [page, setPage] = useState<ProfPage>({
-    //     first: true,
-    //     last: true,
-    //     number: 0,
-    //     totalElements: 0,
-    //     totalPages: 0
-    // });
-
-    // useEffect(()=> {
-    //     axios.get(`${BASE_URL}/professor`)
-    //         .then(response => {
-    //             setPage(response.data);
-    //         });
-           
-    // },[])
 
     return (
         <>

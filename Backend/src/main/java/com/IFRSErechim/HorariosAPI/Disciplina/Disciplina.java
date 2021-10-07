@@ -2,7 +2,6 @@ package com.IFRSErechim.HorariosAPI.Disciplina;
 
 import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
-import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
