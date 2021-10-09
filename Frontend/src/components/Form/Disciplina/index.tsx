@@ -3,7 +3,6 @@ import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 import ProfessorContextProvider from "contexts/ProfessorContext";
-import TableProf from "components/Table/Professor";
 import ComboBoxProf from "components/ComboBox/Professor";
 
 
@@ -25,7 +24,8 @@ function FormDisciplina() {
                     <input type="text" className="form-control" id="inputName" value={nome} onChange={nomeHandler} />
                 </div>
                 <div className="col">
-                    <ComboBoxProf/>
+                    <ProfessorContextProvider><ComboBoxProf/></ProfessorContextProvider>
+                    
                 </div>
                
                 <div className="row mt-3">

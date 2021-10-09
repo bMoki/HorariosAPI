@@ -2,8 +2,8 @@ import { createContext, useState, ChangeEvent, FC, useEffect } from "react";
 import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
 import { Prof, ProfPage } from "types/prof";
-import {PostRequest,PutRequest,DeleteRequest} from "hooks/useAxios";
-import {useAxiosFetchPage} from "hooks/useAxiosFetch";
+import { PostRequest, PutRequest, DeleteRequest } from "hooks/useAxios";
+import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 
 interface IProfessorContext {
     nome: string,
@@ -20,7 +20,7 @@ interface IProfessorContext {
     searchCpf: string,
     searchSiape: string,
     page: ProfPage,
-    fetchError:string | null,
+    fetchError: string | null,
     isLoading: boolean,
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -68,7 +68,7 @@ const defaultState = {
         totalPages: 0
     },
     fetchError: null,
-    isLoading:false,
+    isLoading: false,
 }
 
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
@@ -85,8 +85,8 @@ const ProfessorContextProvider: FC = ({ children }) => {
     });
 
     useEffect(() => {
-        setPage(data);
-    }, [data])
+            setPage(data);
+        }, [data])
 
     const [nome, setNome] = useState("");
     const [cpf, setCPF] = useState("");
@@ -205,7 +205,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PutRequest(`${BASE_URL}/professor`,profe,profe.id).then(go => {
+                PutRequest(`${BASE_URL}/professor`, profe, profe.id).then(go => {
                     window.location.reload();
                 })
 
@@ -219,7 +219,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PostRequest(`${BASE_URL}/professor`,profe).then(go => {
+                PostRequest(`${BASE_URL}/professor`, profe).then(go => {
                     window.location.reload();
                 });
 
@@ -229,7 +229,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteProfessor() {
-        DeleteRequest(`${BASE_URL}/professor`,id).then(go => {
+        DeleteRequest(`${BASE_URL}/professor`, id).then(go => {
             window.location.reload();
         });
     }
@@ -282,7 +282,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
             handleClear,
             handleDeleteProfessor,
             formIsOk,
-            page,  fetchError,
+            page, fetchError,
             isLoading,
         }
         }>
