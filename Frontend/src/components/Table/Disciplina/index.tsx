@@ -1,10 +1,27 @@
 import { DisciplinaContext } from "contexts/DisciplinaContext";
-import { useContext } from "react";
+import { useAxiosFetchPage } from "hooks/useAxiosFetch";
+import { useContext, useEffect, useState } from "react";
+import { DisciplinaPage } from "types/disciplina";
+import { BASE_URL } from "utils/requests";
 
 
 function TableDisciplina() {
 
-    const { disciplina, isLoading, fetchError, handleClick } = useContext(DisciplinaContext);
+    const { handleClick } = useContext(DisciplinaContext);
+    const [disciplina, setDisciplina] = useState<DisciplinaPage>({
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    });
+
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/disciplina`);
+
+
+    useEffect(() => {
+        setDisciplina(data);
+    }, [data])
 
     return (
         <>
@@ -18,18 +35,31 @@ function TableDisciplina() {
                     </div>
                 </div>}
             {fetchError && <p>{fetchError}</p>}
-            {!isLoading && !fetchError && (disciplina.length ?
+            {!isLoading && !fetchError && (disciplina.content?.length ?
                 <div className="table-responsive">
                     <table className="table table-hover ">
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
+                                <th scope="col">Professor</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {disciplina?.map(item => (
+                            {disciplina.content?.map(item => (
                                 <tr key={item.id} onClick={() => handleClick!(item)}>
                                     <td >{item.nome}</td>
+                                    <td>
+                                        {item.professores?.length ?
+                                            item.professores.map(prof => (
+                                                <span className="badge rounded-pill bg-primary p-2 px-3 mx-1 mb-1 mt-1 fw-normal fs-6" key={prof.id}>{prof.nome}</span>
+                                            ))
+                                            :
+                                            <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1"> Nenhum </span>
+                                        }
+
+
+
+                                    </td>
                                 </tr>
                             ))}
 

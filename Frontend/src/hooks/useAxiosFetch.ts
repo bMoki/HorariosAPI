@@ -77,6 +77,7 @@ export const useAxiosFetchPage = (dataUrl:string) => {
                 if (isMounted) {
                     setFetchError(err.message);
                     setData({
+                        content: [],
                         first: true,
                         last: true,
                         number: 0,
@@ -102,4 +103,6 @@ export const useAxiosFetchPage = (dataUrl:string) => {
 
     return {data, fetchError, isLoading};
 }
+
+
 

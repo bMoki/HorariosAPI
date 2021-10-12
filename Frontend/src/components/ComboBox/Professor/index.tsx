@@ -1,6 +1,8 @@
-import { useContext } from "react";
-import { ProfessorContext } from "contexts/ProfessorContext";
+import {  useEffect, useState } from "react";
 import Select from "react-select";
+import { useAxiosFetchPage } from "hooks/useAxiosFetch";
+import { ProfPage } from "types/prof";
+import { BASE_URL } from "utils/requests";
 
 
 
@@ -8,36 +10,57 @@ import Select from "react-select";
 
 function ComboBoxProf() {
 
-    const { page, isLoading, fetchError
-    } = useContext(ProfessorContext);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
+    const [professor, setProfessor] = useState<ProfPage>({
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    });
+    const [options, setOptions] = useState([{}])
 
-    
-    let obj;
-    if(isLoading){
-        obj = [{value:0,label:"Loading..."}]
-    }else{
-        page.content?.length ? 
-       
-        obj = page.content?.map((item) => {
+    useEffect(() => {
+        setProfessor(data);
+    }, [data])
+
+    useEffect(() => {
+        fetchError && setOptions([{label: fetchError }]);
+        professor.content?.length ?
+        setOptions(professor.content!.map((item)=>{
             return {
                 value: item.id,
                 label: item.nome + ' ' + item.sobrenome
-            }
-        }) : obj = [{value:0,label:"Sem professores"}] ;
-    }
+            }   
+        })) : setOptions([]);
+    }, [professor,fetchError])
 
-    if(fetchError){
-        obj = [{value:0,label:fetchError}]
-    }
 
-   
-    // obj = page.content?.map((item) => {
-    //             return {
-    //                 value: item.id,
-    //                 label: item.nome + ' ' + item.sobrenome
-    //             }
-    //         })
-    // let obj = [
+    // let obj;
+
+    // professor.content?.length ?
+
+    //     obj = professor.content?.map((item) => {
+    //         return {
+    //             value: item.id,
+    //             label: item.nome + ' ' + item.sobrenome
+    //         }
+    //     }) : obj = [{ value: 0, label: "Sem professores" }];
+
+
+    // if (fetchError) {
+    //     obj = [{ value: 0, label: fetchError }]
+    // }
+
+
+    // obj = professor.content?.map((item) => {
+    //     return {
+    //         value: item.id,
+    //         label: item.nome + ' ' + item.sobrenome
+    //     }
+    // })
+
+    // obj = [
     //     {value:1,label:"op1"},
     //     {value:2,label:"op2"},
     //     {value:3,label:"op3"},
@@ -54,9 +77,12 @@ function ComboBoxProf() {
             <label htmlFor="comboBox" className="form-label" >Professores</label>
             <div className="form-group">
                 <Select
-                    options={obj}
+                    
+                    options={options}
                     isMulti
                     isSearchable
+                    isLoading={isLoading}
+                    noOptionsMessage={() => 'Não há professor'}
                 />
             </div>
 

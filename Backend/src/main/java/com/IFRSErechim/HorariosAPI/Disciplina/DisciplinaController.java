@@ -6,6 +6,8 @@ import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ public class DisciplinaController {
     private DisciplinaService disciplinaService;
 
     @GetMapping
-    public ResponseEntity<List<DisciplinaDTO>> findAll(){
-        List<DisciplinaDTO> list = disciplinaService.findAll();
+    public ResponseEntity<Page<DisciplinaDTO>> findAll(Pageable pageable){
+        Page<DisciplinaDTO> list = disciplinaService.findAll(pageable);
         return ResponseEntity.ok(list);
 
     }

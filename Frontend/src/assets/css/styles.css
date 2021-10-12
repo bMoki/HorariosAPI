@@ -4,6 +4,7 @@
 :root {
     --color-primary: #1861cf;
     --color-success: #3cb331;
+    --color-secondary: #6c757d9f;
 }
 
 html, body {
@@ -45,5 +46,9 @@ html, body {
 
 .error-toast{
     background-color: var(--color-success) ;
+}
+
+.bg-secondary {
+    background-color: var(--color-secondary)  !important;    
 }
 

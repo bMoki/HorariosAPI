@@ -5,3 +5,15 @@ export type Disciplina = {
     nome?:string;
     professores?:Prof[];
 }
+
+export type DisciplinaPage = {
+    content?: Disciplina[];
+    last: boolean;
+    totalPages: number;
+    totalElements: number;
+    number: number;
+    size?: number;
+    numberOfElements?: number;
+    first: boolean;
+    empty?: boolean;
+}

@@ -1,9 +1,8 @@
-import { createContext, useState, ChangeEvent, FC, useEffect } from "react";
+import { createContext, useState, ChangeEvent, FC } from "react";
 import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
-import { Prof, ProfPage } from "types/prof";
+import { Prof } from "types/prof";
 import { PostRequest, PutRequest, DeleteRequest } from "hooks/useAxios";
-import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 
 interface IProfessorContext {
     nome: string,
@@ -19,9 +18,9 @@ interface IProfessorContext {
     searchSobrenome: string,
     searchCpf: string,
     searchSiape: string,
-    page: ProfPage,
-    fetchError: string | null,
-    isLoading: boolean,
+    // professor: ProfPage,
+    // fetchError: string | null,
+    // isLoading: boolean,
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     sobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -60,33 +59,33 @@ const defaultState = {
     searchSobrenome: "",
     searchCpf: "",
     searchSiape: "",
-    page: {
-        first: true,
-        last: true,
-        number: 0,
-        totalElements: 0,
-        totalPages: 0
-    },
-    fetchError: null,
-    isLoading: false,
+    // professor: {
+    //     first: true,
+    //     last: true,
+    //     number: 0,
+    //     totalElements: 0,
+    //     totalPages: 0
+    // },
+    // fetchError: null,
+    // isLoading: false,
 }
 
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
 
 const ProfessorContextProvider: FC = ({ children }) => {
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
-    const [page, setPage] = useState<ProfPage>({
-        first: true,
-        last: true,
-        number: 0,
-        totalElements: 0,
-        totalPages: 0
-    });
+    // const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
+    // const [professor, setProfessor] = useState<ProfPage>({
+    //     first: true,
+    //     last: true,
+    //     number: 0,
+    //     totalElements: 0,
+    //     totalPages: 0
+    // });
 
-    useEffect(() => {
-            setPage(data);
-        }, [data])
+    // useEffect(() => {
+    //         setProfessor(data);
+    //     }, [data])
 
     const [nome, setNome] = useState("");
     const [cpf, setCPF] = useState("");
@@ -282,8 +281,8 @@ const ProfessorContextProvider: FC = ({ children }) => {
             handleClear,
             handleDeleteProfessor,
             formIsOk,
-            page, fetchError,
-            isLoading,
+            // professor, fetchError,
+            // isLoading,
         }
         }>
 

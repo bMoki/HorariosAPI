@@ -9,6 +9,8 @@ import com.IFRSErechim.HorariosAPI.Professor.ProfessorService;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +25,9 @@ public class DisciplinaService {
 
     private ProfessorService professorService;
 
-    public List<DisciplinaDTO> findAll(){
-        List<Disciplina> result = disciplinaRepository.findAll();
-        return result.stream().map(x -> new DisciplinaDTO(x)).collect(Collectors.toList());
+    public Page<DisciplinaDTO> findAll(Pageable pageable){
+        Page<Disciplina> result = disciplinaRepository.findAll(pageable);
+        return result.map(x -> new DisciplinaDTO(x));
     }
 
     public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) {
