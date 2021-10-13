@@ -10,7 +10,7 @@ import ComboBoxProf from "components/ComboBox/Professor";
 
 function FormDisciplina() {
 
-    const { nome, nomeHandler, btnOperation, handleClear
+    const { nome, nomeHandler, btnOperation, handleClear,handleSubmit,formIsOk
     } = useContext(DisciplinaContext);
 
 
@@ -20,7 +20,7 @@ function FormDisciplina() {
             <form className="row g-3" >
                 <div className="col">
                     <label htmlFor="inputName" className="form-label" >Nome</label>
-                    <input type="text" className="form-control" id="inputName" value={nome} onChange={nomeHandler} />
+                    <input type="text" className={formIsOk ? "form-control" : nome !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={nome} onChange={nomeHandler} />
                 </div>
 
 
@@ -32,7 +32,7 @@ function FormDisciplina() {
 
                 <div className=" d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" >{btnOperation ? "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
                     </div>
                     <div className="p-2 ">
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>

@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom';
 function NavBar() {
     return (
         <>
+
             <nav className="navbar navbar-expand-lg navbar-light border-bottom shadow-sm mb-5">
-                <div className="container-fluid">
+
+                <div className="container-fluid p-3">
 
                     <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                    <Link to="/">
+                    <Link to="/" className="mx-5">
                         <img src={ImgIF} alt="IF" width="40" className="px-1" />
                     </Link>
 
@@ -32,7 +34,9 @@ function NavBar() {
 
                     </div>
                 </div>
+
             </nav>
+
         </>
     );
 }

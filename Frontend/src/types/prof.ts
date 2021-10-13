@@ -19,3 +19,8 @@ export type ProfPage = {
     first: boolean;
     empty?: boolean;
 }
+
+export type ProfOptions = {
+    value?: number;
+    label?: string;
+}

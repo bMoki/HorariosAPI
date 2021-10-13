@@ -37,7 +37,7 @@ function TableDisciplina() {
             {fetchError && <p>{fetchError}</p>}
             {!isLoading && !fetchError && (disciplina.content?.length ?
                 <div className="table-responsive">
-                    <table className="table table-hover ">
+                    <table className="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
@@ -46,15 +46,15 @@ function TableDisciplina() {
                         </thead>
                         <tbody>
                             {disciplina.content?.map(item => (
-                                <tr key={item.id} onClick={() => handleClick!(item)}>
-                                    <td >{item.nome}</td>
-                                    <td>
+                                <tr key={item.id} onClick={() => handleClick!(item)} className="p-1">
+                                    <td className="align-middle">{item.nome}</td>
+                                    <td >
                                         {item.professores?.length ?
                                             item.professores.map(prof => (
                                                 <span className="badge rounded-pill bg-primary p-2 px-3 mx-1 mb-1 mt-1 fw-normal fs-6" key={prof.id}>{prof.nome}</span>
                                             ))
                                             :
-                                            <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1"> Nenhum </span>
+                                            <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1 fs-6"> Nenhum </span>
                                         }
 
 

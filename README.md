@@ -6,4 +6,5 @@ Projeto de serviço web de horarios para o IFRS
   > - Ajeitar exceptions
   > - Ajeitar messages responses
   > - Filtros professor
-  > - botoes cadastro disciplina
+  > - Page Horarios
+  > - Page Cursos

@@ -34,7 +34,7 @@ function TableProf() {
 
             {!isLoading && !fetchError && (professor.totalElements > 0 ?
                 <div className="table-responsive">
-                    <table className="table table-hover ">
+                    <table className="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
@@ -47,11 +47,11 @@ function TableProf() {
                         <tbody>
                             {professor.content?.map(item => (
                                 <tr key={item.id} onClick={() => handleClick!(item)}>
-                                    <td >{item.nome}</td>
-                                    <td>{item.sobrenome}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.cpf}</td>
-                                    <td>{item.siape}</td>
+                                    <td className="align-middle" height="50px">{item.nome}</td>
+                                    <td className="align-middle">{item.sobrenome}</td>
+                                    <td className="align-middle">{item.email}</td>
+                                    <td className="align-middle">{item.cpf}</td>
+                                    <td className="align-middle">{item.siape}</td>
                                 </tr>
                             ))}
 

@@ -18,9 +18,7 @@ interface IProfessorContext {
     searchSobrenome: string,
     searchCpf: string,
     searchSiape: string,
-    // professor: ProfPage,
-    // fetchError: string | null,
-    // isLoading: boolean,
+ 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     sobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -59,33 +57,12 @@ const defaultState = {
     searchSobrenome: "",
     searchCpf: "",
     searchSiape: "",
-    // professor: {
-    //     first: true,
-    //     last: true,
-    //     number: 0,
-    //     totalElements: 0,
-    //     totalPages: 0
-    // },
-    // fetchError: null,
-    // isLoading: false,
+
 }
 
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
 
 const ProfessorContextProvider: FC = ({ children }) => {
-
-    // const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
-    // const [professor, setProfessor] = useState<ProfPage>({
-    //     first: true,
-    //     last: true,
-    //     number: 0,
-    //     totalElements: 0,
-    //     totalPages: 0
-    // });
-
-    // useEffect(() => {
-    //         setProfessor(data);
-    //     }, [data])
 
     const [nome, setNome] = useState("");
     const [cpf, setCPF] = useState("");
@@ -116,7 +93,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setSiape(mask(event.target.value, ['9999999']));
     }
 
-    //Search----
+   
     const [searchNome, setSearchNome] = useState("");
     const [searchSobrenome, setSearchSobrenome] = useState("");
     const [searchCpf, setSearchCpf] = useState("");
@@ -134,10 +111,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
     function searchSiapeHandler(event: ChangeEvent<HTMLInputElement>) {
         setSearchSiape(event.target.value);
     }
-
-
-    //----------
-
 
 
     function FormValidation() {
@@ -184,7 +157,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setBtnOperation(true)
     }
 
-    //Buttons---------------------------------------------------
     function handleSubmit() {
 
         const Ok = FormValidation();
@@ -233,9 +205,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
         });
     }
 
-
-
-
     function handleClear() {
         setNome("");
         setSobrenome("");
@@ -244,6 +213,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setDataNascimento("");
         setSiape("");
         setId(0);
+        setFormIsOk(true);
         setBtnOperation(false);
     }
 
@@ -281,8 +251,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
             handleClear,
             handleDeleteProfessor,
             formIsOk,
-            // professor, fetchError,
-            // isLoading,
         }
         }>
 
