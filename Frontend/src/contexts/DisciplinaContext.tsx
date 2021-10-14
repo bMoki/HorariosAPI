@@ -2,7 +2,6 @@ import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Disciplina } from "types/disciplina";
 import { options } from "types/options";
-import { Prof } from "types/prof";
 import { BASE_URL } from "utils/requests";
 
 
@@ -49,15 +48,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     const [formIsOk, setFormIsOk] = useState(true);
     const [professores,setProfessores] = useState<options[]>([]);
 
-    const [selectedProf, setSelectedProf] = useState<Prof[]>([]);
-
     function selectedProfHandler(selectedOption?: options[]) {
-        setSelectedProf(selectedOption === undefined ? [] :
-            selectedOption.map((item) => {
-                return {
-                    id: item.value
-                }
-            }));
         setProfessores(selectedOption === undefined ? [] : 
             selectedOption.map((item) => {
                 return {
@@ -113,7 +104,11 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                 const disciplina = {
                     id:id,
                     nome: nome,
-                    professores: selectedProf
+                    professores: professores.map((x=>{
+                        return{
+                            id: x.value
+                        }
+                    }))
                 }
 
                 PutRequest(`${BASE_URL}/disciplina`, disciplina, disciplina.id).then(go => {
@@ -123,7 +118,11 @@ const DisciplinaContextProvider: FC = ({ children }) => {
             } else {
                 const disciplina = {
                     nome: nome,
-                    professores: selectedProf
+                    professores:  professores.map((x=>{
+                        return{
+                            id: x.value
+                        }
+                    }))
                 }
                 PostRequest(`${BASE_URL}/disciplina`, disciplina).then(go => {
                     window.location.reload();

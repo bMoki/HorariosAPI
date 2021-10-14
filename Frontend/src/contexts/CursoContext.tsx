@@ -1,7 +1,6 @@
 import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Curso } from "types/curso";
-import { Disciplina } from "types/disciplina";
 import { options } from "types/options";
 import { BASE_URL } from "utils/requests";
 
@@ -49,15 +48,10 @@ const CursoContextProvider: FC = ({ children }) => {
     const [formIsOk, setFormIsOk] = useState(true);
     const [disciplinas,setDisciplinas] = useState<options[]>([]);
 
-    const [selectedDisciplina, setSelectedDisciplina] = useState<Disciplina[]>([]);
+  
 
     function selectedDisciplinaHandler(selectedOption?: options[]) {
-        setSelectedDisciplina(selectedOption === undefined ? [] :
-            selectedOption.map((item) => {
-                return {
-                    id: item.value
-                }
-            }));
+       
             setDisciplinas(selectedOption === undefined ? [] : 
             selectedOption.map((item) => {
                 return {
@@ -113,7 +107,11 @@ const CursoContextProvider: FC = ({ children }) => {
                 const curso = {
                     id:id,
                     nome: nome,
-                    disciplinas: selectedDisciplina
+                    disciplinas: disciplinas.map((x =>{
+                        return{
+                            id: x.value
+                        }
+                    }))
                 }
 
                 PutRequest(`${BASE_URL}/curso`, curso, curso.id).then(go => {
@@ -123,7 +121,11 @@ const CursoContextProvider: FC = ({ children }) => {
             } else {
                 const curso = {
                     nome: nome,
-                    disciplinas: selectedDisciplina
+                    disciplinas: disciplinas.map((x =>{
+                        return{
+                            id: x.value
+                        }
+                    }))
                 }
                 PostRequest(`${BASE_URL}/curso`, curso).then(go => {
                     window.location.reload();
