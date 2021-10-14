@@ -6,6 +6,8 @@ import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,8 @@ public class CursoController {
     private CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<List<CursoDTO>> findAll(){
-        List<CursoDTO> list = cursoService.findAll();
+    public ResponseEntity<Page<CursoDTO>> findAll(Pageable pageable){
+        Page<CursoDTO> list = cursoService.findAll(pageable);
         return ResponseEntity.ok(list);
     }
 

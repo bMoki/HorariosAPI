@@ -1,28 +1,28 @@
 import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
+import { Curso } from "types/curso";
 import { Disciplina } from "types/disciplina";
 import { options } from "types/options";
-import { Prof } from "types/prof";
 import { BASE_URL } from "utils/requests";
 
 
 
 
 
-interface IDisciplinaContext {
+interface ICursoContext {
     nome: string,
     id: number,
     myStorage: Storage,
     btnOperation: boolean,
-    professores: options[],
+    disciplinas: options[],
     formIsOk:boolean,
 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    selectedProfHandler?: (electedOption: any) => void,
-    handleClick?: (item: Disciplina) => void,
+    selectedDisciplinaHandler?: (electedOption: any) => void,
+    handleClick?: (item: Curso) => void,
     handleClear?: () => void,
-    handleDeleteDisciplina?: () => void,
+    handleDeleteCurso?: () => void,
     handleSubmit?: () => void,
 
 }
@@ -33,13 +33,13 @@ const defaultState = {
     myStorage: sessionStorage,
     btnOperation: false,
     index:0,
-    professores:[],
+    disciplinas:[],
     formIsOk: true
 }
 
-export const DisciplinaContext = createContext<IDisciplinaContext>(defaultState);
+export const CursoContext = createContext<ICursoContext>(defaultState);
 
-const DisciplinaContextProvider: FC = ({ children }) => {
+const CursoContextProvider: FC = ({ children }) => {
     var myStorage = window.sessionStorage;
 
 
@@ -47,24 +47,25 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     const [nome, setNome] = useState("");
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
-    const [professores,setProfessores] = useState<options[]>([]);
+    const [disciplinas,setDisciplinas] = useState<options[]>([]);
 
-    const [selectedProf, setSelectedProf] = useState<Prof[]>([]);
+    const [selectedDisciplina, setSelectedDisciplina] = useState<Disciplina[]>([]);
 
-    function selectedProfHandler(selectedOption?: options[]) {
-        setSelectedProf(selectedOption === undefined ? [] :
+    function selectedDisciplinaHandler(selectedOption?: options[]) {
+        setSelectedDisciplina(selectedOption === undefined ? [] :
             selectedOption.map((item) => {
                 return {
                     id: item.value
                 }
             }));
-        setProfessores(selectedOption === undefined ? [] : 
+            setDisciplinas(selectedOption === undefined ? [] : 
             selectedOption.map((item) => {
                 return {
                     value: item.value,
                     label: item.label
                 }
-            }));   
+            })); 
+            
     }
 
 
@@ -72,13 +73,13 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         setNome(event.target.value);
     }
 
-    function handleClick(item: Disciplina) {
+    function handleClick(item: Curso) {
         setNome(item?.nome === undefined ? "" : item.nome);
         setId(item?.id === undefined ? 0 : item.id);
-        setProfessores(item?.professores === undefined ? [] : item.professores.map((prof)=>{
+        setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina)=>{
             return {
-                value: prof.id,
-                label: prof.nome + ' ' + prof.sobrenome
+                value: disciplina.id,
+                label: disciplina.nome
             }
         }));
         setBtnOperation(true);
@@ -87,7 +88,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     function handleClear() {
         setNome("");
         setId(0);
-        setProfessores([]);
+        setDisciplinas([]);
         setBtnOperation(false);
         setFormIsOk(true);
     }
@@ -108,32 +109,31 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         const Ok = FormValidation();
 
         if (Ok) {
-            console.log(btnOperation);
             if (btnOperation) {
-                const disciplina = {
+                const curso = {
                     id:id,
                     nome: nome,
-                    professores: selectedProf
+                    disciplinas: selectedDisciplina
                 }
 
-                PutRequest(`${BASE_URL}/disciplina`, disciplina, disciplina.id).then(go => {
+                PutRequest(`${BASE_URL}/curso`, curso, curso.id).then(go => {
                     window.location.reload();
                 })
 
             } else {
-                const disciplina = {
+                const curso = {
                     nome: nome,
-                    professores: selectedProf
+                    disciplinas: selectedDisciplina
                 }
-                PostRequest(`${BASE_URL}/disciplina`, disciplina).then(go => {
+                PostRequest(`${BASE_URL}/curso`, curso).then(go => {
                     window.location.reload();
                 });
             }
         }
     }
 
-    function handleDeleteDisciplina() {
-        DeleteRequest(`${BASE_URL}/disciplina`, id).then(go => {
+    function handleDeleteCurso() {
+        DeleteRequest(`${BASE_URL}/curso`, id).then(go => {
             window.location.reload();
         });
     }
@@ -141,17 +141,17 @@ const DisciplinaContextProvider: FC = ({ children }) => {
 
 
     return (
-        <DisciplinaContext.Provider value={{
-            id, nome, myStorage,professores,formIsOk,
+        <CursoContext.Provider value={{
+            id, nome, myStorage,disciplinas,formIsOk,
             nomeHandler, handleClick,
             btnOperation,
             handleClear,
-            handleDeleteDisciplina,
-            selectedProfHandler, handleSubmit
+            handleDeleteCurso,
+            selectedDisciplinaHandler, handleSubmit
         }}>
             {children}
-        </DisciplinaContext.Provider>
+        </CursoContext.Provider>
     )
 }
 
-export default DisciplinaContextProvider;
+export default CursoContextProvider;

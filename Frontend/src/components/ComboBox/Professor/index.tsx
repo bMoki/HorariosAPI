@@ -6,7 +6,7 @@ import { BASE_URL } from "utils/requests";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 
 
-function ComboBoxProf(props: any) {
+function ComboBoxProf() {
 
     const { selectedProfHandler, professores
     } = useContext(DisciplinaContext);
@@ -51,10 +51,6 @@ function ComboBoxProf(props: any) {
                     isLoading={isLoading}
                     noOptionsMessage={() => 'Não há professor'}
                     onChange={selectedProfHandler}
-
-
-
-
                 />
             </div>
 

@@ -6,9 +6,12 @@ import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaService;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
+import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +26,9 @@ public class CursoService {
 
     private DisciplinaService disciplinaService;
 
-    public List<CursoDTO> findAll(){
-            List<Curso> result = cursoRepository.findAll();
-            return result.stream().map(x -> new CursoDTO(x)).collect(Collectors.toList());
+    public Page<CursoDTO> findAll(Pageable pageable){
+            Page<Curso> result = cursoRepository.findAll(pageable);
+        return result.map(x -> new CursoDTO(x));
     }
 
     public CursoDTO findById(Long id) throws NotFoundException {
