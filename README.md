@@ -6,5 +6,8 @@ Projeto de serviço web de horarios para o IFRS
   > - Ajeitar exceptions
   > - Ajeitar messages responses
   > - Filtros professor
-  > - Page Horarios
+  > - Limitar quantidade de horarios por periodos que tambem deve ser limitado
+  > - Botao (+) quando estiver vazio e (lapis) quando estiver preenchido
+  > - Preencher from horario a partir do click do bloco
+
  

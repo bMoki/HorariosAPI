@@ -1,4 +1,4 @@
-package com.IFRSErechim.HorariosAPI.Professor;
+package com.IFRSErechim.HorariosAPI.Turma;
 
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Response.StandardError;
@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @ControllerAdvice
-public class ProfessorExceptionHandler {
+public class TurmaExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<StandardError> professorAlreadyExists(AlreadyExistsException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> turmaAlreadyExists(AlreadyExistsException e, HttpServletRequest request) {
         StandardError err = new StandardError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Unique constraint violation",
+                "Unique constraint violation turma",
                 e.getMessage(),
                 request.getRequestURI()
         );

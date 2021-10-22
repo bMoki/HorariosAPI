@@ -3,19 +3,17 @@ package com.IFRSErechim.HorariosAPI.Curso;
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaDTO;
 import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaService;
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
-import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Turma.Turma;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -27,30 +25,64 @@ public class CursoService {
     private DisciplinaService disciplinaService;
 
     public Page<CursoDTO> findAll(Pageable pageable){
-            Page<Curso> result = cursoRepository.findAll(pageable);
+        Page<Curso> result = cursoRepository.findAll(pageable);
         return result.map(x -> new CursoDTO(x));
     }
 
     public CursoDTO findById(Long id) throws NotFoundException {
         Curso curso = verifyIfExists(id);
-        CursoDTO cursoDTO = new CursoDTO(curso);
 
-        return cursoDTO;
+        return new CursoDTO(curso);
     }
 
-    public MessageResponseDTO criaCurso (CursoDTO cursoDTO) {
+    public MessageResponseDTO criaCurso (CursoDTO cursoDTO) throws AlreadyExistsException {
 
         Curso salvarCurso = new Curso(cursoDTO);
 
         Curso CursoSalvo = cursoRepository.save(salvarCurso);
-        return criaMessageResponse(CursoSalvo.getId(), "Curso criado com ID ");
+        for(int i=0; i<CursoSalvo.getQuantidadeTurma();i++){
+
+            Turma turma = new Turma();
+            turma.setNome("Semestre "+(i+1));
+            turma.setCurso(CursoSalvo);
+
+            CursoSalvo.addTurma(turma);
+        }
+        Curso CursoSalvoComTurmas = cursoRepository.save(CursoSalvo);
+
+        return criaMessageResponse(CursoSalvoComTurmas.getId(), "Curso criado com ID ");
     }
 
     public MessageResponseDTO UpdateById(Long id,CursoDTO cursoDTO) throws NotFoundException{
-            verifyIfExists(id);
-
+            Curso curso = verifyIfExists(id);
             Curso cursoToUpdate = new Curso(cursoDTO);
 
+            cursoToUpdate.setTurmas(curso.getTurmas());
+
+            Integer quantidade = curso.getQuantidadeTurma();
+            Integer quantidadeAlterada = cursoToUpdate.getQuantidadeTurma();
+
+            if(quantidade != quantidadeAlterada){
+                Integer dif = quantidadeAlterada - quantidade;
+                if(dif>0){
+                    for(int i=0; i<dif;i++){
+
+                        Turma turma = new Turma();
+                        turma.setNome("Semestre "+ (curso.getQuantidadeTurma()+(i+1)));
+                        turma.setCurso(cursoToUpdate);
+
+                        cursoToUpdate.addTurma(turma);
+                    }
+                }else{
+                    dif = dif*-1;
+                    for(int i=0;i<dif;i++){
+                        Integer index = cursoToUpdate.getTurmas().size()-1;
+                        Turma removeTurma = cursoToUpdate.getTurmas().get(index);
+                        cursoToUpdate.removeTurma(removeTurma);
+                    }
+
+                }
+            }
 
             Curso updatedCurso = cursoRepository.save(cursoToUpdate);
             return criaMessageResponse(updatedCurso.getId(), "Curso atualizado com ID ");

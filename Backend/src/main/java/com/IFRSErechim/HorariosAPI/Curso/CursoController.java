@@ -1,5 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Curso;
 
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
@@ -30,13 +31,13 @@ public class CursoController {
     }
 
     @GetMapping("/{id}")
-    public CursoDTO findById(@PathVariable Long id) throws NotFoundException {
+    public CursoDTO findByIdOrderByPeriodoDiaSemana(@PathVariable Long id) throws NotFoundException {
             return cursoService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaCurso(@RequestBody @Valid CursoDTO cursoDTO){
+    public MessageResponseDTO criaCurso(@RequestBody @Valid CursoDTO cursoDTO) throws AlreadyExistsException {
         return cursoService.criaCurso(cursoDTO);
     }
 

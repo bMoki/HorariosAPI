@@ -1,6 +1,5 @@
 import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
-import { Curso } from "types/curso";
 import { options } from "types/options";
 import { BASE_URL } from "utils/requests";
 
@@ -8,19 +7,19 @@ import { BASE_URL } from "utils/requests";
 
 
 
-interface ICursoContext {
+interface IHorarioContext {
     nome: string,
     id: number,
-    quantidade: string,
     btnOperation: boolean,
-    disciplinas: options[],
+    cursoOptions: options,
+    turma: options,
     formIsOk: boolean,
 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    quantidadeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    selectedDisciplinaHandler?: (electedOption: any) => void,
-    handleClick?: (item: Curso) => void,
+    selectedCursoHandler?: (electedOption: any) => void,
+    selectedTurmaHandler?: (electedOption: any) => void,
+    //handleClick?: (item: Curso) => void,
     handleClear?: () => void,
     handleDeleteCurso?: () => void,
     handleSubmit?: () => void,
@@ -30,64 +29,56 @@ interface ICursoContext {
 const defaultState = {
     nome: "",
     id: 0,
-    quantidade: "1",
     btnOperation: false,
     index: 0,
-    disciplinas: [],
+    cursoOptions: {},
+    turma: {},
     formIsOk: true
 }
 
-export const CursoContext = createContext<ICursoContext>(defaultState);
+export const HorarioContext = createContext<IHorarioContext>(defaultState);
 
-const CursoContextProvider: FC = ({ children }) => {
-    
+const HorarioContextProvider: FC = ({ children }) => {
+
+
     const [id, setId] = useState(0);
     const [nome, setNome] = useState("");
-    const [quantidade, setQuantidade] = useState("1");
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
-    const [disciplinas, setDisciplinas] = useState<options[]>([]);
+    const [cursoOptions, setCursoOptions] = useState<options>({});
+    const [turma, setTurma] = useState<options>({});
 
 
+    function selectedCursoHandler(selectedOption?: options) {
+        setCursoOptions(selectedOption === undefined ? {} : selectedOption);
+    }
 
-    function selectedDisciplinaHandler(selectedOption?: options[]) {
-
-        setDisciplinas(selectedOption === undefined ? [] :
-            selectedOption.map((item) => {
-                return {
-                    value: item.value,
-                    label: item.label
-                }
-            }));
-
+    function selectedTurmaHandler(selectedOption?: options) {
+        setTurma(selectedOption === undefined ? {} : selectedOption);
     }
 
 
     function nomeHandler(event: ChangeEvent<HTMLInputElement>) {
         setNome(event.target.value);
     }
-    function quantidadeHandler(event: ChangeEvent<HTMLInputElement>) {
-        setQuantidade(Number(event.target.value) < 1 ? "1" : event.target.value);
-    }
 
+    /*
     function handleClick(item: Curso) {
         setNome(item?.nome === undefined ? "" : item.nome);
         setId(item?.id === undefined ? 0 : item.id);
-        setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina) => {
+        setCursos(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina)=>{
             return {
                 value: disciplina.id,
                 label: disciplina.nome
             }
         }));
-        setQuantidade(item?.quantidadeTurma === undefined ? "1" : String(item.quantidadeTurma));
         setBtnOperation(true);
     }
-
+*/
     function handleClear() {
         setNome("");
         setId(0);
-        setQuantidade("1");
-        setDisciplinas([]);
+        setCursoOptions({});
         setBtnOperation(false);
         setFormIsOk(true);
     }
@@ -98,15 +89,13 @@ const CursoContextProvider: FC = ({ children }) => {
         if (nome === "") {
             Ok = false;
         }
-        if (quantidade === "") {
-            Ok = false;
-        }
 
         setFormIsOk(Ok)
         return Ok;
 
     }
 
+    /*
     function handleSubmit() {
         const Ok = FormValidation();
 
@@ -115,8 +104,7 @@ const CursoContextProvider: FC = ({ children }) => {
                 const curso = {
                     id: id,
                     nome: nome,
-                    quantidadeTurma: quantidade,
-                    disciplinas: disciplinas.map((x => {
+                    disciplinas: curso.map((x => {
                         return {
                             id: x.value
                         }
@@ -130,8 +118,7 @@ const CursoContextProvider: FC = ({ children }) => {
             } else {
                 const curso = {
                     nome: nome,
-                    quantidadeTurma: quantidade,
-                    disciplinas: disciplinas.map((x => {
+                    disciplinas: curso.map((x => {
                         return {
                             id: x.value
                         }
@@ -143,6 +130,7 @@ const CursoContextProvider: FC = ({ children }) => {
             }
         }
     }
+    */
 
     function handleDeleteCurso() {
         DeleteRequest(`${BASE_URL}/curso`, id).then(go => {
@@ -153,17 +141,18 @@ const CursoContextProvider: FC = ({ children }) => {
 
 
     return (
-        <CursoContext.Provider value={{
-            id, nome, quantidade, disciplinas, formIsOk,
-            nomeHandler, quantidadeHandler, handleClick,
+        <HorarioContext.Provider value={{
+            id, nome,cursoOptions,turma, formIsOk,
+            nomeHandler,
             btnOperation,
             handleClear,
             handleDeleteCurso,
-            selectedDisciplinaHandler, handleSubmit
+            selectedCursoHandler,
+            selectedTurmaHandler
         }}>
             {children}
-        </CursoContext.Provider>
+        </HorarioContext.Provider>
     )
 }
 
-export default CursoContextProvider;
+export default HorarioContextProvider;

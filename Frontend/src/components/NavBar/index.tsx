@@ -34,6 +34,10 @@ function NavBar() {
                                 <Link to="/CadastroCurso" className="nav-link">Curso</Link>
 
                             </li>
+                            <li className="nav-item">
+                                <Link to="/CadastroHorario" className="nav-link">Horário</Link>
+
+                            </li>
                         </ul>
 
                     </div>

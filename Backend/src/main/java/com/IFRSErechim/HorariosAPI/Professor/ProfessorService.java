@@ -1,7 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.ProfessorAlreadyExistsException;
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -24,10 +24,10 @@ public class ProfessorService {
         return result.map(x -> new ProfessorDTO(x));
     }
 
-    public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws ProfessorAlreadyExistsException{
+    public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
 
         if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
-            throw new ProfessorAlreadyExistsException("CPF já cadastrado!");
+            throw new AlreadyExistsException("CPF já cadastrado!");
         }
 
         Professor salvarProfessor = new Professor(professorDTO);

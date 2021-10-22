@@ -3,6 +3,7 @@ import CadastroDisciplina from 'Pages/CadastroDisciplina';
 import CadastroCurso from 'Pages/CadastroCurso'
 import Home from 'Pages/Home';
 import { BrowserRouter, Switch, Route} from 'react-router-dom';
+import CadastroHorario from 'Pages/CadastroHorario';
 
 function Routes() {
     return (
@@ -19,6 +20,9 @@ function Routes() {
                 </Route>
                 <Route path='/CadastroCurso'>
                     <CadastroCurso/>
+                </Route>
+                <Route path='/CadastroHorario'>
+                    <CadastroHorario/>
                 </Route>
             </Switch>
        </BrowserRouter>

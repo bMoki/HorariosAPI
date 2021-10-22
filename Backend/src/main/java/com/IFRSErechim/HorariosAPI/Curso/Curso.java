@@ -1,6 +1,8 @@
 package com.IFRSErechim.HorariosAPI.Curso;
 
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
+import com.IFRSErechim.HorariosAPI.Turma.Turma;
+import com.IFRSErechim.HorariosAPI.Turma.TurmaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +24,14 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Turma> turmas = new ArrayList<>();
+
     @Column(nullable = false)
     private String nome;
+
+    @Column
+    private Integer quantidadeTurma;
 
     @ManyToMany
     @JoinTable(
@@ -31,12 +39,23 @@ public class Curso {
             joinColumns = @JoinColumn(name = "curso_id"),
             inverseJoinColumns = @JoinColumn(name = "disciplina_id")
     )
-    List<Disciplina> disciplinas = new ArrayList<>();
+    private List<Disciplina> disciplinas = new ArrayList<>();
 
-     public Curso(CursoDTO entity) {
+
+    public void addTurma(Turma turma){
+        turmas.add(turma);
+        turma.setCurso(this);
+    }
+    public void removeTurma(Turma turma){
+        turmas.remove(turma);
+        turma.setCurso(null);
+    }
+    public Curso(CursoDTO entity) {
             id = entity.getId();
             nome = entity.getNome();
+            quantidadeTurma = entity.getQuantidadeTurma();
             disciplinas = entity.getDisciplinas().stream().map(x-> new Disciplina(x)).collect(Collectors.toList());
+            turmas = entity.getTurmas().stream().map(x -> new Turma(x)).collect(Collectors.toList());
      }
 
      public void Disciplinas(Disciplina disciplina) {

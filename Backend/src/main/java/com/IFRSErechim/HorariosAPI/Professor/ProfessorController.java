@@ -1,7 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.ProfessorAlreadyExistsException;
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class ProfessorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaProfessor(@RequestBody @Valid ProfessorDTO professorDTO) throws ProfessorAlreadyExistsException {
+    public MessageResponseDTO criaProfessor(@RequestBody @Valid ProfessorDTO professorDTO) throws AlreadyExistsException {
         return professorService.criaProfessor(professorDTO);
     }
 

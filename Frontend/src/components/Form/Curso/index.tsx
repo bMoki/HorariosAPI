@@ -10,7 +10,7 @@ import { CursoContext } from "contexts/CursoContext";
 
 function FormCurso() {
 
-    const { nome, nomeHandler, btnOperation, handleClear,handleSubmit,formIsOk
+    const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk
     } = useContext(CursoContext);
 
 
@@ -23,9 +23,15 @@ function FormCurso() {
                     <input type="text" className={formIsOk ? "form-control" : nome !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={nome} onChange={nomeHandler} />
                 </div>
 
-
-                <div className="col">
+                <div className="col-lg-12 col-md-6">
                     <ComboBoxDisciplina />
+                </div>
+
+                <div className="col-lg-12 col-md-6">
+                    <label htmlFor="inputQuantidade" className="form-label" >Quantidade de semestres</label>
+                    <div className="col-lg-3 col-md-6">
+                        <input type="number" className="form-control" id="inputQuantidade" value={quantidade} onChange={quantidadeHandler} />
+                    </div>
                 </div>
 
 

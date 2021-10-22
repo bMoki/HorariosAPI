@@ -42,6 +42,7 @@ function TableCurso() {
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Disciplina</th>
+                                <th scope="col">Semestres</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +61,7 @@ function TableCurso() {
 
 
                                     </td>
+                                    <td className="align-middle">{item.quantidadeTurma}</td>
                                 </tr>
                             ))}
 

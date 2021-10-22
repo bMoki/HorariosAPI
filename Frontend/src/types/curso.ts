@@ -1,8 +1,12 @@
-import {Disciplina} from 'types/disciplina';
+import {Disciplina} from './disciplina';
+import { Turma } from './turma';
+
 
 export type Curso = {
     id?:number;
     nome?:string;
+    turmas?:Turma[];
+    quantidadeTurma?:number;
     disciplinas?:Disciplina[];
 }
 

@@ -5,6 +5,8 @@ import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +23,15 @@ public class HorarioController {
     private HorarioService horarioService;
 
     @GetMapping
-    public ResponseEntity<List<HorarioDTO>> findAll(){
-        List<HorarioDTO> list = horarioService.findAll();
+    public ResponseEntity<Page<HorarioDTO>> findAll(Pageable pageable){
+        //wholepage = Pageable.unpaged();
+        Page<HorarioDTO> list = horarioService.findAll(pageable);
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaHorario(@RequestBody @Valid HorarioDTO horarioDTO){
+    public Horario criaHorario( @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException{
         return horarioService.criaHorario(horarioDTO);
     }
 

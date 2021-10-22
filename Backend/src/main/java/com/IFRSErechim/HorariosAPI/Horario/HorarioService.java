@@ -3,8 +3,11 @@ package com.IFRSErechim.HorariosAPI.Horario;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Turma.TurmaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +20,9 @@ public class HorarioService {
     @Autowired
     private HorarioRepository horarioRepository;
 
-     public List<HorarioDTO> findAll(){
-                List<Horario> result = horarioRepository.findAll();
-                return result.stream().map(x -> new HorarioDTO(x)).collect(Collectors.toList());
+     public Page<HorarioDTO> findAll(Pageable pageable){
+                Page<Horario> result = horarioRepository.findAll(pageable);
+                return result.map(x -> new HorarioDTO(x));
      }
 
     public HorarioDTO findById(Long id) throws NotFoundException {
@@ -29,12 +32,13 @@ public class HorarioService {
         return horarioDTO;
     }
 
-    public MessageResponseDTO criaHorario (HorarioDTO horarioDTO) {
+    public Horario criaHorario (HorarioDTO horarioDTO) {
 
             Horario salvarHorario = new Horario(horarioDTO);
 
             Horario HorarioSalvo = horarioRepository.save(salvarHorario);
-            return criaMessageResponse(HorarioSalvo.getId(), "Horario criado com ID ");
+
+            return HorarioSalvo;
         }
 
         public MessageResponseDTO UpdateById(Long id,HorarioDTO horarioDTO) throws NotFoundException{
