@@ -23,10 +23,11 @@ public class DisciplinaController {
     private DisciplinaService disciplinaService;
 
     @GetMapping
-    public ResponseEntity<Page<DisciplinaDTO>> findAll(Pageable pageable){
+    public ResponseEntity<Page<DisciplinaDTO>>  findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged, Pageable pageable){
+        if(!paged) pageable = Pageable.unpaged();
+
         Page<DisciplinaDTO> list = disciplinaService.findAll(pageable);
         return ResponseEntity.ok(list);
-
     }
 
     @PostMapping

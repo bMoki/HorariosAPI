@@ -11,7 +11,7 @@ function ComboBoxDisciplina() {
     const { selectedDisciplinaHandler, disciplinas
     } = useContext(CursoContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/disciplina`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/disciplina?paged=false`);
     const [disciplina, setDisciplina] = useState<DisciplinaPage>({
         first: true,
         last: true,

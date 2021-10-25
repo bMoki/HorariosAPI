@@ -1,3 +1,5 @@
+import ComboBoxCurso from "components/ComboBox/Curso";
+import ComboBoxTurma from "components/ComboBox/Turma";
 import FormHorario from "components/Form/Horario";
 import Modal from "components/Modal";
 import NavBar from "components/NavBar";
@@ -29,7 +31,22 @@ function Cadastro_Horario() {
                             <div className="col-lg-5 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
-                                        <FormHorario />
+                                        <form className="row g-3" >
+
+                                            <div className="col">
+                                                <ComboBoxCurso />
+                                            </div>
+                                            <div className="col">
+                                                <ComboBoxTurma />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-6 col-md-12 col-sm-12  p-3 m-2 ">
+                                <div className="row">
+                                    <div className=" col border shadow-sm p-3">
+                                       <FormHorario/>
                                     </div>
                                 </div>
                             </div>

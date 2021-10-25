@@ -1,3 +1,5 @@
+import { HorarioContext } from "contexts/HorarioContext";
+import { useContext } from "react";
 import { Horario } from "types/horario";
 
 type Props = {
@@ -5,12 +7,13 @@ type Props = {
 }
 
 function ColsHorario(props: Props) {
+  
 
     return (
         <>
             <td className="align-middle p-0">
                 <table className="table table-bordered m-0">
-                    <tbody>
+                    <tbody onClick={()=> console.log(props.horarios)}>
                         <tr>
                             <td className="table-secondary align-middle" height="75px">{props.horarios.length ? props.horarios[0].disciplina?.nome: "⠀"}</td>
                         </tr>

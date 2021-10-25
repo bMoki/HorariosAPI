@@ -23,7 +23,9 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @GetMapping
-    public ResponseEntity<Page<ProfessorDTO>> findAll(Pageable pageable){
+    public ResponseEntity<Page<ProfessorDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,Pageable pageable){
+        if(!paged) pageable = Pageable.unpaged();
+
         Page<ProfessorDTO> list = professorService.findAll(pageable);
         return ResponseEntity.ok(list);
 

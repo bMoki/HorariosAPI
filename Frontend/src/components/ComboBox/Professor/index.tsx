@@ -11,7 +11,7 @@ function ComboBoxProf() {
     const { selectedProfHandler, professores
     } = useContext(DisciplinaContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor?paged=false`);
     const [professor, setProfessor] = useState<ProfPage>({
         first: true,
         last: true,

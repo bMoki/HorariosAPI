@@ -11,7 +11,7 @@ function ComboBoxCurso() {
     const { selectedCursoHandler, cursoOptions
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/curso`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/curso?paged=false`);
     const [cursoPage, setCurso] = useState<CursoPage>({
         first: true,
         last: true,

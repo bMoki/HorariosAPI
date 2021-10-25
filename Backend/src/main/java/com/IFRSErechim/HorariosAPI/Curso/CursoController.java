@@ -25,7 +25,9 @@ public class CursoController {
     private CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<Page<CursoDTO>> findAll(Pageable pageable){
+    public ResponseEntity<Page<CursoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,Pageable pageable){
+        if(!paged) pageable = Pageable.unpaged();
+
         Page<CursoDTO> list = cursoService.findAll(pageable);
         return ResponseEntity.ok(list);
     }
