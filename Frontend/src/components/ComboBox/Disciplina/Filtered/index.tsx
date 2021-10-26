@@ -6,15 +6,13 @@ import { HorarioContext } from "contexts/HorarioContext";
 import { Curso } from "types/curso";
 
 
-function ComboBoxTurma() {
+function ComboBoxDisciplinaFiltered() {
 
-    const { selectedTurmaHandler, cursoOptions, turmaOptions,
-    } = useContext(HorarioContext);
+    const {cursoOptions,disciplinaOptions,selectedDisciplinaHandler} = useContext(HorarioContext);
 
     const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
     const [result, setResult] = useState<Curso>();
     const [options, setOptions] = useState([{}]);
-
 
     useEffect(() => {
         setResult(data);
@@ -22,8 +20,8 @@ function ComboBoxTurma() {
 
     useEffect(() => {
         fetchError && setOptions([{ label: fetchError }]);
-        result?.turmas ?
-            setOptions(result.turmas.map((item) => {
+        result?.disciplinas ?
+            setOptions(result.disciplinas.map((item) => {
                 return {
                     value: item.id,
                     label: item.nome
@@ -35,16 +33,15 @@ function ComboBoxTurma() {
     return (
         <>
 
-            <label htmlFor="comboBox" className="form-label" >Semestres</label>
+            <label htmlFor="comboBox" className="form-label" >Disciplinas</label>
             <div className="form-group">
                 <Select
-                    isClearable
                     options={options}
-                    value={turmaOptions === null ? null : turmaOptions.value ? turmaOptions : null}
+                    value={disciplinaOptions === null ? null : disciplinaOptions.value ? disciplinaOptions : null}
                     isSearchable
                     isLoading={isLoading}
-                    noOptionsMessage={() => 'Não há turmas'}
-                    onChange={selectedTurmaHandler}
+                    noOptionsMessage={() => 'Não há disciplina'}
+                    onChange={selectedDisciplinaHandler}
                 />
             </div>
 
@@ -53,4 +50,4 @@ function ComboBoxTurma() {
         </>
     );
 };
-export default ComboBoxTurma;
+export default ComboBoxDisciplinaFiltered;

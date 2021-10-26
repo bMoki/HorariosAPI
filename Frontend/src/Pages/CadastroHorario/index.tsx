@@ -28,22 +28,22 @@ function Cadastro_Horario() {
 
 
 
-                            <div className="col-lg-5 col-md-12 col-sm-12  p-3 m-2 ">
+                            <div className="col-lg-4 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
                                         <form className="row g-3" >
 
-                                            <div className="col">
+                                            <div className="col-12">
                                                 <ComboBoxCurso />
                                             </div>
-                                            <div className="col">
+                                            <div className="col-12">
                                                 <ComboBoxTurma />
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-6 col-md-12 col-sm-12  p-3 m-2 ">
+                            <div className="col  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
                                        <FormHorario/>

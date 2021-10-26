@@ -1,6 +1,8 @@
 import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
+import { Horario } from "types/horario";
 import { options } from "types/options";
+import { Turma } from "types/turma";
 import { BASE_URL } from "utils/requests";
 
 
@@ -9,31 +11,43 @@ import { BASE_URL } from "utils/requests";
 
 interface IHorarioContext {
     nome: string,
-    id: number,
+    id: number | undefined,
     btnOperation: boolean,
     cursoOptions: options,
-    turma: options,
+    turmaOptions: options,
+    disciplinaOptions: options,
+    professorOptions: options,
     formIsOk: boolean,
+    dia: string,
+    periodo: number | undefined,
+    turma: Turma | undefined,
 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    selectedCursoHandler?: (electedOption: any) => void,
-    selectedTurmaHandler?: (electedOption: any) => void,
-    //handleClick?: (item: Curso) => void,
+    selectedCursoHandler?: (selectedOption: any) => void,
+    selectedTurmaHandler?: (selectedOption: any) => void,
+    selectedDisciplinaHandler?: (selectedOption: any) => void,
+    selectedProfessorHandler?: (selectedOptions: any) => void,
+    handleClick?: (dia: string, periodo: number, turma: Turma, horario: Horario) => void,
     handleClear?: () => void,
-    handleDeleteCurso?: () => void,
+    handleDeleteHorario?: () => void,
     handleSubmit?: () => void,
 
 }
 
 const defaultState = {
     nome: "",
-    id: 0,
+    id: undefined,
     btnOperation: false,
     index: 0,
     cursoOptions: {},
-    turma: {},
-    formIsOk: true
+    turmaOptions: {},
+    disciplinaOptions: {},
+    professorOptions: {},
+    formIsOk: true,
+    dia: "",
+    periodo: undefined,
+    turma: undefined
 }
 
 export const HorarioContext = createContext<IHorarioContext>(defaultState);
@@ -41,20 +55,37 @@ export const HorarioContext = createContext<IHorarioContext>(defaultState);
 const HorarioContextProvider: FC = ({ children }) => {
 
 
-    const [id, setId] = useState(0);
+    const [id, setId] = useState<number | undefined>();
     const [nome, setNome] = useState("");
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
     const [cursoOptions, setCursoOptions] = useState<options>({});
-    const [turma, setTurma] = useState<options>({});
+    const [turmaOptions, setTurmaOptions] = useState<options>({});
+    const [professorOptions, setProfessorOptions] = useState<options>({});
+    const [disciplinaOptions, setDisciplinaOptions] = useState<options>({});
+    const [dia, setDia] = useState("");
+    const [periodo, setPeriodo] = useState<number | undefined>(undefined);
+    const [turma, setTurma] = useState<Turma | undefined>(undefined);
+    const [horarioId, setHorarioId] = useState<number | undefined>(undefined);
+
 
 
     function selectedCursoHandler(selectedOption?: options) {
+        handleClear();
         setCursoOptions(selectedOption === undefined ? {} : selectedOption);
     }
 
     function selectedTurmaHandler(selectedOption?: options) {
-        setTurma(selectedOption === undefined ? {} : selectedOption);
+        handleClear();
+        setTurmaOptions(selectedOption === undefined ? {} : selectedOption);
+    }
+
+    function selectedProfessorHandler(selectedOption?: options) {
+        setProfessorOptions(selectedOption === undefined ? {} : selectedOption);
+    }
+
+    function selectedDisciplinaHandler(selectedOption?: options) {
+        setDisciplinaOptions(selectedOption === undefined ? {} : selectedOption);
     }
 
 
@@ -62,23 +93,37 @@ const HorarioContextProvider: FC = ({ children }) => {
         setNome(event.target.value);
     }
 
-    /*
-    function handleClick(item: Curso) {
-        setNome(item?.nome === undefined ? "" : item.nome);
-        setId(item?.id === undefined ? 0 : item.id);
-        setCursos(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina)=>{
-            return {
-                value: disciplina.id,
-                label: disciplina.nome
-            }
-        }));
-        setBtnOperation(true);
+
+    function handleClick(dia: string, periodo: number, turma: Turma, horario: Horario) {
+        setDia(dia);
+        setPeriodo(periodo);
+        setTurma(turma);
+        horario && horario.disciplina ?
+            setDisciplinaOptions(() => {
+                return {
+                    value: horario.disciplina?.id,
+                    label: horario.disciplina?.nome
+                }
+            }) : setDisciplinaOptions({});
+        horario && horario.professor ?
+            setProfessorOptions(() => {
+                return {
+                    value: horario.professor?.id,
+                    label: horario.professor?.nome
+                }
+            }) : setProfessorOptions({});
+        horario ? setBtnOperation(true) : setBtnOperation(false);
+        horario && setId(horario.id);
+
     }
-*/
     function handleClear() {
         setNome("");
-        setId(0);
-        setCursoOptions({});
+        setId(undefined);
+        setProfessorOptions({});
+        setDisciplinaOptions({});
+        setDia("");
+        setPeriodo(undefined);
+        setTurma(undefined);
         setBtnOperation(false);
         setFormIsOk(true);
     }
@@ -86,69 +131,79 @@ const HorarioContextProvider: FC = ({ children }) => {
     function FormValidation() {
         var Ok = true;
 
-        if (nome === "") {
-            Ok = false;
-        }
 
         setFormIsOk(Ok)
         return Ok;
 
     }
 
-    /*
+
     function handleSubmit() {
         const Ok = FormValidation();
-
+        console.log(Ok);
         if (Ok) {
             if (btnOperation) {
-                const curso = {
+                const horario = {
                     id: id,
-                    nome: nome,
-                    disciplinas: curso.map((x => {
-                        return {
-                            id: x.value
-                        }
-                    }))
+                    diaSemana: dia,
+                    periodo: periodo,
+                    disciplina: {
+                        id: disciplinaOptions.value
+                    },
+                    professor: {
+                        id: professorOptions.value
+                    }
                 }
 
-                PutRequest(`${BASE_URL}/curso`, curso, curso.id).then(go => {
+                PutRequest(`${BASE_URL}/horario`, horario, id!).then(go => {
                     window.location.reload();
                 })
 
             } else {
-                const curso = {
-                    nome: nome,
-                    disciplinas: curso.map((x => {
-                        return {
-                            id: x.value
-                        }
-                    }))
+                const horario = {
+                    diaSemana: dia,
+                    periodo: periodo,
+                    disciplina: {
+                        id: disciplinaOptions.value
+                    },
+                    professor: {
+                        id: professorOptions.value
+                    }
                 }
-                PostRequest(`${BASE_URL}/curso`, curso).then(go => {
+                console.log(horario)
+                PutRequest(`${BASE_URL}/turma`, horario, turma!.id).then(go => {
                     window.location.reload();
                 });
             }
         }
     }
-    */
 
-    function handleDeleteCurso() {
-        DeleteRequest(`${BASE_URL}/curso`, id).then(go => {
-            window.location.reload();
-        });
+
+
+    function handleDeleteHorario() {
+        console.log(id);
+        // DeleteRequest(`${BASE_URL}/horario`, id!).then(go => {
+        //     window.location.reload();
+        // });
     }
 
 
 
     return (
         <HorarioContext.Provider value={{
-            id, nome,cursoOptions,turma, formIsOk,
+            id, nome, cursoOptions, turmaOptions, disciplinaOptions, professorOptions,
+            formIsOk,
+            dia, periodo, turma,
             nomeHandler,
             btnOperation,
             handleClear,
-            handleDeleteCurso,
+            handleClick,
+            handleSubmit,
+            handleDeleteHorario,
             selectedCursoHandler,
-            selectedTurmaHandler
+            selectedTurmaHandler,
+            selectedProfessorHandler,
+            selectedDisciplinaHandler,
         }}>
             {children}
         </HorarioContext.Provider>

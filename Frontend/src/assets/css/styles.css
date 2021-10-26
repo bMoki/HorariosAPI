@@ -52,3 +52,6 @@ html, body {
     background-color: var(--color-secondary)  !important;    
 }
 
+.table-horario:hover {
+   transform: scale(1.1);
+}

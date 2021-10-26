@@ -3,18 +3,17 @@ import Select from "react-select";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
 import { BASE_URL } from "utils/requests";
 import { HorarioContext } from "contexts/HorarioContext";
-import { Curso } from "types/curso";
+import { Disciplina } from "types/disciplina";
 
 
-function ComboBoxTurma() {
+function ComboBoxProfFiltered() {
 
-    const { selectedTurmaHandler, cursoOptions, turmaOptions,
+    const { disciplinaOptions , professorOptions, selectedProfessorHandler
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
-    const [result, setResult] = useState<Curso>();
+    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/disciplina/${disciplinaOptions.value === undefined ? "": disciplinaOptions.value}`);
+    const [result, setResult] = useState<Disciplina>();
     const [options, setOptions] = useState([{}]);
-
 
     useEffect(() => {
         setResult(data);
@@ -22,8 +21,8 @@ function ComboBoxTurma() {
 
     useEffect(() => {
         fetchError && setOptions([{ label: fetchError }]);
-        result?.turmas ?
-            setOptions(result.turmas.map((item) => {
+        result?.professores ?
+            setOptions(result.professores.map((item) => {
                 return {
                     value: item.id,
                     label: item.nome
@@ -35,16 +34,15 @@ function ComboBoxTurma() {
     return (
         <>
 
-            <label htmlFor="comboBox" className="form-label" >Semestres</label>
+            <label htmlFor="comboBox" className="form-label" >Professores</label>
             <div className="form-group">
                 <Select
-                    isClearable
                     options={options}
-                    value={turmaOptions === null ? null : turmaOptions.value ? turmaOptions : null}
+                    value={professorOptions === null ? null : professorOptions.value ? professorOptions : null}
                     isSearchable
                     isLoading={isLoading}
-                    noOptionsMessage={() => 'Não há turmas'}
-                    onChange={selectedTurmaHandler}
+                    noOptionsMessage={() => 'Não há professor'}
+                    onChange={selectedProfessorHandler}
                 />
             </div>
 
@@ -53,4 +51,4 @@ function ComboBoxTurma() {
         </>
     );
 };
-export default ComboBoxTurma;
+export default ComboBoxProfFiltered;

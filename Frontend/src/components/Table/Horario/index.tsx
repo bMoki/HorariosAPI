@@ -9,7 +9,7 @@ import RowsHorario from "./Rows";
 
 function TableHorario() {
 
-    const { cursoOptions, turma
+    const { cursoOptions, turmaOptions
     } = useContext(HorarioContext);
 
     const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "" : cursoOptions.value}`);
@@ -23,12 +23,12 @@ function TableHorario() {
 
     useEffect(() => {
         setTurma(result?.turmas);
-        if (turma !== null) {
-            if (turma.value !== undefined) {
-                setTurma(result && result?.turmas?.filter(t => t.id === (turma === null ? {} : turma.value)));
+        if (turmaOptions !== null) {
+            if (turmaOptions.value !== undefined) {
+                setTurma(result && result?.turmas?.filter(t => t.id === (turmaOptions === null ? {} : turmaOptions.value)));
             }
         }
-    }, [turma, result])
+    }, [turmaOptions, result])
 
     return (
         <>
@@ -60,8 +60,8 @@ function TableHorario() {
                             </tr>
 
 
-                            <RowsHorario horarios={turmas.horarios.filter(horarios => horarios.periodo === 1)} />
-                            <RowsHorario horarios={turmas.horarios.filter(horarios => horarios.periodo === 2)} />
+                            <RowsHorario horarios={turmas.horarios.filter(horarios => horarios.periodo === 1)} turma={turmas} periodo={1} />
+                            <RowsHorario horarios={turmas.horarios.filter(horarios => horarios.periodo === 2)} turma={turmas} periodo={2} />
 
 
 
