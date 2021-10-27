@@ -32,10 +32,20 @@ public class Turma {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Horario> horarios = new ArrayList<>();
 
+    public void addHorario(Horario horario){
+        horarios.add(horario);
+        horario.setTurma(this);
+    }
+
+    public void removeHorario(Horario horario){
+        horarios.remove(horario);
+        horario.setTurma(null);
+    }
+
     public Turma(TurmaDTO entity){
         id = entity.getId();
         nome = entity.getNome();
-        curso = new Curso(entity.getCurso());
+        if(entity.getCurso() != null) curso = new Curso(entity.getCurso());
         horarios = entity.getHorarios().stream().map(x -> new Horario(x)).collect(Collectors.toList());
     }
 

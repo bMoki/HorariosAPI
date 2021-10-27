@@ -21,7 +21,7 @@ public class TurmaService {
     @Autowired
     private TurmaRepository turmaRepository;
 
-    private HorarioService horarioService;
+    //private HorarioService horarioService;
 
     @Transactional(readOnly = true)
     public List<TurmaDTO> findAll(){
@@ -41,24 +41,31 @@ public class TurmaService {
     }
 
     public TurmaDTO findById(Long id) throws NotFoundException {
-        Turma turma = verifyIfExistsById(id);
-        TurmaDTO turmaDTO = new TurmaDTO(turma);
-
-        return turmaDTO;
+       Turma turma = verifyIfExistsById(id);
+        return new TurmaDTO(turma);
     }
 
-    public MessageResponseDTO AddHorarioTurma(Long turmaId, HorarioDTO novoHorarioDTO) throws NotFoundException {
+//    public MessageResponseDTO AddHorarioTurma(Long turmaId, HorarioDTO novoHorarioDTO) throws NotFoundException {
+//
+//        verifyIfExistsById(turmaId);
+//        Turma turmaToAddHorario = verifyIfExistsById(turmaId);
+//
+//        Horario novoHorario = horarioService.criaHorario(novoHorarioDTO);
+//
+//        turmaToAddHorario.getHorarios().add(novoHorario);
+//
+//        Turma turmaSalva = turmaRepository.save(turmaToAddHorario);
+//        return criaMessageResponse(turmaSalva.getId(), "Horario criado para turma com ID ");
+//    }
 
-        verifyIfExistsById(turmaId);
-        Turma turmaToAddHorario = verifyIfExistsById(turmaId);
-
-        Horario novoHorario = horarioService.criaHorario(novoHorarioDTO);
-
-        turmaToAddHorario.getHorarios().add(novoHorario);
-
-        Turma turmaSalva = turmaRepository.save(turmaToAddHorario);
-        return criaMessageResponse(turmaSalva.getId(), "Horario criado para turma com ID ");
-    }
+//    public MessageResponseDTO removeHorarioTurma(Long turmaId, Long horarioId) throws NotFoundException{
+//        Turma turmaToRemoveHorario = verifyIfExistsById(turmaId);
+//        Horario horarioToRemove = new Horario (horarioService.findById(horarioId));
+//
+//        turmaToRemoveHorario.getHorarios().remove(horarioToRemove);
+//        return  criaMessageResponse(turmaToRemoveHorario.getId(), "Horario removido para turma com ID ");
+//
+//    }
 
 //
 //    public MessageResponseDTO delete(Long id) throws ProfessorNotFoundException, DeleteException {
@@ -71,7 +78,7 @@ public class TurmaService {
 //        return criaMessageResponse(id,"Professor excluido com ID ");
 //    }
 //
-    private Turma verifyIfExistsById(Long id) throws NotFoundException {
+    public Turma verifyIfExistsById(Long id) throws NotFoundException {
         return turmaRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
@@ -86,4 +93,9 @@ public class TurmaService {
                 .message(message + id)
                 .build();
    }
+
+
+    public Turma save(Turma turmaToAddHorario) {
+        return turmaRepository.save(turmaToAddHorario);
+    }
 }

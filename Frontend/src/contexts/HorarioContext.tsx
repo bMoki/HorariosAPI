@@ -1,5 +1,5 @@
-import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
-import { createContext, useState, FC, ChangeEvent } from "react";
+import { DeleteRequest, PutRequest, PostRequest } from "hooks/useAxios";
+import { createContext, useState, FC, ChangeEvent, useEffect } from "react";
 import { Horario } from "types/horario";
 import { options } from "types/options";
 import { Turma } from "types/turma";
@@ -54,7 +54,7 @@ export const HorarioContext = createContext<IHorarioContext>(defaultState);
 
 const HorarioContextProvider: FC = ({ children }) => {
 
-
+    let MyStorage = window.sessionStorage
     const [id, setId] = useState<number | undefined>();
     const [nome, setNome] = useState("");
     const [btnOperation, setBtnOperation] = useState(false);
@@ -66,10 +66,21 @@ const HorarioContextProvider: FC = ({ children }) => {
     const [dia, setDia] = useState("");
     const [periodo, setPeriodo] = useState<number | undefined>(undefined);
     const [turma, setTurma] = useState<Turma | undefined>(undefined);
-    const [horarioId, setHorarioId] = useState<number | undefined>(undefined);
 
+    useEffect(() => {
+        const storedSelectedCurso = JSON.parse(sessionStorage.getItem('selectedCurso') || '{}');
+        const storedSelectedTurma = JSON.parse(sessionStorage.getItem('selectedTurma') || '{}');
+        setCursoOptions(storedSelectedCurso);
+        setTurmaOptions(storedSelectedTurma);
+        sessionStorage.removeItem("selectedCurso");
+        sessionStorage.removeItem("selectedTurma");
+    }, [])
 
-
+    function StoreSelected() {
+        MyStorage.setItem('selectedCurso', JSON.stringify(cursoOptions));
+        MyStorage.setItem('selectedTurma', JSON.stringify(turmaOptions));
+    }
+ 
     function selectedCursoHandler(selectedOption?: options) {
         handleClear();
         setCursoOptions(selectedOption === undefined ? {} : selectedOption);
@@ -142,6 +153,7 @@ const HorarioContextProvider: FC = ({ children }) => {
         const Ok = FormValidation();
         console.log(Ok);
         if (Ok) {
+            StoreSelected();
             if (btnOperation) {
                 const horario = {
                     id: id,
@@ -152,6 +164,9 @@ const HorarioContextProvider: FC = ({ children }) => {
                     },
                     professor: {
                         id: professorOptions.value
+                    },
+                    turma: {
+                        id: turma?.id
                     }
                 }
 
@@ -168,10 +183,15 @@ const HorarioContextProvider: FC = ({ children }) => {
                     },
                     professor: {
                         id: professorOptions.value
+                    },
+                    turma: {
+                        id: turma?.id
                     }
                 }
-                console.log(horario)
-                PutRequest(`${BASE_URL}/turma`, horario, turma!.id).then(go => {
+
+
+
+                PostRequest(`${BASE_URL}/horario`, horario).then(go => {
                     window.location.reload();
                 });
             }
@@ -179,12 +199,11 @@ const HorarioContextProvider: FC = ({ children }) => {
     }
 
 
-
     function handleDeleteHorario() {
-        console.log(id);
-        // DeleteRequest(`${BASE_URL}/horario`, id!).then(go => {
-        //     window.location.reload();
-        // });
+        StoreSelected();
+        DeleteRequest(`${BASE_URL}/horario`, id!).then(go => {
+            window.location.reload();
+        });
     }
 
 

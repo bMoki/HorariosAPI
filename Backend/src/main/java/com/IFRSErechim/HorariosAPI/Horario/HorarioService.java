@@ -3,6 +3,7 @@ package com.IFRSErechim.HorariosAPI.Horario;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Turma.Turma;
 import com.IFRSErechim.HorariosAPI.Turma.TurmaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,6 +19,8 @@ public class HorarioService {
     @Autowired
     private HorarioRepository horarioRepository;
 
+    private TurmaService turmaService;
+
      public Page<HorarioDTO> findAll(Pageable pageable){
                 Page<Horario> result = horarioRepository.findAll(pageable);
                 return result.map(x -> new HorarioDTO(x));
@@ -27,18 +28,22 @@ public class HorarioService {
 
     public HorarioDTO findById(Long id) throws NotFoundException {
         Horario horario = verifyIfExists(id);
-        HorarioDTO horarioDTO = new HorarioDTO(horario);
-
-        return horarioDTO;
+        return new HorarioDTO(horario);
     }
 
-    public Horario criaHorario (HorarioDTO horarioDTO) {
+    public MessageResponseDTO criaHorario (HorarioDTO horarioDTO) throws NotFoundException{
 
             Horario salvarHorario = new Horario(horarioDTO);
 
             Horario HorarioSalvo = horarioRepository.save(salvarHorario);
 
-            return HorarioSalvo;
+            Turma turmaToAddHorario = turmaService.verifyIfExistsById(horarioDTO.getTurma().getId());
+
+            turmaToAddHorario.addHorario(HorarioSalvo);
+            Turma turmaSalva = turmaService.save(turmaToAddHorario);
+
+            return criaMessageResponse(turmaSalva.getId(), "Horario criado para turma com ID ");
+
         }
 
         public MessageResponseDTO UpdateById(Long id,HorarioDTO horarioDTO) throws NotFoundException{
@@ -52,7 +57,10 @@ public class HorarioService {
         }
 
          public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
-                    verifyIfExists(id);
+                    Horario horarioToRemove = verifyIfExists(id);
+                    Turma turmaToRemoveHorario = turmaService.verifyIfExistsById(horarioToRemove.getTurma().getId());
+
+                    turmaToRemoveHorario.removeHorario(horarioToRemove);
 
                     horarioRepository.deleteById(id);
                     return criaMessageResponse(id,"Horario excluido com ID ");

@@ -6,7 +6,7 @@ import NavBar from "components/NavBar";
 import TableHorario from "components/Table/Horario";
 import HorarioContextProvider from "contexts/HorarioContext";
 import { ToastContainer, Zoom } from "react-toastify";
-import Toast from "utils/toasts";
+import { Toast } from "utils/storageManager";
 
 
 
@@ -46,7 +46,7 @@ function Cadastro_Horario() {
                             <div className="col  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
-                                       <FormHorario/>
+                                        <FormHorario />
                                     </div>
                                 </div>
                             </div>

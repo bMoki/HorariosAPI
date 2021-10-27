@@ -31,7 +31,7 @@ public class HorarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Horario criaHorario( @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException{
+    public MessageResponseDTO criaHorario( @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException{
         return horarioService.criaHorario(horarioDTO);
     }
 

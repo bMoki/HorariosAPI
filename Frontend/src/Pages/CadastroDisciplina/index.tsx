@@ -8,7 +8,7 @@ import TableDisciplina from "components/Table/Disciplina";
 
 import DisciplinaContextProvider from "contexts/DisciplinaContext";
 import { ToastContainer, Zoom } from "react-toastify";
-import Toast from "utils/toasts";
+import { Toast } from "utils/storageManager";
 
 
 

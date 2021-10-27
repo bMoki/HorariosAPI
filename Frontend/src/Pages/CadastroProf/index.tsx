@@ -6,7 +6,7 @@ import SearchProf from "components/Search/Professor";
 import TableProf from "components/Table/Professor";
 import ProfessorContextProvider from "contexts/ProfessorContext";
 import { ToastContainer, Zoom } from "react-toastify";
-import Toast from "utils/toasts";
+import { Toast } from "utils/storageManager";
 
 
 

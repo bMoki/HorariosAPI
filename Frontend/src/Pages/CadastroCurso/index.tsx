@@ -5,7 +5,7 @@ import Pagination from "components/Pagination";
 import TableCurso from "components/Table/Curso";
 import CursoContextProvider from "contexts/CursoContext";
 import { ToastContainer, Zoom } from "react-toastify";
-import Toast from "utils/toasts";
+import { Toast } from "utils/storageManager";
 
 
 

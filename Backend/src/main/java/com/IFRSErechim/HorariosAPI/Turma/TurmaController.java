@@ -18,8 +18,13 @@ public class TurmaController {
     @Autowired
     private TurmaService turmaService;
 
-    @PutMapping("/{id}")
-    public MessageResponseDTO addHorarioTurma(@PathVariable Long id, @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException {
-        return turmaService.AddHorarioTurma(id,horarioDTO);
-    }
+//    @PutMapping("/{id}")
+//    public MessageResponseDTO addHorarioTurma(@PathVariable Long id, @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException {
+//        return turmaService.AddHorarioTurma(id,horarioDTO);
+//    }
+//
+//    @PutMapping("/{turmaId}")
+//    public MessageResponseDTO removeHorarioTurma(@PathVariable Long turmaId, @PathVariable Long horarioId) throws  NotFoundException{
+//        return turmaService.removeHorarioTurma(turmaId,horarioId);
+//    }
 }

@@ -4,6 +4,7 @@ import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Curso.CursoDTO;
 import com.IFRSErechim.HorariosAPI.Horario.HorarioDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +39,7 @@ public class TurmaDTO implements Serializable {
         id = entity.getId();
         nome = entity.getNome();
         horarios = entity.getHorarios().stream().map(x -> new HorarioDTO(x)).collect(Collectors.toList());
+
     }
 
 }

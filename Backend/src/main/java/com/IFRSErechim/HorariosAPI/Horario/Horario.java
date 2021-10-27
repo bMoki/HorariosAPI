@@ -1,7 +1,9 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
+import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
+import com.IFRSErechim.HorariosAPI.Turma.Turma;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +31,8 @@ public class Horario {
     @Column
     private DiaSemana diaSemana;
 
-//    @ManyToOne
-//    private Curso curso;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Turma turma;
 
     @ManyToOne
     private Disciplina disciplina;
@@ -39,13 +41,15 @@ public class Horario {
     private Professor professor;
 
 
+
     public Horario(HorarioDTO entity) {
         id = entity.getId();
         //semestre = entity.getSemestre();
         periodo = entity.getPeriodo();
         diaSemana = entity.getDiaSemana();
         //curso = entity.getCurso();
-        disciplina = entity.getDisciplina();
-        professor = entity.getProfessor();
+        disciplina = new Disciplina(entity.getDisciplina());
+        professor = new Professor(entity.getProfessor());
+        turma = new Turma(entity.getTurma());
     }
 }
