@@ -7,22 +7,22 @@ import { FiTrash2 } from "react-icons/fi";
 
 function FormHorario() {
 
-    const { dia, periodo, turma, btnOperation, handleClear, handleSubmit } = useContext(HorarioContext);
+    const { dia, periodo, turma, btnOperation, handleClear, handleSubmit,formIsOk } = useContext(HorarioContext);
 
     return (
         <>
             <form className="row g-3" >
                 <div className="col-lg-3 col-sm-6 me-4">
                     <label htmlFor="inputSemestre" className="form-label">Semestre</label>
-                    <input type="text" className="form-control" disabled id="inputSemestre" defaultValue={turma?.nome} />
+                    <input type="text" className={formIsOk ? "form-control" : turma ? "form-control" : "form-control is-invalid"} disabled id="inputSemestre" defaultValue={turma?.nome} />
                 </div>
                 <div className="col-lg-2 col-sm-4 me-4">
                     <label htmlFor="inputDia" className="form-label">Dia</label>
-                    <input type="text" className="form-control" disabled id="inputDia" defaultValue={dia} />
+                    <input type="text" className={formIsOk ? "form-control" : dia!=="" ? "form-control" : "form-control is-invalid"} disabled id="inputDia" defaultValue={dia} />
                 </div>
                 <div className="col-lg-2 col-sm-2 ">
                     <label htmlFor="inputPeriodo" className="form-label">Periodo</label>
-                    <input type="text" className="form-control" disabled id="inputPeriodo" defaultValue={periodo} />
+                    <input type="text" className={formIsOk ? "form-control" : periodo ? "form-control" : "form-control is-invalid"} disabled id="inputPeriodo" defaultValue={periodo} />
                 </div>
                 <div className="row mt-3">
                     <div className="col-4">
@@ -32,7 +32,7 @@ function FormHorario() {
                         <ComboBoxProfFiltered />
                     </div>
                     <div className="col d-flex align-items-end">
-                        <div className="me-auto p-2 pb-0">
+                        <div className="me-auto p-2 pb-0 ps-0 ">
                             <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
                         </div>
                         <div className="p-2 pb-0">

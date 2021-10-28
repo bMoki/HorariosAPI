@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,14 +35,19 @@ public class HorarioService {
         return new HorarioDTO(horario);
     }
 
-    public MessageResponseDTO criaHorario (HorarioDTO horarioDTO) throws NotFoundException{
+    public MessageResponseDTO criaHorario (HorarioDTO horarioDTO) throws NotFoundException, LimitHorarioExceeded{
 
             Horario salvarHorario = new Horario(horarioDTO);
-
-            Horario HorarioSalvo = horarioRepository.save(salvarHorario);
-
             Turma turmaToAddHorario = turmaService.verifyIfExistsById(horarioDTO.getTurma().getId());
 
+            if(turmaToAddHorario.getHorarios().size() == 10){
+                throw new LimitHorarioExceeded(turmaToAddHorario.getId());
+            }else{
+                if(isLimitExceeded(salvarHorario.getPeriodo(),turmaToAddHorario.getHorarios()))
+                    throw new LimitHorarioExceeded(turmaToAddHorario.getId());
+
+            }
+            Horario HorarioSalvo = horarioRepository.save(salvarHorario);
             turmaToAddHorario.addHorario(HorarioSalvo);
             Turma turmaSalva = turmaService.save(turmaToAddHorario);
 
@@ -69,6 +78,12 @@ public class HorarioService {
     private Horario verifyIfExists(Long id) throws NotFoundException {
             return horarioRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException(id));
+    }
+
+    private Boolean isLimitExceeded (Integer periodo, List<Horario> horarios){
+        if(horarios.stream()
+                .filter(h -> h.getPeriodo() == periodo).collect(Collectors.toList()).size() == 5) return true;
+        return false;
     }
 
     private MessageResponseDTO criaMessageResponse(Long id, String message) {

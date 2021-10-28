@@ -33,6 +33,7 @@ public class TurmaDTO implements Serializable {
     @JsonIgnore
     private CursoDTO curso;
 
+    @Size(max = 10)
     private List<HorarioDTO> horarios = new ArrayList<>();
 
     public TurmaDTO (Turma entity){

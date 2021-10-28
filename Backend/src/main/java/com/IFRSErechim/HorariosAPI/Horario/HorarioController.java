@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class HorarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaHorario( @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException{
+    public MessageResponseDTO criaHorario( @RequestBody @Valid HorarioDTO horarioDTO) throws NotFoundException, LimitHorarioExceeded {
         return horarioService.criaHorario(horarioDTO);
     }
 

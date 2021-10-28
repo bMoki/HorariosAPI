@@ -10,7 +10,6 @@ import { BASE_URL } from "utils/requests";
 
 
 interface IHorarioContext {
-    nome: string,
     id: number | undefined,
     btnOperation: boolean,
     cursoOptions: options,
@@ -36,7 +35,6 @@ interface IHorarioContext {
 }
 
 const defaultState = {
-    nome: "",
     id: undefined,
     btnOperation: false,
     index: 0,
@@ -56,7 +54,6 @@ const HorarioContextProvider: FC = ({ children }) => {
 
     let MyStorage = window.sessionStorage
     const [id, setId] = useState<number | undefined>();
-    const [nome, setNome] = useState("");
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
     const [cursoOptions, setCursoOptions] = useState<options>({});
@@ -100,10 +97,6 @@ const HorarioContextProvider: FC = ({ children }) => {
     }
 
 
-    function nomeHandler(event: ChangeEvent<HTMLInputElement>) {
-        setNome(event.target.value);
-    }
-
 
     function handleClick(dia: string, periodo: number, turma: Turma, horario: Horario) {
         setDia(dia);
@@ -128,7 +121,6 @@ const HorarioContextProvider: FC = ({ children }) => {
 
     }
     function handleClear() {
-        setNome("");
         setId(undefined);
         setProfessorOptions({});
         setDisciplinaOptions({});
@@ -140,17 +132,21 @@ const HorarioContextProvider: FC = ({ children }) => {
     }
 
     function FormValidation() {
-        var Ok = true;
+    
+        if(dia==="")return false;
+        if(!periodo)return false;
+        if(!turma)return false;
+        if(!disciplinaOptions.value)return false;
+        if(!professorOptions.value)return false;
 
-
-        setFormIsOk(Ok)
-        return Ok;
+        return true;
 
     }
 
 
     function handleSubmit() {
         const Ok = FormValidation();
+        setFormIsOk(Ok);
         console.log(Ok);
         if (Ok) {
             StoreSelected();
@@ -160,7 +156,7 @@ const HorarioContextProvider: FC = ({ children }) => {
                     diaSemana: dia,
                     periodo: periodo,
                     disciplina: {
-                        id: disciplinaOptions.value
+                        id: disciplinaOptions?.value
                     },
                     professor: {
                         id: professorOptions.value
@@ -179,7 +175,7 @@ const HorarioContextProvider: FC = ({ children }) => {
                     diaSemana: dia,
                     periodo: periodo,
                     disciplina: {
-                        id: disciplinaOptions.value
+                        id: disciplinaOptions?.value
                     },
                     professor: {
                         id: professorOptions.value
@@ -210,10 +206,9 @@ const HorarioContextProvider: FC = ({ children }) => {
 
     return (
         <HorarioContext.Provider value={{
-            id, nome, cursoOptions, turmaOptions, disciplinaOptions, professorOptions,
+            id, cursoOptions, turmaOptions, disciplinaOptions, professorOptions,
             formIsOk,
             dia, periodo, turma,
-            nomeHandler,
             btnOperation,
             handleClear,
             handleClick,
