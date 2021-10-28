@@ -7,7 +7,6 @@ Projeto de serviço web de horarios para o IFRS
   > - Ajeitar messages responses
   > - Filtros professor
   > - Limitar quantidade de horarios por periodos que tambem deve ser limitado
-  > - delete horario ( foreign key constraint violation)
  
   
  
