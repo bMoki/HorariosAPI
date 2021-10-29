@@ -45,7 +45,7 @@ const defaultState = {
     formIsOk: true,
     dia: "",
     periodo: undefined,
-    turma: undefined
+    turma: undefined,
 }
 
 export const HorarioContext = createContext<IHorarioContext>(defaultState);

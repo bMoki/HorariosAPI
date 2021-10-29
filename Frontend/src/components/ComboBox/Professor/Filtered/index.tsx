@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import Select from "react-select";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
 import { BASE_URL } from "utils/requests";
 import { HorarioContext } from "contexts/HorarioContext";
 import { Disciplina } from "types/disciplina";
+import { CustomSelect } from "components/ComboBox/customSelect";
 
 
 function ComboBoxProfFiltered() {
 
-    const { disciplinaOptions , professorOptions, selectedProfessorHandler
+    const { disciplinaOptions , professorOptions, selectedProfessorHandler,formIsOk
     } = useContext(HorarioContext);
 
     const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/disciplina/${disciplinaOptions.value === undefined ? "": disciplinaOptions.value}`);
@@ -36,13 +36,14 @@ function ComboBoxProfFiltered() {
 
             <label htmlFor="comboBox" className="form-label" >Professores</label>
             <div className="form-group">
-                <Select
+                <CustomSelect
                     options={options}
                     value={professorOptions === null ? null : professorOptions.value ? professorOptions : null}
                     isSearchable
                     isLoading={isLoading}
                     noOptionsMessage={() => 'Não há professor'}
                     onChange={selectedProfessorHandler}
+                    isValid={!formIsOk ?  professorOptions.value ? true : false : true}
                 />
             </div>
 
