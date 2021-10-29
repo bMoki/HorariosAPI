@@ -1,10 +1,8 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
-import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
-import com.IFRSErechim.HorariosAPI.Professor.Professor;
-import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
+import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorService;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
@@ -13,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -30,63 +26,52 @@ public class DisciplinaService {
         return result.map(x -> new DisciplinaDTO(x));
     }
 
-    public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) {
-
+    public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) throws AlreadyExistsException{
+        if(disciplinaRepository.findByNome(disciplinaDTO.getNome()) > 0){
+                    throw new AlreadyExistsException("Disciplina já cadastrada!");
+                }
         Disciplina salvarDisciplina = new Disciplina(disciplinaDTO);
 
         Disciplina DisciplinaSalva = disciplinaRepository.save(salvarDisciplina);
-        return criaMessageResponse(DisciplinaSalva.getId(), "Disciplina criada com ID ");
+        return criaMessageResponse("Disciplina " +DisciplinaSalva.getNome()+ " cadastrada!");
     }
 
-    public MessageResponseDTO atribuiProfessorParaDisciplina (Long disciplinaId, Long profesorId) throws DisciplinaNotFoundException, ProfessorNotFoundException {
-        ProfessorDTO professorDTO = professorService.findById(profesorId);
-        Professor professor = new Professor(professorDTO);
-
-        DisciplinaDTO disciplinaDTO = findById(disciplinaId);
-        Disciplina disciplina = new Disciplina(disciplinaDTO);
-        disciplina.Professores(professor);
-
-        Disciplina DisciplinaSalva = disciplinaRepository.save(disciplina);
-
-        return criaMessageResponse(DisciplinaSalva.getId(), "Disciplina criada com ID ");
-    }
-    public MessageResponseDTO UpdateById(Long id,DisciplinaDTO disciplinaDTO) throws DisciplinaNotFoundException{
+    public MessageResponseDTO UpdateById(Long id,DisciplinaDTO disciplinaDTO) throws NotFoundException {
         verifyIfExists(id);
 
         Disciplina disciplinaToUpdate = new Disciplina(disciplinaDTO);
-        //disciplinaToUpdate.setProfessores(disciplina.getProfessores());
 
         Disciplina updatedDisciplina = disciplinaRepository.save(disciplinaToUpdate);
-        return criaMessageResponse(updatedDisciplina.getId(), "Disciplina atualizada com ID ");
+        return criaMessageResponse("Disciplina " +updatedDisciplina.getNome()+ " atualizada!");
     }
 
-    public DisciplinaDTO findById(Long id) throws DisciplinaNotFoundException {
+    public DisciplinaDTO findById(Long id) throws NotFoundException {
         Disciplina disciplina = verifyIfExists(id);
         DisciplinaDTO disciplinaDTO = new DisciplinaDTO(disciplina);
 
         return disciplinaDTO;
     }
 
-      public MessageResponseDTO delete(Long id) throws DisciplinaNotFoundException, DeleteException {
-            verifyIfExists(id);
+      public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
+            Disciplina disciplinaToDelete = verifyIfExists(id);
             if(disciplinaRepository.DisciplinaHasReference(id) > 0){
                 throw new DeleteException(id,"Disciplina");
             }
 
             disciplinaRepository.deleteById(id);
-            return criaMessageResponse(id,"Disciplina excluida com ID ");
+            return criaMessageResponse("Disciplina "+ disciplinaToDelete.getNome()+ " deletada!");
         }
 
 
-    private Disciplina verifyIfExists(Long id) throws DisciplinaNotFoundException {
+    private Disciplina verifyIfExists(Long id) throws NotFoundException {
         return disciplinaRepository.findById(id)
-                .orElseThrow(() -> new DisciplinaNotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Disciplina"));
     }
 
-    private MessageResponseDTO criaMessageResponse(Long id, String message) {
+    private MessageResponseDTO criaMessageResponse(String message) {
         return MessageResponseDTO
                 .builder()
-                .message(message + id)
+                .message(message)
                 .build();
     }
 }

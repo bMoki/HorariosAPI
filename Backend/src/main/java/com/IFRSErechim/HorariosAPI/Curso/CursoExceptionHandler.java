@@ -1,4 +1,4 @@
-package com.IFRSErechim.HorariosAPI.Professor;
+package com.IFRSErechim.HorariosAPI.Curso;
 
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @ControllerAdvice
-public class ProfessorExceptionHandler {
+public class CursoExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<StandardError> professorAlreadyExists(AlreadyExistsException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> cursoAlreadyExists(AlreadyExistsException e, HttpServletRequest request) {
         StandardError err = new StandardError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -29,11 +29,11 @@ public class ProfessorExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<StandardError> professorNotFound(NotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> cursoNotFound(NotFoundException e, HttpServletRequest request) {
         StandardError err = new StandardError(
                 Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
-                "Professor does not exists",
+                "Curso does not exists",
                 e.getMessage(),
                 request.getRequestURI()
         );
@@ -42,11 +42,11 @@ public class ProfessorExceptionHandler {
     }
 
     @ExceptionHandler(DeleteException.class)
-    public ResponseEntity<StandardError> professorHasReference(DeleteException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> cursoHasReference(DeleteException e, HttpServletRequest request) {
         StandardError err = new StandardError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Professor has reference",
+                "Curso has reference",
                 e.getMessage(),
                 request.getRequestURI()
         );

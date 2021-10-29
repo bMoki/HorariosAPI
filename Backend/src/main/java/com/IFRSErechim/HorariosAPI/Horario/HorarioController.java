@@ -1,6 +1,5 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/horario")
@@ -25,7 +23,6 @@ public class HorarioController {
 
     @GetMapping
     public ResponseEntity<Page<HorarioDTO>> findAll(Pageable pageable){
-        //wholepage = Pageable.unpaged();
         Page<HorarioDTO> list = horarioService.findAll(pageable);
         return ResponseEntity.ok(list);
     }
@@ -46,7 +43,7 @@ public class HorarioController {
     }
 
     @DeleteMapping("/{id}")
-    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException, DeleteException {
+    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException {
         return horarioService.delete(id);
     }
 }

@@ -1,11 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Curso;
 
-import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
-import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaDTO;
-import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaService;
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.DisciplinaNotFoundException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
@@ -22,8 +18,6 @@ public class CursoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    private DisciplinaService disciplinaService;
-
     public Page<CursoDTO> findAll(Pageable pageable){
         Page<Curso> result = cursoRepository.findAll(pageable);
         return result.map(x -> new CursoDTO(x));
@@ -36,7 +30,9 @@ public class CursoService {
     }
 
     public MessageResponseDTO criaCurso (CursoDTO cursoDTO) throws AlreadyExistsException {
-
+        if(cursoRepository.findByNome(cursoDTO.getNome()) > 0){
+            throw new AlreadyExistsException("Curso já cadastrado!");
+        }
         Curso salvarCurso = new Curso(cursoDTO);
 
         Curso CursoSalvo = cursoRepository.save(salvarCurso);
@@ -50,7 +46,7 @@ public class CursoService {
         }
         Curso CursoSalvoComTurmas = cursoRepository.save(CursoSalvo);
 
-        return criaMessageResponse(CursoSalvoComTurmas.getId(), "Curso criado com ID ");
+        return criaMessageResponse("Curso "+CursoSalvoComTurmas.getNome()+" cadastrado!");
     }
 
     public MessageResponseDTO UpdateById(Long id,CursoDTO cursoDTO) throws NotFoundException{
@@ -85,41 +81,29 @@ public class CursoService {
             }
 
             Curso updatedCurso = cursoRepository.save(cursoToUpdate);
-            return criaMessageResponse(updatedCurso.getId(), "Curso atualizado com ID ");
+            return criaMessageResponse("Curso "+updatedCurso.getNome()+" atualizado!");
     }
 
      public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
-                verifyIfExists(id);
+                Curso cursoToDelete = verifyIfExists(id);
                 if(cursoRepository.CursoHasReference(id) > 0){
                     throw new DeleteException(id,"Curso");
                 }
 
                 cursoRepository.deleteById(id);
-                return criaMessageResponse(id,"Curso excluido com ID ");
+                return criaMessageResponse("Curso "+cursoToDelete.getNome()+" deletado!");
     }
 
-    public MessageResponseDTO atribuiDisciplinaParaCurso (Long cursoId, Long disciplinaId) throws DisciplinaNotFoundException, NotFoundException {
-            DisciplinaDTO disciplinaDTO = disciplinaService.findById(disciplinaId);
-            Disciplina disciplina = new Disciplina(disciplinaDTO);
-
-            CursoDTO cursoDTO = findById(cursoId);
-            Curso curso = new Curso(cursoDTO);
-            curso.Disciplinas(disciplina);
-
-            Curso CursoSalvo = cursoRepository.save(curso);
-
-            return criaMessageResponse(CursoSalvo.getId(), "Curso atualizado com ID ");
-        }
 
     private Curso verifyIfExists(Long id) throws NotFoundException {
             return cursoRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException(id));
+                    .orElseThrow(() -> new NotFoundException("Curso"));
     }
 
-    private MessageResponseDTO criaMessageResponse(Long id, String message) {
+    private MessageResponseDTO criaMessageResponse(String message) {
             return MessageResponseDTO
                     .builder()
-                    .message(message + id)
+                    .message(message)
                     .build();
     }
 }

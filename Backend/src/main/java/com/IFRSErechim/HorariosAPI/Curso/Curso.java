@@ -27,7 +27,7 @@ public class Curso {
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Turma> turmas = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String nome;
 
     @Column

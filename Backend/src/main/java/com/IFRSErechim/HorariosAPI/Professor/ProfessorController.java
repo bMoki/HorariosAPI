@@ -2,7 +2,7 @@ package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
-import com.IFRSErechim.HorariosAPI.Exception.ProfessorNotFoundException;
+import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +38,17 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}")
-    public ProfessorDTO findById(@PathVariable Long id) throws ProfessorNotFoundException {
+    public ProfessorDTO findById(@PathVariable Long id) throws NotFoundException {
         return professorService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid ProfessorDTO professorDTO) throws ProfessorNotFoundException {
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid ProfessorDTO professorDTO) throws NotFoundException {
         return professorService.updateById(id, professorDTO);
     }
 
     @DeleteMapping("/{id}")
-    public MessageResponseDTO delete (@PathVariable Long id) throws ProfessorNotFoundException, DeleteException {
+    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException, DeleteException {
         return professorService.delete(id);
     }
 }

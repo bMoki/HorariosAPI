@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
 import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
+import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.StandardError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,18 @@ public class HorarioExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardError> horarioNotFound(NotFoundException e, HttpServletRequest request) {
+        StandardError err = new StandardError(
+                Instant.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Horario does not exists",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 }

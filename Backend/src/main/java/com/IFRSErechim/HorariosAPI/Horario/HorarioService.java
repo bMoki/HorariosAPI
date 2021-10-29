@@ -1,6 +1,5 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
 import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
@@ -49,9 +48,9 @@ public class HorarioService {
             }
             Horario HorarioSalvo = horarioRepository.save(salvarHorario);
             turmaToAddHorario.addHorario(HorarioSalvo);
-            Turma turmaSalva = turmaService.save(turmaToAddHorario);
+            turmaService.save(turmaToAddHorario);
 
-            return criaMessageResponse(turmaSalva.getId(), "Horario criado para turma com ID ");
+            return criaMessageResponse("Horario cadastrado!");
 
         }
 
@@ -61,23 +60,23 @@ public class HorarioService {
                 Horario horarioToUpdate = new Horario(horarioDTO);
 
 
-                Horario updatedHorario = horarioRepository.save(horarioToUpdate);
-                return criaMessageResponse(updatedHorario.getId(), "Horario atualizado com ID ");
+                horarioRepository.save(horarioToUpdate);
+                return criaMessageResponse("Horario atualizado!");
         }
 
-         public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
+         public MessageResponseDTO delete(Long id) throws NotFoundException {
                     Horario horarioToRemove = verifyIfExists(id);
                     Turma turmaToRemoveHorario = turmaService.verifyIfExistsById(horarioToRemove.getTurma().getId());
 
                     turmaToRemoveHorario.removeHorario(horarioToRemove);
 
                     horarioRepository.deleteById(id);
-                    return criaMessageResponse(id,"Horario excluido com ID ");
+                    return criaMessageResponse("Horario deletado!");
         }
 
     private Horario verifyIfExists(Long id) throws NotFoundException {
             return horarioRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException(id));
+                    .orElseThrow(() -> new NotFoundException("Horario"));
     }
 
     private Boolean isLimitExceeded (Integer periodo, List<Horario> horarios){
@@ -86,10 +85,10 @@ public class HorarioService {
         return false;
     }
 
-    private MessageResponseDTO criaMessageResponse(Long id, String message) {
+    private MessageResponseDTO criaMessageResponse(String message) {
             return MessageResponseDTO
                     .builder()
-                    .message(message + id)
+                    .message(message)
                     .build();
     }
 }

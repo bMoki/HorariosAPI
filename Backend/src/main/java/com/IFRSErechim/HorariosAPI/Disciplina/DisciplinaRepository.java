@@ -13,4 +13,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina,Long> {
             "where cd.disciplina_id = ?",nativeQuery = true)
     Integer DisciplinaHasReference(Long id);
 
+    @Query(value = "SELECT COUNT(nome) FROM disciplina WHERE UPPER(nome) = UPPER(?)",nativeQuery = true)
+    Integer findByNome(String nome);
+
 }

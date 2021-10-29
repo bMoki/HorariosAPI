@@ -2,10 +2,7 @@
 Projeto de serviço web de horarios para o IFRS
 
 > To do
-  > - Verificar redundancia com o request put
-  > - Ajeitar exceptions
-  > - Ajeitar messages responses
   > - Filtros professor
-  > - verificar se campos estao vazios (horarios)
+  > - Page nas tables
   
  

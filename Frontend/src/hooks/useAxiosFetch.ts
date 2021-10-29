@@ -28,14 +28,13 @@ export const useAxiosFetchById = (dataUrl: string) => {
                     setData({});
                 }
             } finally {
-                isMounted && setTimeout(() => setIsLoading(false), 2000);
+                isMounted && setIsLoading(false);
             }
         }
 
         fetchData(dataUrl);
 
         const cleanUp = () => {
-            console.log('clean up function')
             isMounted = false;
             source.cancel();
         }
@@ -85,14 +84,13 @@ export const useAxiosFetchPage = (dataUrl: string) => {
                     });
                 }
             } finally {
-                isMounted && setTimeout(() => setIsLoading(false), 500);
+                isMounted && setIsLoading(false);
             }
         }
 
         fetchData(dataUrl);
 
         const cleanUp = () => {
-            console.log('clean up function')
             isMounted = false;
             source.cancel();
         }
