@@ -29,12 +29,7 @@ function Cadastro_Prof() {
                     </div>
                     <div className="row">
                         <div className="col-md-12 col-lg-7 col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
-                            <div className="row">
-                                <TableProf />
-                            </div>
-                            <div className="row mt-auto">
-                                <Pagination />
-                            </div>
+                            <TableProf />
                         </div>
 
                         <div className="col-lg-4 border shadow-sm p-3  mt-2 m-2">

@@ -26,14 +26,7 @@ function Cadastro_Curso() {
                         <div className="row">
 
                             <div className="col-lg-8 col-md-12 col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
-
-                                <div className="row">
-                                    <TableCurso />
-                                </div>
-                                <div className="row mt-auto">
-                                    <Pagination />
-                                </div>
-
+                                <TableCurso />
                             </div>
 
                             <div className="col-lg-3 col-md-12 col-sm-12  p-3 m-2 ">

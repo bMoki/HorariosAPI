@@ -28,14 +28,7 @@ function Cadastro_Disciplina() {
 
                         <div className="row">
                             <div className="col-lg-6 col-md-12 col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
-
-                                <div className="row">
-                                    <TableDisciplina />
-                                </div>
-                                <div className="row mt-auto">
-                                    <Pagination />
-                                </div>
-
+                                <TableDisciplina />
                             </div>
 
                             <div className="col-lg-5 col-md-12 col-sm-12  p-3 m-2 ">

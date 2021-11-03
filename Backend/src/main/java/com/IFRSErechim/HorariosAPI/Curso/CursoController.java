@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,8 @@ public class CursoController {
     private CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<Page<CursoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,Pageable pageable){
+    public ResponseEntity<Page<CursoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,
+                                                  @PageableDefault(size = 12 )Pageable pageable){
         if(!paged) pageable = Pageable.unpaged();
 
         Page<CursoDTO> list = cursoService.findAll(pageable);
