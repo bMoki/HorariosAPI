@@ -37,14 +37,6 @@ public class DisciplinaController {
         return disciplinaService.criaDisciplina(disciplinaDTO);
     }
 
-//    @PutMapping("/{disciplinaId}/professor/{professorId}")
-//    public MessageResponseDTO atribuiProfessorParaDisciplina(
-//            @PathVariable Long disciplinaId,
-//            @PathVariable Long professorId
-//    ) throws DisciplinaNotFoundException, ProfessorNotFoundException {
-//        return  disciplinaService.atribuiProfessorParaDisciplina(disciplinaId,professorId);
-//    }
-
     @GetMapping("/{id}")
     public DisciplinaDTO findById(@PathVariable Long id) throws NotFoundException {
         return disciplinaService.findById(id);

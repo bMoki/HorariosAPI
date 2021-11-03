@@ -15,6 +15,7 @@ interface IDisciplinaContext {
     btnOperation: boolean,
     professores: options[],
     formIsOk:boolean,
+    codMoodle: number | undefined,
 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -33,7 +34,8 @@ const defaultState = {
     btnOperation: false,
     index:0,
     professores:[],
-    formIsOk: true
+    formIsOk: true,
+    codMoodle: undefined
 }
 
 export const DisciplinaContext = createContext<IDisciplinaContext>(defaultState);
@@ -47,6 +49,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     const [btnOperation, setBtnOperation] = useState(false);
     const [formIsOk, setFormIsOk] = useState(true);
     const [professores,setProfessores] = useState<options[]>([]);
+    const [codMoodle, setCodMoodle] = useState<number | undefined>(undefined);
 
     function selectedProfHandler(selectedOption?: options[]) {
         setProfessores(selectedOption === undefined ? [] : 
@@ -72,6 +75,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                 label: prof.nome + ' ' + prof.sobrenome
             }
         }));
+        setCodMoodle(item.codMoodle);
         setBtnOperation(true);
     }
 
@@ -80,6 +84,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         setId(0);
         setProfessores([]);
         setBtnOperation(false);
+        setCodMoodle(undefined);
         setFormIsOk(true);
     }
 
@@ -141,7 +146,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
 
     return (
         <DisciplinaContext.Provider value={{
-            id, nome, myStorage,professores,formIsOk,
+            id, nome, myStorage,professores,formIsOk,codMoodle,
             nomeHandler, handleClick,
             btnOperation,
             handleClear,

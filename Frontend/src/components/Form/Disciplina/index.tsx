@@ -10,7 +10,7 @@ import ComboBoxProf from "components/ComboBox/Professor";
 
 function FormDisciplina() {
 
-    const { nome, nomeHandler, btnOperation, handleClear,handleSubmit,formIsOk
+    const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle
     } = useContext(DisciplinaContext);
 
 
@@ -18,14 +18,21 @@ function FormDisciplina() {
     return (
         <>
             <form className="row g-3" >
-                <div className="col">
+
+                <div className="col-lg-6">
                     <label htmlFor="inputName" className="form-label" >Nome</label>
                     <input type="text" className={formIsOk ? "form-control" : nome !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={nome} onChange={nomeHandler} />
                 </div>
 
 
-                <div className="col">
+                <div className="col-lg-6">
                     <ComboBoxProf />
+                </div>
+
+
+                <div className="col-lg-6">
+                    <label htmlFor="inputCodMoodle" className="form-label" >Código Moodle</label>
+                    <input type="text" className="form-control"  disabled id="inputCodMoodle" defaultValue={codMoodle} />
                 </div>
 
 

@@ -1,6 +1,5 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
-import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Curso.CursoDTO;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -33,10 +31,13 @@ public class DisciplinaDTO implements Serializable {
     @JsonIgnore
     private List<CursoDTO> cursos = new ArrayList<>();
 
+    private Long codMoodle;
+
     public DisciplinaDTO(Disciplina entity) {
         id = entity.getId();
         nome = entity.getNome();
         professores = entity.getProfessores().stream().map(x -> new ProfessorDTO(x)).collect(Collectors.toList());
+        codMoodle = entity.getCodMoodle();
     }
 
 }

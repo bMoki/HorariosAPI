@@ -38,13 +38,13 @@ public class Disciplina {
     @ManyToMany(mappedBy = "disciplinas")
     private  List<Curso> cursos = new ArrayList<>();
 
+    @Column
+    private Long codMoodle;
+
     public Disciplina(DisciplinaDTO entity) {
         id = entity.getId();
         nome = entity.getNome();
         professores = entity.getProfessores().stream().map(x-> new Professor(x)).collect(Collectors.toList());
-    }
-
-    public void Professores(Professor professor) {
-        professores.add(professor);
+        codMoodle = entity.getCodMoodle();
     }
 }
