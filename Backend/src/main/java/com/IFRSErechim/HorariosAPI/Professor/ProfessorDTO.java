@@ -56,7 +56,6 @@ public class ProfessorDTO implements Serializable {
         email = entity.getEmail();
         dataNascimento = entity.getDataNascimento();
         SIAPE = entity.getSIAPE();
-        //disciplinas = entity.getDisciplinas().stream().map(x -> new DisciplinaDTO(x)).collect(Collectors.toList());
 
     }
 

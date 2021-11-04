@@ -1,18 +1,14 @@
 import FormDisciplina from "components/Form/Disciplina";
-
 import Modal from "components/Modal";
 import NavBar from "components/NavBar";
-import Pagination from "components/Pagination";
-
 import TableDisciplina from "components/Table/Disciplina";
-
 import DisciplinaContextProvider from "contexts/DisciplinaContext";
 import { ToastContainer, Zoom } from "react-toastify";
 import { Toast } from "utils/storageManager";
 
 
 
-function Cadastro_Disciplina() {
+function Disciplina() {
     window.onload = function () {
         Toast();
     }
@@ -53,4 +49,4 @@ function Cadastro_Disciplina() {
     );
 }
 
-export default Cadastro_Disciplina;
+export default Disciplina;

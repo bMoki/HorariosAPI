@@ -2,7 +2,6 @@ package com.IFRSErechim.HorariosAPI.Curso;
 
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
-import com.IFRSErechim.HorariosAPI.Turma.TurmaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,10 +55,6 @@ public class Curso {
             quantidadeTurma = entity.getQuantidadeTurma();
             disciplinas = entity.getDisciplinas().stream().map(x-> new Disciplina(x)).collect(Collectors.toList());
             turmas = entity.getTurmas().stream().map(x -> new Turma(x)).collect(Collectors.toList());
-     }
-
-     public void Disciplinas(Disciplina disciplina) {
-            disciplinas.add(disciplina);
      }
 
 }

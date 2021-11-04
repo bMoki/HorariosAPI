@@ -3,6 +3,7 @@ import { DisciplinaContext } from "contexts/DisciplinaContext";
 import { useContext } from "react";
 import { CursoContext } from "contexts/CursoContext";
 import { HorarioContext } from "contexts/HorarioContext";
+import { AlunoContext } from "contexts/AlunoContext";
 
 interface IProps {
     message: string;
@@ -14,6 +15,7 @@ function Modal({ message, context }: IProps) {
     const { handleDeleteDisciplina } = useContext(DisciplinaContext);
     const { handleDeleteCurso } = useContext(CursoContext);
     const { handleDeleteHorario } = useContext(HorarioContext);
+    const { handleDeleteAluno } = useContext(AlunoContext);
 
     const onClickFunction = (context: string) => {
         switch (context) {
@@ -28,6 +30,9 @@ function Modal({ message, context }: IProps) {
                 break;
             case "horario":
                 handleDeleteHorario!();
+                break;
+            case "aluno":
+                handleDeleteAluno!();
                 break;
         }
     }

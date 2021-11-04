@@ -1,7 +1,6 @@
 import FormProf from "components/Form/Professor";
 import Modal from "components/Modal";
 import NavBar from "components/NavBar";
-import Pagination from "components/Pagination";
 import SearchProf from "components/Search/Professor";
 import TableProf from "components/Table/Professor";
 import ProfessorContextProvider from "contexts/ProfessorContext";
@@ -10,7 +9,7 @@ import { Toast } from "utils/storageManager";
 
 
 
-function Cadastro_Prof() {
+function Professor() {
     window.onload = function () {
         Toast();
     }
@@ -47,4 +46,4 @@ function Cadastro_Prof() {
     );
 }
 
-export default Cadastro_Prof;
+export default Professor;

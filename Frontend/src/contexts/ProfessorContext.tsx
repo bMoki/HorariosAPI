@@ -3,6 +3,7 @@ import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
 import { Prof } from "types/prof";
 import { PostRequest, PutRequest, DeleteRequest } from "hooks/useAxios";
+import { dataFormater } from "utils/dataFormater";
 
 interface IProfessorContext {
     nome: string,
@@ -18,7 +19,7 @@ interface IProfessorContext {
     searchSobrenome: string,
     searchCpf: string,
     searchSiape: string,
- 
+
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     sobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -64,15 +65,19 @@ export const ProfessorContext = createContext<IProfessorContext>(defaultState);
 
 const ProfessorContextProvider: FC = ({ children }) => {
 
-    const [nome, setNome] = useState("");
-    const [cpf, setCPF] = useState("");
-    const [sobrenome, setSobrenome] = useState("");
-    const [email, setEmail] = useState("");
-    const [dataNascimento, setDataNascimento] = useState("");
-    const [siape, setSiape] = useState("");
-    const [id, setId] = useState(0);
-    const [btnOperation, setBtnOperation] = useState(false);
-    const [formIsOk, setFormIsOk] = useState(true);
+    const [nome, setNome] = useState(""),
+        [cpf, setCPF] = useState(""),
+        [sobrenome, setSobrenome] = useState(""),
+        [email, setEmail] = useState(""),
+        [dataNascimento, setDataNascimento] = useState(""),
+        [siape, setSiape] = useState(""),
+        [id, setId] = useState(0),
+        [btnOperation, setBtnOperation] = useState(false),
+        [formIsOk, setFormIsOk] = useState(true),
+        [searchNome, setSearchNome] = useState(""),
+        [searchSobrenome, setSearchSobrenome] = useState(""),
+        [searchCpf, setSearchCpf] = useState(""),
+        [searchSiape, setSearchSiape] = useState("");
 
     function nomeHandler(event: ChangeEvent<HTMLInputElement>) {
         setNome(event.target.value);
@@ -93,12 +98,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setSiape(mask(event.target.value, ['9999999']));
     }
 
-   
-    const [searchNome, setSearchNome] = useState("");
-    const [searchSobrenome, setSearchSobrenome] = useState("");
-    const [searchCpf, setSearchCpf] = useState("");
-    const [searchSiape, setSearchSiape] = useState("");
-
     function searchNomeHandler(event: ChangeEvent<HTMLInputElement>) {
         setSearchNome(event.target.value);
     }
@@ -114,44 +113,41 @@ const ProfessorContextProvider: FC = ({ children }) => {
 
 
     function FormValidation() {
-        var Ok = true;
 
         if (nome === "") {
-            Ok = false;
+            return false;
         }
 
         if (cpf.length < 14) {
-            Ok = false;
+            return false;
         }
 
         if (sobrenome === "") {
-            Ok = false;
+            return false;
         }
 
         if (email === "") {
-            Ok = false;
+            return false;
         }
 
         if (dataNascimento.length < 10) {
-            Ok = false;
+            return false;
         }
 
         if (siape === "") {
-            Ok = false;
+            return false;
         }
-
-        setFormIsOk(Ok)
-        return Ok;
+        return true;
 
     }
 
     function handleClick(item: Prof) {
-        const data = item?.dataNascimento?.slice(8, 10) + "/" + item?.dataNascimento?.slice(5, 7) + "/" + item?.dataNascimento?.slice(0, 4);
+        const data = dataFormater(item.dataNascimento);
         setNome(item?.nome === undefined ? "" : item.nome);
         setSobrenome(item?.sobrenome === undefined ? "" : item.sobrenome);
         setCPF(item?.cpf === undefined ? "" : item.cpf);
         setEmail(item?.email === undefined ? "" : item.email);
-        setDataNascimento(data);
+        setDataNascimento(data === undefined ? "" : data);
         setSiape(item?.siape === undefined ? "" : item.siape);
         setId(item?.id === undefined ? 0 : item.id);
         setBtnOperation(true)
@@ -160,9 +156,9 @@ const ProfessorContextProvider: FC = ({ children }) => {
     function handleSubmit() {
 
         const Ok = FormValidation();
-
+        setFormIsOk(Ok)
         if (Ok) {
-            const data = dataNascimento.slice(6, 10) + '-' + dataNascimento.slice(3, 5) + '-' + dataNascimento.slice(0, 2);
+            const data = dataFormater(dataNascimento)
 
             if (btnOperation) {
 

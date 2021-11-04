@@ -1,7 +1,6 @@
 import FormCurso from "components/Form/Curso";
 import Modal from "components/Modal";
 import NavBar from "components/NavBar";
-import Pagination from "components/Pagination";
 import TableCurso from "components/Table/Curso";
 import CursoContextProvider from "contexts/CursoContext";
 import { ToastContainer, Zoom } from "react-toastify";
@@ -9,7 +8,7 @@ import { Toast } from "utils/storageManager";
 
 
 
-function Cadastro_Curso() {
+function Curso() {
     window.onload = function () {
         Toast();
     }
@@ -53,4 +52,4 @@ function Cadastro_Curso() {
     );
 }
 
-export default Cadastro_Curso;
+export default Curso;

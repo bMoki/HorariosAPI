@@ -10,7 +10,7 @@ import { Toast } from "utils/storageManager";
 
 
 
-function Cadastro_Horario() {
+function Horario() {
     window.onload = function () {
         Toast();
     }
@@ -74,4 +74,4 @@ function Cadastro_Horario() {
     );
 }
 
-export default Cadastro_Horario;
+export default Horario;

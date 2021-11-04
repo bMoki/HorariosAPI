@@ -14,7 +14,7 @@ interface IDisciplinaContext {
     myStorage: Storage,
     btnOperation: boolean,
     professores: options[],
-    formIsOk:boolean,
+    formIsOk: boolean,
     codMoodle: number | undefined,
 
 
@@ -32,8 +32,8 @@ const defaultState = {
     id: 0,
     myStorage: sessionStorage,
     btnOperation: false,
-    index:0,
-    professores:[],
+    index: 0,
+    professores: [],
     formIsOk: true,
     codMoodle: undefined
 }
@@ -44,21 +44,21 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     var myStorage = window.sessionStorage;
 
 
-    const [id, setId] = useState(0);
-    const [nome, setNome] = useState("");
-    const [btnOperation, setBtnOperation] = useState(false);
-    const [formIsOk, setFormIsOk] = useState(true);
-    const [professores,setProfessores] = useState<options[]>([]);
-    const [codMoodle, setCodMoodle] = useState<number | undefined>(undefined);
+    const [id, setId] = useState(0),
+        [nome, setNome] = useState(""),
+        [btnOperation, setBtnOperation] = useState(false),
+        [formIsOk, setFormIsOk] = useState(true),
+        [professores, setProfessores] = useState<options[]>([]),
+        [codMoodle, setCodMoodle] = useState<number | undefined>(undefined);
 
     function selectedProfHandler(selectedOption?: options[]) {
-        setProfessores(selectedOption === undefined ? [] : 
+        setProfessores(selectedOption === undefined ? [] :
             selectedOption.map((item) => {
                 return {
                     value: item.value,
                     label: item.label
                 }
-            }));   
+            }));
     }
 
 
@@ -69,7 +69,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     function handleClick(item: Disciplina) {
         setNome(item?.nome === undefined ? "" : item.nome);
         setId(item?.id === undefined ? 0 : item.id);
-        setProfessores(item?.professores === undefined ? [] : item.professores.map((prof)=>{
+        setProfessores(item?.professores === undefined ? [] : item.professores.map((prof) => {
             return {
                 value: prof.id,
                 label: prof.nome + ' ' + prof.sobrenome
@@ -107,10 +107,10 @@ const DisciplinaContextProvider: FC = ({ children }) => {
             console.log(btnOperation);
             if (btnOperation) {
                 const disciplina = {
-                    id:id,
+                    id: id,
                     nome: nome,
-                    professores: professores.map((x=>{
-                        return{
+                    professores: professores.map((x => {
+                        return {
                             id: x.value
                         }
                     }))
@@ -123,8 +123,8 @@ const DisciplinaContextProvider: FC = ({ children }) => {
             } else {
                 const disciplina = {
                     nome: nome,
-                    professores:  professores.map((x=>{
-                        return{
+                    professores: professores.map((x => {
+                        return {
                             id: x.value
                         }
                     }))
@@ -146,7 +146,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
 
     return (
         <DisciplinaContext.Provider value={{
-            id, nome, myStorage,professores,formIsOk,codMoodle,
+            id, nome, myStorage, professores, formIsOk, codMoodle,
             nomeHandler, handleClick,
             btnOperation,
             handleClear,

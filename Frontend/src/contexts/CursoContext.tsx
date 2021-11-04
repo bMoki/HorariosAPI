@@ -40,13 +40,13 @@ const defaultState = {
 export const CursoContext = createContext<ICursoContext>(defaultState);
 
 const CursoContextProvider: FC = ({ children }) => {
-    
-    const [id, setId] = useState(0);
-    const [nome, setNome] = useState("");
-    const [quantidade, setQuantidade] = useState("1");
-    const [btnOperation, setBtnOperation] = useState(false);
-    const [formIsOk, setFormIsOk] = useState(true);
-    const [disciplinas, setDisciplinas] = useState<options[]>([]);
+
+    const [id, setId] = useState(0),
+        [nome, setNome] = useState(""),
+        [quantidade, setQuantidade] = useState("1"),
+        [btnOperation, setBtnOperation] = useState(false),
+        [formIsOk, setFormIsOk] = useState(true),
+        [disciplinas, setDisciplinas] = useState<options[]>([]);
 
 
 

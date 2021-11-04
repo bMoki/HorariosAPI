@@ -3,6 +3,7 @@ Projeto de serviço web de horarios para o IFRS
 
 > To do
   > - Filtros professor
-  > - Cadastrar aluno
+  > - data desativação , data inclusão
   > - Relatorios
+  > - Deploy
  

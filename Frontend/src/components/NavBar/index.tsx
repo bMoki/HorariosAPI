@@ -23,21 +23,27 @@ function NavBar() {
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link to="/CadastroProf" className="nav-link">Professor</Link>
+                                <Link to="/Professor" className="nav-link">Professor</Link>
 
                             </li>
                             <li className="nav-item">
-                                <Link to="/CadastroDisciplina" className="nav-link">Disciplina</Link>
+                                <Link to="/Aluno" className="nav-link">Aluno</Link>
 
                             </li>
                             <li className="nav-item">
-                                <Link to="/CadastroCurso" className="nav-link">Curso</Link>
+                                <Link to="/Disciplina" className="nav-link">Disciplina</Link>
 
                             </li>
                             <li className="nav-item">
-                                <Link to="/CadastroHorario" className="nav-link">Horário</Link>
+                                <Link to="/Curso" className="nav-link">Curso</Link>
 
                             </li>
+
+                            <li className="nav-item">
+                                <Link to="/Horario" className="nav-link">Horário</Link>
+
+                            </li>
+
                         </ul>
 
                     </div>

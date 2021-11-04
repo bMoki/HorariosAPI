@@ -1,4 +1,4 @@
-package com.IFRSErechim.HorariosAPI.Curso;
+package com.IFRSErechim.HorariosAPI.Aluno;
 
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
@@ -16,41 +16,41 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/curso")
+@RequestMapping("/aluno")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CursoController {
+public class AlunoController {
 
     @Autowired
-    private CursoService cursoService;
+    private AlunoService alunoService;
 
     @GetMapping
-    public ResponseEntity<Page<CursoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,
-                                                  @PageableDefault(size = 12 )Pageable pageable){
+    public ResponseEntity<Page<AlunoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,
+                                                  @PageableDefault(size = 6 )Pageable pageable){
         if(!paged) pageable = Pageable.unpaged();
 
-        Page<CursoDTO> list = cursoService.findAll(pageable);
+        Page<AlunoDTO> list = alunoService.findAll(pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public CursoDTO findById(@PathVariable Long id) throws NotFoundException {
-            return cursoService.findById(id);
+    public AlunoDTO findById(@PathVariable Long id) throws NotFoundException {
+            return alunoService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO criaCurso(@RequestBody @Valid CursoDTO cursoDTO) throws AlreadyExistsException {
-        return cursoService.criaCurso(cursoDTO);
+    public MessageResponseDTO criaAluno(@RequestBody @Valid AlunoDTO alunoDTO) throws AlreadyExistsException {
+        return alunoService.criaAluno(alunoDTO);
     }
 
     @PutMapping("/{id}")
-    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid CursoDTO cursoDTO) throws NotFoundException{
-        return cursoService.UpdateById(id, cursoDTO);
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid AlunoDTO alunoDTO) throws NotFoundException{
+        return alunoService.UpdateById(id, alunoDTO);
     }
 
     @DeleteMapping("/{id}")
     public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException, DeleteException {
-        return cursoService.delete(id);
+        return alunoService.delete(id);
     }
 
 

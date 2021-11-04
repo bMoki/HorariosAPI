@@ -53,16 +53,16 @@ export const HorarioContext = createContext<IHorarioContext>(defaultState);
 const HorarioContextProvider: FC = ({ children }) => {
 
     let MyStorage = window.sessionStorage
-    const [id, setId] = useState<number | undefined>();
-    const [btnOperation, setBtnOperation] = useState(false);
-    const [formIsOk, setFormIsOk] = useState(true);
-    const [cursoOptions, setCursoOptions] = useState<options>({});
-    const [turmaOptions, setTurmaOptions] = useState<options>({});
-    const [professorOptions, setProfessorOptions] = useState<options>({});
-    const [disciplinaOptions, setDisciplinaOptions] = useState<options>({});
-    const [dia, setDia] = useState("");
-    const [periodo, setPeriodo] = useState<number | undefined>(undefined);
-    const [turma, setTurma] = useState<Turma | undefined>(undefined);
+    const [id, setId] = useState<number | undefined>(),
+        [btnOperation, setBtnOperation] = useState(false),
+        [formIsOk, setFormIsOk] = useState(true),
+        [cursoOptions, setCursoOptions] = useState<options>({}),
+        [turmaOptions, setTurmaOptions] = useState<options>({}),
+        [professorOptions, setProfessorOptions] = useState<options>({}),
+        [disciplinaOptions, setDisciplinaOptions] = useState<options>({}),
+        [dia, setDia] = useState(""),
+        [periodo, setPeriodo] = useState<number | undefined>(undefined),
+        [turma, setTurma] = useState<Turma | undefined>(undefined);
 
     useEffect(() => {
         const storedSelectedCurso = JSON.parse(sessionStorage.getItem('selectedCurso') || '{}');
@@ -77,7 +77,7 @@ const HorarioContextProvider: FC = ({ children }) => {
         MyStorage.setItem('selectedCurso', JSON.stringify(cursoOptions));
         MyStorage.setItem('selectedTurma', JSON.stringify(turmaOptions));
     }
- 
+
     function selectedCursoHandler(selectedOption?: options) {
         handleClear();
         setCursoOptions(selectedOption === undefined ? {} : selectedOption);
@@ -132,12 +132,12 @@ const HorarioContextProvider: FC = ({ children }) => {
     }
 
     function FormValidation() {
-    
-        if(dia==="")return false;
-        if(!periodo)return false;
-        if(!turma)return false;
-        if(!disciplinaOptions.value)return false;
-        if(!professorOptions.value)return false;
+
+        if (dia === "") return false;
+        if (!periodo) return false;
+        if (!turma) return false;
+        if (!disciplinaOptions.value) return false;
+        if (!professorOptions.value) return false;
 
         return true;
 

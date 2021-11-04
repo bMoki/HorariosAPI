@@ -1,31 +1,36 @@
-import CadastroProf from 'Pages/CadastroProf';
-import CadastroDisciplina from 'Pages/CadastroDisciplina';
-import CadastroCurso from 'Pages/CadastroCurso'
+import Professor from 'Pages/Professor';
+import Disciplina from 'Pages/Disciplina';
+import Curso from 'Pages/Curso'
 import Home from 'Pages/Home';
-import { BrowserRouter, Switch, Route} from 'react-router-dom';
-import CadastroHorario from 'Pages/CadastroHorario';
+import Horario from 'Pages/Horario';
+import Aluno from 'Pages/Aluno';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 
 function Routes() {
     return (
-       <BrowserRouter>
+        <BrowserRouter>
             <Switch>
                 <Route path="/" exact>
                     <Home />
                 </Route>
-                <Route path="/CadastroProf">
-                        <CadastroProf />
+                <Route path="/Professor">
+                    <Professor />
                 </Route>
-                <Route path='/CadastroDisciplina'>
-                    <CadastroDisciplina/>
+                <Route path='/Disciplina'>
+                    <Disciplina />
                 </Route>
-                <Route path='/CadastroCurso'>
-                    <CadastroCurso/>
+                <Route path='/Curso'>
+                    <Curso />
                 </Route>
-                <Route path='/CadastroHorario'>
-                    <CadastroHorario/>
+                <Route path='/Horario'>
+                    <Horario />
+                </Route>
+                <Route path='/Aluno'>
+                    <Aluno />
                 </Route>
             </Switch>
-       </BrowserRouter>
+        </BrowserRouter>
     );
 }
 
