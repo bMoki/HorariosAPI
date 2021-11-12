@@ -32,7 +32,6 @@ public class AlunoDTO implements Serializable {
 
     private LocalDate dataInativacao;
 
-    @NotEmpty
     private LocalDate dataInclusao;
 
     public AlunoDTO (Aluno entity){

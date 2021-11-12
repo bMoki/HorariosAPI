@@ -6,14 +6,9 @@ import NavBar from "components/NavBar";
 import TableHorario from "components/Table/Horario";
 import HorarioContextProvider from "contexts/HorarioContext";
 import { ToastContainer, Zoom } from "react-toastify";
-import { Toast } from "utils/storageManager";
-
 
 
 function Horario() {
-    window.onload = function () {
-        Toast();
-    }
     return (
         <>
             <HorarioContextProvider>

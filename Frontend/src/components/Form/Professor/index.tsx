@@ -4,18 +4,13 @@ import { ProfessorContext } from "contexts/ProfessorContext";
 import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 
-
-
-
-
 function FormProf() {
 
     const { nome, cpf, email, sobrenome, dataNascimento, siape,
         nomeHandler, sobrenomeHandler, cpfHandler, emailHandler, dataNascimentoHandler, siapeHandler,
         handleSubmit, btnOperation, handleClear, formIsOk
     } = useContext(ProfessorContext);
-
-
+    
 
     return (
         <>

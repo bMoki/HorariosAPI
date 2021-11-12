@@ -6,11 +6,3 @@ export type User = {
     admin?: boolean
 }
 
-export type TokenDecoded = {
-    iss: string,
-    exp: number,
-    sub: string,
-    roles: string[],
-    admin: boolean
-}
-

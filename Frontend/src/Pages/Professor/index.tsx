@@ -7,16 +7,9 @@ import { LoginContext } from "contexts/LoginContext";
 import ProfessorContextProvider from "contexts/ProfessorContext";
 import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
-import { Toast } from "utils/storageManager";
-
-
 
 function Professor() {
-    window.onload = function () {
-        Toast();
-    }
     const { user } = useContext(LoginContext);
-    console.log(user)
     return (
         <>
             <ProfessorContextProvider>

@@ -1,4 +1,4 @@
-import { DeleteRequest, PutRequest, PostRequest } from "hooks/useAxios";
+import useApi from "hooks/useApi";
 import { createContext, useState, FC, ChangeEvent, useEffect } from "react";
 import { Horario } from "types/horario";
 import { options } from "types/options";
@@ -47,7 +47,8 @@ export const HorarioContext = createContext<IHorarioContext>(defaultState);
 
 const HorarioContextProvider: FC = ({ children }) => {
 
-    let MyStorage = window.sessionStorage
+    let MyStorage = window.sessionStorage;
+    const api = useApi();
     const [id, setId] = useState<number | undefined>(),
         [btnOperation, setBtnOperation] = useState(false),
         [formIsOk, setFormIsOk] = useState(true),
@@ -161,9 +162,7 @@ const HorarioContextProvider: FC = ({ children }) => {
                     }
                 }
 
-                PutRequest(`/horario`, horario, id!).then(go => {
-                    window.location.reload();
-                })
+                api.put(`/horario/${id!}`, horario);
 
             } else {
                 const horario = {
@@ -182,9 +181,7 @@ const HorarioContextProvider: FC = ({ children }) => {
 
 
 
-                PostRequest(`/horario`, horario).then(go => {
-                    window.location.reload();
-                });
+                api.post(`/horario`, horario);
             }
         }
     }
@@ -192,9 +189,7 @@ const HorarioContextProvider: FC = ({ children }) => {
 
     function handleDeleteHorario() {
         StoreSelected();
-        DeleteRequest(`/horario`, id!).then(go => {
-            window.location.reload();
-        });
+        api.delete(`/horario/${id!}`);
     }
 
 

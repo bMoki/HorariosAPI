@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { TokenDecoded, User } from "types/user";
+import { User } from "types/user";
 
 
 export default function useAuth() {
@@ -41,7 +41,7 @@ export default function useAuth() {
         if (data.status === 200) {
             setAuthTokens(JSON.stringify(data.data));
             setAuthenticated(true);
-            const decoded = jwtDecode(data.data.access_token) as TokenDecoded;
+            const decoded = jwtDecode(data.data.access_token) as User;
             setUser(decoded);
             localStorage.setItem('tokens', JSON.stringify(data.data));
             history.push('/');

@@ -41,7 +41,6 @@ const useApi = () => {
     axiosInstance.interceptors.request.use(async req => {
 
         const isExpired = await checkToken(user);
-
         if (isExpired === false) {
             req.headers.Authorization = `Bearer ${JSON.parse(authTokens!).access_token}`
             return req
@@ -64,7 +63,22 @@ const useApi = () => {
 
 
         return req
-    })
+    });
+
+    axiosInstance.interceptors.response.use(function (response) {
+        if (response.config.method !== "get") {
+            sessionStorage.setItem("response", JSON.stringify(response));
+            window.location.reload();
+        }
+        return response;
+    }, function (error) {
+        if (error.config.method !== "get") {
+            sessionStorage.setItem("response", JSON.stringify(error.response));
+            window.location.reload();
+        }
+        return Promise.reject(error);
+
+    });
 
     return axiosInstance
 }

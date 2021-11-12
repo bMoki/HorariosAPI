@@ -1,4 +1,4 @@
-import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
+import useApi from "hooks/useApi";
 import { ChangeEvent, createContext, FC, useState } from "react";
 import { mask } from "remask";
 import { Aluno } from "types/aluno";
@@ -43,6 +43,7 @@ const defaultState = {
 export const AlunoContext = createContext<IAlunoContext>(defaultState);
 
 const AlunoContextProvider: FC = ({ children }) => {
+    const api = useApi();
     const [id, setId] = useState(0),
         [nomeCompleto, setNomeCompleto] = useState(""),
         [cpf, setCpf] = useState(""),
@@ -142,9 +143,7 @@ const AlunoContextProvider: FC = ({ children }) => {
                     dataInclusao: dtInclusao
                 }
 
-                PutRequest(`/aluno`, aluno, aluno.id).then(go => {
-                    window.location.reload();
-                })
+                api.put(`/aluno/${aluno.id}`, aluno);
 
             } else {
                 const aluno = {
@@ -156,24 +155,14 @@ const AlunoContextProvider: FC = ({ children }) => {
                     dataInclusao: dtInclusao
                 }
 
-                PostRequest(`/aluno`, aluno).then(go => {
-                    window.location.reload();
-                });
-
-
+                api.post(`/aluno`, aluno);
             }
         }
     }
 
     function handleDeleteAluno() {
-        DeleteRequest(`/aluno`, id).then(go => {
-            window.location.reload();
-        });
+        api.delete(`/aluno/${id}`);
     }
-
-
-
-
 
     return (
         <AlunoContext.Provider value={{

@@ -6,14 +6,8 @@ import AlunoContextProvider from "contexts/AlunoContext";
 import { LoginContext } from "contexts/LoginContext";
 import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
-import { Toast } from "utils/storageManager";
-
-
 
 function Aluno() {
-    window.onload = function () {
-        Toast();
-    }
     const { user } = useContext(LoginContext);
 
     return (
@@ -23,17 +17,23 @@ function Aluno() {
                 <NavBar />
                 <div className="container">
                     <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
+                    <div className="row d-flex justify-content-center">
 
-                    <div className="row">
-                        <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
-                            <TableAluno />
+                        <div className="row">
+                            <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
+                                <TableAluno />
+                            </div>
+
+                            {user?.admin && <div className="col-lg-4  p-3  mt-2 m-2">
+                                <div className="row">
+                                    <div className=" col border shadow-sm p-3">
+                                        <FormAluno />
+                                    </div>
+                                </div>
+                            </div>}
+
+
                         </div>
-                        {user?.admin && <div className="col-lg-4 border shadow-sm p-3  mt-2 m-2">
-                            <FormAluno />
-                        </div>
-                        }
-
-
                     </div>
 
 

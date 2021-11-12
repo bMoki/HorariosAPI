@@ -6,14 +6,8 @@ import CursoContextProvider from "contexts/CursoContext";
 import { LoginContext } from "contexts/LoginContext";
 import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
-import { Toast } from "utils/storageManager";
-
-
 
 function Curso() {
-    window.onload = function () {
-        Toast();
-    }
     const { user } = useContext(LoginContext);
     return (
         <>

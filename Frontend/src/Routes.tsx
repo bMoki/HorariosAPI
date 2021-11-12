@@ -6,8 +6,9 @@ import Horario from 'Pages/Horario';
 import Aluno from 'Pages/Aluno';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import LoginPage from 'Pages/Login';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { LoginContext } from 'contexts/LoginContext';
+import { Toast } from 'utils/storageManager';
 
 function CustomRoute({ isPrivate, ...rest }: any) {
     const { loading, authenticated } = useContext(LoginContext);
@@ -23,7 +24,9 @@ function CustomRoute({ isPrivate, ...rest }: any) {
 
 function Routes({ history }: any) {
 
-
+    useEffect(() => {
+        Toast();
+    }, [])
 
 
     return (

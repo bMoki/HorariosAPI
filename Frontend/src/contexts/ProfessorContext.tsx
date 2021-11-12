@@ -1,8 +1,8 @@
 import { createContext, useState, ChangeEvent, FC } from "react";
 import { mask } from "remask";
 import { Prof } from "types/prof";
-import { PostRequest, PutRequest, DeleteRequest } from "hooks/useAxios";
 import { dataFormater } from "utils/dataFormater";
+import useApi from "hooks/useApi";
 
 interface IProfessorContext {
     nome: string,
@@ -63,7 +63,7 @@ const defaultState = {
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
 
 const ProfessorContextProvider: FC = ({ children }) => {
-
+    const api = useApi();
     const [nome, setNome] = useState(""),
         [cpf, setCPF] = useState(""),
         [sobrenome, setSobrenome] = useState(""),
@@ -152,6 +152,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setBtnOperation(true)
     }
 
+
     function handleSubmit() {
 
         const Ok = FormValidation();
@@ -171,9 +172,11 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PutRequest(`/professor`, profe, profe.id).then(go => {
-                    window.location.reload();
-                })
+
+                api.put(`/professor/${profe.id}`, profe);
+
+
+
 
             } else {
                 const profe = {
@@ -185,9 +188,10 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PostRequest(`/professor`, profe).then(go => {
-                    window.location.reload();
-                });
+
+                api.post(`/professor`, profe);
+
+
 
 
             }
@@ -195,9 +199,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteProfessor() {
-        DeleteRequest(`/professor`, id).then(go => {
-            window.location.reload();
-        });
+        api.delete(`/professor/${id}`);
     }
 
     function handleClear() {

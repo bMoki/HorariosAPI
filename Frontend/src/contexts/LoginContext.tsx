@@ -18,13 +18,16 @@ export const LoginContext = createContext<ILoginContext>({
     loading: true,
     user: undefined,
     authTokens: null,
+  
 });
 
 const LoginContextProvider: FC = ({ children }) => {
 
+  
     const {
         authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser
     } = useAuth();
+
 
 
 

@@ -6,14 +6,9 @@ import DisciplinaContextProvider from "contexts/DisciplinaContext";
 import { LoginContext } from "contexts/LoginContext";
 import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
-import { Toast } from "utils/storageManager";
-
-
 
 function Disciplina() {
-    window.onload = function () {
-        Toast();
-    }
+
     const { user } = useContext(LoginContext);
     return (
         <>

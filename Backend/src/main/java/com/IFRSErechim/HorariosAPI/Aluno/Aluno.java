@@ -34,7 +34,7 @@ public class Aluno {
     @Column
     private LocalDate dataInativacao;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate dataInclusao;
 
     public Aluno (AlunoDTO entity){

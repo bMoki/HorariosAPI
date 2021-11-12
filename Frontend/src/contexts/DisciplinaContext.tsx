@@ -1,4 +1,4 @@
-import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
+import useApi from "hooks/useApi";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Disciplina } from "types/disciplina";
 import { options } from "types/options";
@@ -6,7 +6,6 @@ import { options } from "types/options";
 interface IDisciplinaContext {
     nome: string,
     id: number,
-    myStorage: Storage,
     btnOperation: boolean,
     professores: options[],
     formIsOk: boolean,
@@ -25,7 +24,6 @@ interface IDisciplinaContext {
 const defaultState = {
     nome: "",
     id: 0,
-    myStorage: sessionStorage,
     btnOperation: false,
     index: 0,
     professores: [],
@@ -36,9 +34,8 @@ const defaultState = {
 export const DisciplinaContext = createContext<IDisciplinaContext>(defaultState);
 
 const DisciplinaContextProvider: FC = ({ children }) => {
-    var myStorage = window.sessionStorage;
-
-
+    
+    const api = useApi();
     const [id, setId] = useState(0),
         [nome, setNome] = useState(""),
         [btnOperation, setBtnOperation] = useState(false),
@@ -111,10 +108,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                     }))
                 }
 
-                PutRequest(`/disciplina`, disciplina, disciplina.id).then(go => {
-                    window.location.reload();
-                })
-
+                api.put(`/disciplina/${disciplina.id}`, disciplina);
             } else {
                 const disciplina = {
                     nome: nome,
@@ -124,24 +118,20 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                         }
                     }))
                 }
-                PostRequest(`/disciplina`, disciplina).then(go => {
-                    window.location.reload();
-                });
+                api.post(`/disciplina`, disciplina);
             }
         }
     }
 
     function handleDeleteDisciplina() {
-        DeleteRequest(`/disciplina`, id).then(go => {
-            window.location.reload();
-        });
+        api.delete(`/disciplina${id}`);
     }
 
 
 
     return (
         <DisciplinaContext.Provider value={{
-            id, nome, myStorage, professores, formIsOk, codMoodle,
+            id, nome, professores, formIsOk, codMoodle,
             nomeHandler, handleClick,
             btnOperation,
             handleClear,

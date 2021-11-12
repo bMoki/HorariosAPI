@@ -1,4 +1,4 @@
-import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
+import useApi from "hooks/useApi";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Curso } from "types/curso";
 import { options } from "types/options";
@@ -36,7 +36,7 @@ const defaultState = {
 export const CursoContext = createContext<ICursoContext>(defaultState);
 
 const CursoContextProvider: FC = ({ children }) => {
-
+    const api = useApi();
     const [id, setId] = useState(0),
         [nome, setNome] = useState(""),
         [quantidade, setQuantidade] = useState("1"),
@@ -119,9 +119,7 @@ const CursoContextProvider: FC = ({ children }) => {
                     }))
                 }
 
-                PutRequest(`/curso`, curso, curso.id).then(go => {
-                    window.location.reload();
-                })
+                api.put(`/curso/${curso.id}`, curso);
 
             } else {
                 const curso = {
@@ -133,17 +131,13 @@ const CursoContextProvider: FC = ({ children }) => {
                         }
                     }))
                 }
-                PostRequest(`/curso`, curso).then(go => {
-                    window.location.reload();
-                });
+                api.post(`/curso`, curso);
             }
         }
     }
 
     function handleDeleteCurso() {
-        DeleteRequest(`$/curso`, id).then(go => {
-            window.location.reload();
-        });
+        api.delete(`/curso/${id}`);
     }
 
 
