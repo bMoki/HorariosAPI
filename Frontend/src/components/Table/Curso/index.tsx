@@ -4,7 +4,6 @@ import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { CursoPage } from "types/curso";
-import { BASE_URL } from "utils/requests";
 
 
 function TableCurso() {
@@ -19,7 +18,7 @@ function TableCurso() {
         totalPages: 0
     });
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/curso?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/curso?page=${activePage}`);
 
 
     useEffect(() => {

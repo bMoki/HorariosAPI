@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
-import { BASE_URL } from "utils/requests";
 import { DisciplinaPage } from "types/disciplina";
 import { CursoContext } from "contexts/CursoContext";
 
@@ -11,7 +10,7 @@ function ComboBoxDisciplina() {
     const { selectedDisciplinaHandler, disciplinas
     } = useContext(CursoContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/disciplina?paged=false`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/disciplina?paged=false`);
     const [disciplina, setDisciplina] = useState<DisciplinaPage>({
         first: true,
         last: true,

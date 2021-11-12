@@ -4,31 +4,53 @@ import Curso from 'Pages/Curso'
 import Home from 'Pages/Home';
 import Horario from 'Pages/Horario';
 import Aluno from 'Pages/Aluno';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import LoginPage from 'Pages/Login';
+import { useContext } from 'react';
+import { LoginContext } from 'contexts/LoginContext';
+
+function CustomRoute({ isPrivate, ...rest }: any) {
+    const { loading, authenticated } = useContext(LoginContext);
+    if (loading) {
+        return <h1>loading...</h1>
+    }
+
+    if (isPrivate && !authenticated) {
+        return <Redirect to="/Login" />
+    }
+    return <Route {...rest} />;
+}
+
+function Routes({ history }: any) {
 
 
-function Routes() {
+
+
     return (
+
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact>
+                <CustomRoute path="/" isPrivate exact>
                     <Home />
-                </Route>
-                <Route path="/Professor">
+                </CustomRoute>
+                <CustomRoute path="/Professor" isPrivate>
                     <Professor />
-                </Route>
-                <Route path='/Disciplina'>
+                </CustomRoute>
+                <CustomRoute path='/Disciplina' isPrivate>
                     <Disciplina />
-                </Route>
-                <Route path='/Curso'>
+                </CustomRoute>
+                <CustomRoute path='/Curso' isPrivate>
                     <Curso />
-                </Route>
-                <Route path='/Horario'>
+                </CustomRoute>
+                <CustomRoute path='/Horario' isPrivate>
                     <Horario />
-                </Route>
-                <Route path='/Aluno'>
+                </CustomRoute>
+                <CustomRoute path='/Aluno' isPrivate>
                     <Aluno />
-                </Route>
+                </CustomRoute>
+                <CustomRoute path='/Login'>
+                    <LoginPage />
+                </CustomRoute>
             </Switch>
         </BrowserRouter>
     );

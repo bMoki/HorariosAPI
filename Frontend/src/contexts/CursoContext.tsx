@@ -2,10 +2,6 @@ import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Curso } from "types/curso";
 import { options } from "types/options";
-import { BASE_URL } from "utils/requests";
-
-
-
 
 
 interface ICursoContext {
@@ -123,7 +119,7 @@ const CursoContextProvider: FC = ({ children }) => {
                     }))
                 }
 
-                PutRequest(`${BASE_URL}/curso`, curso, curso.id).then(go => {
+                PutRequest(`/curso`, curso, curso.id).then(go => {
                     window.location.reload();
                 })
 
@@ -137,7 +133,7 @@ const CursoContextProvider: FC = ({ children }) => {
                         }
                     }))
                 }
-                PostRequest(`${BASE_URL}/curso`, curso).then(go => {
+                PostRequest(`/curso`, curso).then(go => {
                     window.location.reload();
                 });
             }
@@ -145,7 +141,7 @@ const CursoContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteCurso() {
-        DeleteRequest(`${BASE_URL}/curso`, id).then(go => {
+        DeleteRequest(`$/curso`, id).then(go => {
             window.location.reload();
         });
     }

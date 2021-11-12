@@ -3,7 +3,6 @@ import { useAxiosFetchById } from "hooks/useAxiosFetch";
 import { useContext, useEffect, useState } from "react";
 import { Curso } from "types/curso";
 import { Turma } from "types/turma";
-import { BASE_URL } from "utils/requests";
 import RowsHorario from "./Rows";
 
 
@@ -12,7 +11,7 @@ function TableHorario() {
     const { cursoOptions, turmaOptions
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "" : cursoOptions.value}`);
+    const { data, fetchError, isLoading } = useAxiosFetchById(`/curso/${cursoOptions.value === undefined ? "" : cursoOptions.value}`);
     const [result, setResult] = useState<Curso>();
     const [selectedTurma, setTurma] = useState<Turma[]>();
 

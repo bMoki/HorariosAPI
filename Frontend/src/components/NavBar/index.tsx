@@ -1,7 +1,12 @@
 import ImgIF from 'assets/img/logoIF.png';
+import { LoginContext } from 'contexts/LoginContext';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
 
 function NavBar() {
+    const { handleLogout } = useContext(LoginContext);
+
     return (
         <>
 
@@ -43,8 +48,17 @@ function NavBar() {
                                 <Link to="/Horario" className="nav-link">Horário</Link>
 
                             </li>
+                        </ul>
+                        <ul className="navbar-nav me-5 ms-auto mb-2 mb-lg-0">
+
+                            <li className="nav-item">
+                                <Link to="/Login" onClick={handleLogout} className="nav-link text-danger" title="Sair"><FiLogOut /></Link>
+
+                            </li>
 
                         </ul>
+
+
 
                     </div>
                 </div>

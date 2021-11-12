@@ -5,14 +5,13 @@ import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { AlunoPage } from "types/aluno";
 import { dataFormater } from "utils/dataFormater";
-import { BASE_URL } from "utils/requests";
 
 function TableAluno() {
 
     const { handleClick } = useContext(AlunoContext);
 
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/aluno?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/aluno?page=${activePage}`);
     const [aluno, setAluno] = useState<AlunoPage>({
         first: true,
         last: true,

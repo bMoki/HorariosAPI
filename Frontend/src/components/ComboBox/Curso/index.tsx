@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
-import { BASE_URL } from "utils/requests";
 import { CursoPage } from "types/curso";
 import { HorarioContext } from "contexts/HorarioContext";
 
@@ -11,7 +10,7 @@ function ComboBoxCurso() {
     const { selectedCursoHandler, cursoOptions
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/curso?paged=false`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/curso?paged=false`);
     const [cursoPage, setCurso] = useState<CursoPage>({
         first: true,
         last: true,

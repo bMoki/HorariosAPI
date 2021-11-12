@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { ProfPage } from "types/prof";
-import { BASE_URL } from "utils/requests";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 
 
@@ -11,7 +10,7 @@ function ComboBoxProf() {
     const { selectedProfHandler, professores
     } = useContext(DisciplinaContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor?paged=false`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/professor?paged=false`);
     const [professor, setProfessor] = useState<ProfPage>({
         first: true,
         last: true,

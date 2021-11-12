@@ -3,7 +3,6 @@ import { ChangeEvent, createContext, FC, useState } from "react";
 import { mask } from "remask";
 import { Aluno } from "types/aluno";
 import { dataFormater } from "utils/dataFormater";
-import { BASE_URL } from "utils/requests";
 
 interface IAlunoContext {
     id: number,
@@ -143,7 +142,7 @@ const AlunoContextProvider: FC = ({ children }) => {
                     dataInclusao: dtInclusao
                 }
 
-                PutRequest(`${BASE_URL}/aluno`, aluno, aluno.id).then(go => {
+                PutRequest(`/aluno`, aluno, aluno.id).then(go => {
                     window.location.reload();
                 })
 
@@ -157,7 +156,7 @@ const AlunoContextProvider: FC = ({ children }) => {
                     dataInclusao: dtInclusao
                 }
 
-                PostRequest(`${BASE_URL}/aluno`, aluno).then(go => {
+                PostRequest(`/aluno`, aluno).then(go => {
                     window.location.reload();
                 });
 
@@ -167,7 +166,7 @@ const AlunoContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteAluno() {
-        DeleteRequest(`${BASE_URL}/aluno`, id).then(go => {
+        DeleteRequest(`/aluno`, id).then(go => {
             window.location.reload();
         });
     }

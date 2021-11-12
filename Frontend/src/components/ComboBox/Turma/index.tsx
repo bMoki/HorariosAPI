@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
-import { BASE_URL } from "utils/requests";
 import { HorarioContext } from "contexts/HorarioContext";
 import { Curso } from "types/curso";
 
@@ -11,7 +10,7 @@ function ComboBoxTurma() {
     const { selectedTurmaHandler, cursoOptions, turmaOptions,
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
+    const { data, fetchError, isLoading } = useAxiosFetchById(`/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
     const [result, setResult] = useState<Curso>();
     const [options, setOptions] = useState([{}]);
 

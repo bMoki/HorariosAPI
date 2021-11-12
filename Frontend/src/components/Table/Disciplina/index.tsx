@@ -4,7 +4,6 @@ import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { DisciplinaPage } from "types/disciplina";
-import { BASE_URL } from "utils/requests";
 
 
 function TableDisciplina() {
@@ -19,7 +18,7 @@ function TableDisciplina() {
         totalPages: 0
     });
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/disciplina?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/disciplina?page=${activePage}`);
 
 
     useEffect(() => {

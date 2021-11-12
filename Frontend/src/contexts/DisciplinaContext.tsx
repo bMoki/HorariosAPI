@@ -2,11 +2,6 @@ import { DeleteRequest, PostRequest, PutRequest } from "hooks/useAxios";
 import { createContext, useState, FC, ChangeEvent } from "react";
 import { Disciplina } from "types/disciplina";
 import { options } from "types/options";
-import { BASE_URL } from "utils/requests";
-
-
-
-
 
 interface IDisciplinaContext {
     nome: string,
@@ -116,7 +111,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                     }))
                 }
 
-                PutRequest(`${BASE_URL}/disciplina`, disciplina, disciplina.id).then(go => {
+                PutRequest(`/disciplina`, disciplina, disciplina.id).then(go => {
                     window.location.reload();
                 })
 
@@ -129,7 +124,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                         }
                     }))
                 }
-                PostRequest(`${BASE_URL}/disciplina`, disciplina).then(go => {
+                PostRequest(`/disciplina`, disciplina).then(go => {
                     window.location.reload();
                 });
             }
@@ -137,7 +132,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteDisciplina() {
-        DeleteRequest(`${BASE_URL}/disciplina`, id).then(go => {
+        DeleteRequest(`/disciplina`, id).then(go => {
             window.location.reload();
         });
     }

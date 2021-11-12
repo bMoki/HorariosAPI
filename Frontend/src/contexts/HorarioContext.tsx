@@ -3,11 +3,6 @@ import { createContext, useState, FC, ChangeEvent, useEffect } from "react";
 import { Horario } from "types/horario";
 import { options } from "types/options";
 import { Turma } from "types/turma";
-import { BASE_URL } from "utils/requests";
-
-
-
-
 
 interface IHorarioContext {
     id: number | undefined,
@@ -166,7 +161,7 @@ const HorarioContextProvider: FC = ({ children }) => {
                     }
                 }
 
-                PutRequest(`${BASE_URL}/horario`, horario, id!).then(go => {
+                PutRequest(`/horario`, horario, id!).then(go => {
                     window.location.reload();
                 })
 
@@ -187,7 +182,7 @@ const HorarioContextProvider: FC = ({ children }) => {
 
 
 
-                PostRequest(`${BASE_URL}/horario`, horario).then(go => {
+                PostRequest(`/horario`, horario).then(go => {
                     window.location.reload();
                 });
             }
@@ -197,7 +192,7 @@ const HorarioContextProvider: FC = ({ children }) => {
 
     function handleDeleteHorario() {
         StoreSelected();
-        DeleteRequest(`${BASE_URL}/horario`, id!).then(go => {
+        DeleteRequest(`/horario`, id!).then(go => {
             window.location.reload();
         });
     }

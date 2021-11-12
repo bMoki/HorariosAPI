@@ -1,5 +1,4 @@
 import { createContext, useState, ChangeEvent, FC } from "react";
-import { BASE_URL } from "utils/requests";
 import { mask } from "remask";
 import { Prof } from "types/prof";
 import { PostRequest, PutRequest, DeleteRequest } from "hooks/useAxios";
@@ -172,7 +171,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PutRequest(`${BASE_URL}/professor`, profe, profe.id).then(go => {
+                PutRequest(`/professor`, profe, profe.id).then(go => {
                     window.location.reload();
                 })
 
@@ -186,7 +185,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
                     siape: siape
                 }
 
-                PostRequest(`${BASE_URL}/professor`, profe).then(go => {
+                PostRequest(`/professor`, profe).then(go => {
                     window.location.reload();
                 });
 
@@ -196,7 +195,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteProfessor() {
-        DeleteRequest(`${BASE_URL}/professor`, id).then(go => {
+        DeleteRequest(`/professor`, id).then(go => {
             window.location.reload();
         });
     }

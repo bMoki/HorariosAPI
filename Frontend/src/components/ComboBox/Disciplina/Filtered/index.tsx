@@ -1,16 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
-import { BASE_URL } from "utils/requests";
 import { HorarioContext } from "contexts/HorarioContext";
 import { Curso } from "types/curso";
 import { CustomSelect } from "../../customSelect";
-
 
 function ComboBoxDisciplinaFiltered() {
 
     const {cursoOptions,disciplinaOptions,selectedDisciplinaHandler, formIsOk} = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
+    const { data, fetchError, isLoading } = useAxiosFetchById(`/curso/${cursoOptions.value === undefined ? "": cursoOptions.value}`);
     const [result, setResult] = useState<Curso>();
     const [options, setOptions] = useState([{}]);
 

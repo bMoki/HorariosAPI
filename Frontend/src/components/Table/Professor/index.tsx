@@ -4,14 +4,13 @@ import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { ProfPage } from "types/prof";
-import { BASE_URL } from "utils/requests";
 
 function TableProf() {
 
     const { handleClick } = useContext(ProfessorContext);
 
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`${BASE_URL}/professor?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/professor?page=${activePage}`);
     const [professor, setProfessor] = useState<ProfPage>({
         first: true,
         last: true,

@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { Page } from 'types/Page';
+import useApi from "./useApi";
 
 export const useAxiosFetchById = (dataUrl: string) => {
+    const api = useApi();
     const [data, setData] = useState({});
     const [fetchError, setFetchError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,8 +17,8 @@ export const useAxiosFetchById = (dataUrl: string) => {
         const fetchData = async (url: string) => {
             setIsLoading(true);
             try {
-                const response = await axios.get(url, {
-                    cancelToken: source.token
+                const response = await api.get(url, {
+                    cancelToken: source.token,
                 });
 
                 if (isMounted) {
@@ -45,7 +48,7 @@ export const useAxiosFetchById = (dataUrl: string) => {
 }
 
 export const useAxiosFetchPage = (dataUrl: string) => {
-
+    const api = useApi();
     const [data, setData] = useState<Page>({
         first: true,
         last: true,
@@ -63,7 +66,7 @@ export const useAxiosFetchPage = (dataUrl: string) => {
         const fetchData = async (url: string) => {
             setIsLoading(true);
             try {
-                const response = await axios.get(url, {
+                const response = await api.get(url, {
                     cancelToken: source.token
                 });
 

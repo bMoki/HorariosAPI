@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
-import { BASE_URL } from "utils/requests";
 import { HorarioContext } from "contexts/HorarioContext";
 import { Disciplina } from "types/disciplina";
 import { CustomSelect } from "components/ComboBox/customSelect";
@@ -11,7 +10,7 @@ function ComboBoxProfFiltered() {
     const { disciplinaOptions , professorOptions, selectedProfessorHandler,formIsOk
     } = useContext(HorarioContext);
 
-    const { data, fetchError, isLoading } = useAxiosFetchById(`${BASE_URL}/disciplina/${disciplinaOptions.value === undefined ? "": disciplinaOptions.value}`);
+    const { data, fetchError, isLoading } = useAxiosFetchById(`/disciplina/${disciplinaOptions.value === undefined ? "": disciplinaOptions.value}`);
     const [result, setResult] = useState<Disciplina>();
     const [options, setOptions] = useState([{}]);
 
