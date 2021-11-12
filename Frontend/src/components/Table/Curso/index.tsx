@@ -1,3 +1,4 @@
+import EmptyMessage from "components/EmptyMessage";
 import Pagination from "components/Pagination";
 import { CursoContext } from "contexts/CursoContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -71,7 +72,9 @@ function TableCurso() {
                         </table>
                     </div>
 
-                    : <p>Sem curso para mostrar</p>)}
+                    :
+                    <EmptyMessage text="Sem curso para mostrar" />
+                )}
             </div>
 
             <Pagination page={curso} onPageChange={changePage} />

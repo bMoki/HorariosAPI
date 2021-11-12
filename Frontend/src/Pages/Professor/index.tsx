@@ -16,7 +16,7 @@ function Professor() {
         Toast();
     }
     const { user } = useContext(LoginContext);
-
+    console.log(user)
     return (
         <>
             <ProfessorContextProvider>
@@ -33,7 +33,7 @@ function Professor() {
                         <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
                             <TableProf />
                         </div>
-                        {user?.isAdmin &&
+                        {user?.admin &&
                             <div className="col-lg-4 border shadow-sm p-3  mt-2 m-2">
                                 <FormProf />
                             </div>

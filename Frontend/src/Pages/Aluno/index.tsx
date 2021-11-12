@@ -28,7 +28,7 @@ function Aluno() {
                         <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
                             <TableAluno />
                         </div>
-                        {user?.isAdmin && <div className="col-lg-4 border shadow-sm p-3  mt-2 m-2">
+                        {user?.admin && <div className="col-lg-4 border shadow-sm p-3  mt-2 m-2">
                             <FormAluno />
                         </div>
                         }

@@ -1,10 +1,9 @@
 export type User = {
-    id?: number,
-    name?: string,
+    iss?: string,
+    exp?: number,
     sub?: string,
-    password?: string,
-    isAdmin?: boolean,
-    exp?: number
+    roles?: string[],
+    admin?: boolean
 }
 
 export type TokenDecoded = {

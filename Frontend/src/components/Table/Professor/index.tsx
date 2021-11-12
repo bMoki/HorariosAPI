@@ -1,3 +1,4 @@
+import EmptyMessage from "components/EmptyMessage";
 import Pagination from "components/Pagination";
 import { ProfessorContext } from "contexts/ProfessorContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -62,7 +63,10 @@ function TableProf() {
                             </tbody>
                         </table>
                     </div>
-                    : <p>Sem professor para mostrar</p>)}
+                    :
+                    <EmptyMessage text="Sem professor para mostrar" />
+                )
+                }
             </div>
             <Pagination page={professor} onPageChange={changePage} />
         </>

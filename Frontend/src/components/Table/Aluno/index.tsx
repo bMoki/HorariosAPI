@@ -1,3 +1,4 @@
+import EmptyMessage from "components/EmptyMessage";
 import Pagination from "components/Pagination";
 import { AlunoContext } from "contexts/AlunoContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -63,7 +64,9 @@ function TableAluno() {
                             </tbody>
                         </table>
                     </div>
-                    : <p>Sem aluno para mostrar</p>)}
+                    : 
+                    <EmptyMessage text="Sem aluno para mostrar"/>
+                    )}
             </div>
             <Pagination page={aluno} onPageChange={changePage} />
         </>

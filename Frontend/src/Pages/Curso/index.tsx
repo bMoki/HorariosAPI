@@ -30,7 +30,7 @@ function Curso() {
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
                                 <TableCurso />
                             </div>
-                            {user?.isAdmin && <div className="col-lg-3 col-md-12 col-sm-12  p-3 m-2 ">
+                            {user?.admin && <div className="col-lg-3 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
                                         <FormCurso />

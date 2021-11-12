@@ -29,7 +29,7 @@ function Disciplina() {
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
                                 <TableDisciplina />
                             </div>
-                            {user?.isAdmin && <div className="col-lg-5 col-md-12 col-sm-12  p-3 m-2 ">
+                            {user?.admin && <div className="col-lg-5 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
                                         <FormDisciplina />

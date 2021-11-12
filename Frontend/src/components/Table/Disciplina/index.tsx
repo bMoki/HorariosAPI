@@ -1,3 +1,4 @@
+import EmptyMessage from "components/EmptyMessage";
 import Pagination from "components/Pagination";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -70,7 +71,9 @@ function TableDisciplina() {
                         </table>
                     </div>
 
-                    : <p>Sem disciplina para mostrar</p>)}
+                    :
+                    <EmptyMessage text="Sem disciplina para mostrar" />
+                )}
 
             </div>
             <Pagination page={disciplina} onPageChange={changePage} />
