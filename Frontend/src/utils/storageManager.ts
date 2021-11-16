@@ -12,6 +12,12 @@ export const Toast = () => {
         }
         sessionStorage.removeItem("response");
     }
+
+    if (sessionStorage.getItem("logout")) {
+        const res = sessionStorage.getItem("logout");
+        toast.warn(res);
+        sessionStorage.removeItem("logout");
+    }
 }
 
 

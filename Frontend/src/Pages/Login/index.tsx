@@ -1,11 +1,19 @@
 import FormLogin from "components/Form/Login";
 import LoginImg from "assets/img/Login.png"
+import { ToastContainer, Zoom } from "react-toastify";
+import { useEffect } from "react";
+import { Toast } from "utils/storageManager";
 
 function LoginPage() {
+
+    useEffect(() => {
+        Toast();
+    },[]);
 
     return (
         <>
             <div className="container h-100">
+                <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
                 <div className="row align-items-center  h-100">
                     <div className="col-12 mx-auto ">
 

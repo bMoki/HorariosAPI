@@ -12,6 +12,7 @@ import { Toast } from 'utils/storageManager';
 
 function CustomRoute({ isPrivate, ...rest }: any) {
     const { loading, authenticated } = useContext(LoginContext);
+  
     if (loading) {
         return <h1>loading...</h1>
     }

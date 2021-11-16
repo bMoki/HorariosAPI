@@ -50,7 +50,7 @@ const useApi = () => {
 
         if (response.status !== 200) {
             console.clear();
-            handleLogout!();
+            handleLogout!(true);
             throw new axios.Cancel('Not Authorized');
         }
 

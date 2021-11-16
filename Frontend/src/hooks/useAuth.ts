@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { User } from "types/user";
 
 
@@ -46,11 +47,17 @@ export default function useAuth() {
             localStorage.setItem('tokens', JSON.stringify(data.data));
             history.push('/');
         } else {
-            alert('Something went wrong!')
+            toast.error("Erro no login");
         }
     }
 
-    function handleLogout() {
+    function LogOut() {
+        sessionStorage.setItem("logout", "Você saiu!");
+        handleLogout(false);
+    }
+
+    function handleLogout(exp: boolean) {
+        if (exp) { sessionStorage.setItem("logout", "Login expirado!") };
         setAuthenticated(false);
         setAuthTokens(null);
         setUser(undefined);
@@ -70,5 +77,5 @@ export default function useAuth() {
 
 
 
-    return { authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser }
+    return { authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser, LogOut }
 }

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 
 function NavBar() {
-    const { handleLogout } = useContext(LoginContext);
+    const { LogOut } = useContext(LoginContext);
 
     return (
         <>
@@ -52,7 +52,7 @@ function NavBar() {
                         <ul className="navbar-nav me-5 ms-auto mb-2 mb-lg-0">
 
                             <li className="nav-item">
-                                <Link to="/Login" onClick={handleLogout} className="nav-link text-danger" title="Sair"><FiLogOut /></Link>
+                                <Link to="/Login" onClick={LogOut} className="nav-link text-danger fs-4" title="Sair"><FiLogOut /></Link>
 
                             </li>
 

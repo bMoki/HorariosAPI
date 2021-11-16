@@ -4,7 +4,8 @@ import { User } from "types/user";
 
 interface ILoginContext {
     handleLogin?: (username: string, password: string, history: any) => void,
-    handleLogout?: () => void,
+    handleLogout?: (exp:boolean) => void,
+    LogOut?:()=>void,
     authenticated: boolean,
     loading: boolean,
     user: User | undefined,
@@ -25,7 +26,7 @@ const LoginContextProvider: FC = ({ children }) => {
 
   
     const {
-        authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser
+        authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser,LogOut
     } = useAuth();
 
 
@@ -33,7 +34,7 @@ const LoginContextProvider: FC = ({ children }) => {
 
     return (
         <LoginContext.Provider value={{
-            handleLogin, handleLogout, authenticated, loading, user, authTokens, setAuthTokens, setUser
+            handleLogin, handleLogout, authenticated, loading, user, authTokens, setAuthTokens, setUser,LogOut
         }}>
             {children}
         </LoginContext.Provider>

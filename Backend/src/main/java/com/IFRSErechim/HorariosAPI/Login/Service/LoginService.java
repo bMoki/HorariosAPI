@@ -33,7 +33,7 @@ public class LoginService implements UserDetailsService {
         Usuario user = usuarioRepository.findByUsername(username);
         if(user == null){
             log.error("User not found");
-            throw new UsernameNotFoundException("User not found in the database");
+            throw new UsernameNotFoundException("Login incorreto");
         }else{
             log.info("User found in the database: {}",username);
         }
