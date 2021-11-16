@@ -1,11 +1,9 @@
 package com.IFRSErechim.HorariosAPI.Login.Filter;
 
-import com.IFRSErechim.HorariosAPI.Login.Service.LoginService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,12 +45,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+
         User user = (User)authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() +1 * 9 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +20 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .withClaim("admin", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).contains("ROLE_ADMIN"))
@@ -60,12 +59,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() +1* 10 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +15 *60 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-
-//        response.setHeader("access_token", access_token);
-//        response.setHeader("refresh_token", refresh_token);
 
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
@@ -74,4 +70,5 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
 
     }
+
 }

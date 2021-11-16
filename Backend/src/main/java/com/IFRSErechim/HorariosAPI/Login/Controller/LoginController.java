@@ -12,8 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,13 +47,13 @@ public class LoginController {
 
     @PostMapping("/save")
     public ResponseEntity<Usuario>saveUser(@RequestBody Usuario user){
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/usuario/save").toUriString());
         return ResponseEntity.created(uri).body(loginService.saveUser(user));
     }
 
     @PostMapping("/role/save")
     public ResponseEntity<Role>saveRole(@RequestBody Role role){
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/usuario/role/save").toUriString());
         return ResponseEntity.created(uri).body(loginService.saveRole(role));
     }
 

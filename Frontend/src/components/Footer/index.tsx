@@ -8,6 +8,8 @@ function Footer() {
                         <strong>IFRS - Horarios</strong><br />
                         Instituto Federal do Rio Grande do Sul - IFRS
                     </small>
+                    <br />
+                    <small><a href="https://storyset.com/web">Web illustrations by Storyset</a></small>
                 </p>
             </div>
         </footer>

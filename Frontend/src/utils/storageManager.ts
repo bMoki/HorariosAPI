@@ -15,8 +15,14 @@ export const Toast = () => {
 
     if (sessionStorage.getItem("logout")) {
         const res = sessionStorage.getItem("logout");
-        toast.warn(res);
+        toast.info(res);
         sessionStorage.removeItem("logout");
+    }
+
+    if (sessionStorage.getItem("login")) {
+        const res = sessionStorage.getItem("login");
+        toast.success(res);
+        sessionStorage.removeItem("login");
     }
 }
 

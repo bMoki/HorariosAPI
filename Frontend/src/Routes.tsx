@@ -9,12 +9,18 @@ import LoginPage from 'Pages/Login';
 import { useContext, useEffect } from 'react';
 import { LoginContext } from 'contexts/LoginContext';
 import { Toast } from 'utils/storageManager';
+import Usuario from 'Pages/Usuario';
+import Unauthorized from 'Pages/Unauthorized';
 
-function CustomRoute({ isPrivate, ...rest }: any) {
-    const { loading, authenticated } = useContext(LoginContext);
-  
+function CustomRoute({ isPrivate, isAdmin, ...rest }: any) {
+    const { loading, authenticated, user } = useContext(LoginContext);
+
     if (loading) {
         return <h1>loading...</h1>
+    }
+
+    if (isAdmin && !user?.admin) {
+        return <Redirect to="/Unauthorized" />
     }
 
     if (isPrivate && !authenticated) {
@@ -52,8 +58,14 @@ function Routes({ history }: any) {
                 <CustomRoute path='/Aluno' isPrivate>
                     <Aluno />
                 </CustomRoute>
+                <CustomRoute path='/Usuario' isPrivate isAdmin>
+                    <Usuario />
+                </CustomRoute>
                 <CustomRoute path='/Login'>
                     <LoginPage />
+                </CustomRoute>
+                <CustomRoute path='/Unauthorized'>
+                    <Unauthorized />
                 </CustomRoute>
             </Switch>
         </BrowserRouter>

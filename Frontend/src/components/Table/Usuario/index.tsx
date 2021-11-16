@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { AlunoPage } from "types/aluno";
 import { dataFormater } from "utils/dataFormater";
 
-function TableAluno() {
+function TableUsuario() {
 
     const { handleClick } = useContext(AlunoContext);
 
@@ -44,10 +44,8 @@ function TableAluno() {
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">CPF</th>
-                                    <th scope="col">Matricula</th>
-                                    <th scope="col">Inativação</th>
-                                    <th scope="col">Inclusão</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Administrador</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,7 +64,7 @@ function TableAluno() {
                         </table>
                     </div>
                     : 
-                    <EmptyMessage text="Sem aluno para mostrar"/>
+                    <EmptyMessage text="Sem usuário para mostrar"/>
                     )}
             </div>
             <Pagination page={aluno} onPageChange={changePage} />
@@ -74,4 +72,4 @@ function TableAluno() {
     );
 }
 
-export default TableAluno;
+export default TableUsuario;

@@ -1,4 +1,5 @@
 import EmptyMessage from "components/EmptyMessage";
+import Error504Message from "components/Error/Error504Message";
 import Pagination from "components/Pagination";
 import { CursoContext } from "contexts/CursoContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -36,7 +37,7 @@ function TableCurso() {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>}
-                {fetchError && <p>{fetchError}</p>}
+                {fetchError && <Error504Message size={300}/>}
                 {!isLoading && !fetchError && (curso.content?.length ?
                     <div className="table-responsive">
                         <table className="table table-hover align-middle">

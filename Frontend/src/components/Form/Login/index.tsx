@@ -17,6 +17,10 @@ function FormLogin() {
         setSenha(event.target.value);
     }
 
+    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === "Enter") { Login() };
+    }
+
     function Login() {
         handleLogin!(username, senha, history);
     }
@@ -29,11 +33,11 @@ function FormLogin() {
                 <h2 className='d-flex justify-content-center'>Login</h2>
                 <div className="col-12">
                     <label htmlFor="inputUsuario" className="form-label">Usuário</label>
-                    <input type="text" className="form-control" id="inputUsuario" onChange={handleUsername} value={username} />
+                    <input type="text" className="form-control" id="inputUsuario" onChange={handleUsername} value={username} onKeyPress={handleKeyPress} />
                 </div>
                 <div className="col-12">
                     <label htmlFor="inputSenha" className="form-label">Senha</label>
-                    <input type="password" className="form-control" id="inputSenha" onChange={handleSenha} value={senha} />
+                    <input type="password" className="form-control" id="inputSenha" onChange={handleSenha} value={senha} onKeyPress={handleKeyPress} />
                 </div>
 
                 <div className="col-12 mt-5">

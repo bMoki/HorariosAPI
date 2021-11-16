@@ -1,4 +1,5 @@
 import EmptyMessage from "components/EmptyMessage";
+import Error504Message from "components/Error/Error504Message";
 import Pagination from "components/Pagination";
 import { ProfessorContext } from "contexts/ProfessorContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -34,7 +35,7 @@ function TableProf() {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>}
-                {fetchError && <p>{fetchError}</p>}
+                {fetchError && <Error504Message size={300}/>}
 
                 {!isLoading && !fetchError && (professor.totalElements > 0 ?
                     <div className="table-responsive">

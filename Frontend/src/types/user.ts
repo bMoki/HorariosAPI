@@ -6,3 +6,15 @@ export type User = {
     admin?: boolean
 }
 
+type Roles = {
+    id?: number,
+    name?: string
+}
+
+export type UserDetail = {
+    id?: number,
+    name?: string,
+    username?: string,
+    password?: string,
+    roles?: Roles[]
+}

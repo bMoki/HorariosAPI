@@ -2,16 +2,14 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { User } from "types/user";
+import { User, UserDetail } from "types/user";
 
 
 export default function useAuth() {
     const [authenticated, setAuthenticated] = useState(false),
         [loading, setLoading] = useState(true),
         [user, setUser] = useState<User | undefined>(undefined),
-        [authTokens, setAuthTokens] = useState<string | null>(() => localStorage.getItem('tokens') ? localStorage.getItem('tokens') : null)
-
-
+        [authTokens, setAuthTokens] = useState<string | null>(() => localStorage.getItem('tokens') ? localStorage.getItem('tokens') : null);
 
 
 
@@ -45,7 +43,9 @@ export default function useAuth() {
             const decoded = jwtDecode(data.data.access_token) as User;
             setUser(decoded);
             localStorage.setItem('tokens', JSON.stringify(data.data));
+            sessionStorage.setItem('login', `Bem vindo!`)
             history.push('/');
+
         } else {
             toast.error("Erro no login");
         }
