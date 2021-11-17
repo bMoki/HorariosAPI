@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
-@ControllerAdvice
+
 public class ProfessorExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)

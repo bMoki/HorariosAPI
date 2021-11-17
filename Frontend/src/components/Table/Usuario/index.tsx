@@ -1,7 +1,7 @@
 import EmptyMessage from "components/EmptyMessage";
 import Error504Message from "components/Error/Error504Message";
 import Pagination from "components/Pagination";
-import { AlunoContext } from "contexts/AlunoContext";
+import { UsuarioContext } from "contexts/UsuarioContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { UserPage } from "types/user";
 
 function TableUsuario() {
 
-    const { handleClick } = useContext(AlunoContext);
+    const { handleClick } = useContext(UsuarioContext);
 
     const { activePage, changePage } = usePage();
     const { data, fetchError, isLoading } = useAxiosFetchPage(`/usuario/info?page=${activePage}`);
@@ -54,7 +54,7 @@ function TableUsuario() {
                                         <td className="align-middle" height="50px">{item.name}</td>
                                         <td className="align-middle">{item.username}</td>
                                         <td className="align-middle">{
-                                            item.roles?.find(roles => roles.name === "ROLE_ADMIN") ?
+                                            item.admin ?
                                                 <AiOutlineCheck className="text-primary fs-4" />
                                                 :
                                                 <AiOutlineClose className="text-danger fs-4" />

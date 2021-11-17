@@ -40,7 +40,7 @@ function Usuario() {
 
 
                 </div>
-                <Modal message="Tem certeza que deseja excluir o aluno?" context="aluno" />
+                <Modal message="Tem certeza que deseja excluir o usuário?" context="usuario" />
             </UsuarioContextProvider>
         </>
     );

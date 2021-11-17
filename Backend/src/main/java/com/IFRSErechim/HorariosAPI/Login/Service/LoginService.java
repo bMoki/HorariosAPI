@@ -1,10 +1,13 @@
 package com.IFRSErechim.HorariosAPI.Login.Service;
 
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Repository.RoleRepository;
 import com.IFRSErechim.HorariosAPI.Login.Repository.UsuarioRepository;
+import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -45,20 +48,56 @@ public class LoginService implements UserDetailsService {
         user.getRoles().forEach(role-> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(
+        UserDetails details =  new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
                 authorities
         );
+        return details;
     }
 
-    public MessageResponseDTO saveUser(UsuarioDTO user) {
-        Usuario userToSave = new Usuario(user);
+    public MessageResponseDTO saveUser(UsuarioDTO usuarioDTO) {
+        Usuario userToSave = new Usuario(usuarioDTO);
+
+        Collection<Role> roles= new ArrayList<>();
+        roles.add(roleRepository.findByName("ROLE_USER"));
+        if(usuarioDTO.getAdmin()){
+            roles.add(roleRepository.findByName("ROLE_ADMIN"));
+        }
+
+        userToSave.addRoles(roles);
 
         userToSave.setPassword(passwordEncoder.encode(userToSave.getPassword()));
         Usuario userSaved = usuarioRepository.save(userToSave);
 
         return criaMessageResponse("Usuário "+userSaved.getName()+" cadastrado!");
+    }
+
+    public MessageResponseDTO updateUser(Long id,UsuarioDTO usuarioDTO) throws NotFoundException{
+        Usuario usuario = verifyIfExistsById(id);
+        Usuario usuarioToUpdate = new Usuario(usuarioDTO);
+
+        if(usuarioToUpdate.getPassword() == null){
+            usuarioToUpdate.setPassword(usuario.getPassword());
+        }else{
+            usuarioToUpdate.setPassword(passwordEncoder.encode(usuarioToUpdate.getPassword()));
+        }
+
+        Collection<Role> roles= new ArrayList<>();
+        roles.add(roleRepository.findByName("ROLE_USER"));
+        if(usuarioDTO.getAdmin()){
+            roles.add(roleRepository.findByName("ROLE_ADMIN"));
+        }
+
+        usuarioToUpdate.addRoles(roles);
+
+        Usuario updatedUsuario = usuarioRepository.save(usuarioToUpdate);
+        return criaMessageResponse("Usuário "+updatedUsuario.getName()+" atualizado!");
+    }
+
+    private Usuario verifyIfExistsById(Long id) throws NotFoundException {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuário"));
     }
 
     public Role saveRole(Role role) {
@@ -88,5 +127,13 @@ public class LoginService implements UserDetailsService {
                 .build();
     }
 
+
+    public MessageResponseDTO delete(Long id) throws NotFoundException {
+        Usuario usuarioToDelete = verifyIfExistsById(id);
+        usuarioToDelete.setRoles(new ArrayList<>());
+
+        usuarioRepository.deleteById(id);
+        return criaMessageResponse("Usuário "+usuarioToDelete.getName()+ " deletado!");
+    }
 
 }

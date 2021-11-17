@@ -9,7 +9,7 @@ interface IUsuarioContext {
     id: number,
     name: string,
     username: string,
-    password: string,
+    password: string | undefined,
     admin: boolean,
     btnOperation: boolean,
     formIsOk: boolean,
@@ -20,7 +20,7 @@ interface IUsuarioContext {
     adminHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     handleSubmit?: () => void,
     handleClear?: () => void,
-    handleDeleteAluno?: () => void,
+    handleDeleteUsuario?: () => void,
     handleClick?: (item: Aluno) => void,
 
 }
@@ -29,7 +29,7 @@ const defaultState = {
     id: 0,
     name: "",
     username: "",
-    password: "",
+    password: undefined,
     admin: false,
     btnOperation: false,
     formIsOk: true,
@@ -42,7 +42,7 @@ const UsuarioContextProvider: FC = ({ children }) => {
     const [id, setId] = useState(0),
         [name, setName] = useState(""),
         [username, setUsername] = useState(""),
-        [password, setPassword] = useState(""),
+        [password, setPassword] = useState<string | undefined>(undefined),
         [admin, setAdmin] = useState(false),
         [roles, setRoles] = useState<Roles[] | undefined>(undefined),
         [btnOperation, setBtnOperation] = useState(false),
@@ -61,20 +61,7 @@ const UsuarioContextProvider: FC = ({ children }) => {
     }
 
     function adminHandler(event: ChangeEvent<HTMLInputElement>) {
-        event.target.checked ?
-            setRoles([{
-                id: 1,
-                name: "ROLE_USER"
-            },
-            {
-                id: 2,
-                name: "ROLE_ADMIN"
-            }])
-            :
-            setRoles([{
-                
-            }])
-        
+        setAdmin(event.target.checked);
     }
 
     function handleClick(item: UserDetail) {
@@ -82,13 +69,13 @@ const UsuarioContextProvider: FC = ({ children }) => {
         setId(item?.id === undefined ? 0 : item.id);
         setName(item?.name === undefined ? "" : item.name);
         setUsername(item?.username === undefined ? "" : item.username);
-
+        setAdmin(item?.admin === undefined ? true : item.admin);
         setBtnOperation(true);
     }
 
     function handleClear() {
         setId(0);
-
+        setAdmin(false);
         setName("");
         setUsername("");
         setBtnOperation(false);
@@ -105,53 +92,55 @@ const UsuarioContextProvider: FC = ({ children }) => {
             return false;
         }
 
+        if (!btnOperation && password === "") {
+            return false;
+        }
+
         return true;
 
     }
 
-    // function handleSubmit() {
+    function handleSubmit() {
 
-    //     const Ok = FormValidation();
-    //     setFormIsOk(Ok)
-    //     if (Ok) {
+        const Ok = FormValidation();
+        setFormIsOk(Ok)
+        if (Ok) {
 
-    //         if (btnOperation) {
+            if (btnOperation) {
 
-    //             const usuario = {
-    //                 id: id,
-    //                 name: name,
-    //                 username: username,
-    //                 password: password,
+                const usuario = {
+                    id: id,
+                    name: name,
+                    username: username,
+                    password: password,
+                    admin: admin
+                }
 
-    //             }
+                api.put(`/usuario/save/${usuario.id}`, usuario);
 
-    //             api.put(`/aluno/${aluno.id}`, aluno);
+            } else {
+                const usuario = {
+                    name: name,
+                    username: username,
+                    password: password,
+                    admin: admin
+                }
 
-    //         } else {
-    //             const aluno = {
-    //                 nomeCompleto: nomeCompleto,
-    //                 matricula: matricula,
-    //                 cpf: cpf,
-    //                 ativo: ativo,
-    //                 dataInativacao: dtInativacao,
-    //                 dataInclusao: dtInclusao
-    //             }
+                api.post(`/usuario/save`, usuario);
+            }
+        }
+    }
 
-    //             api.post(`/aluno`, aluno);
-    //         }
-    //     }
-    // }
-
-    // function handleDeleteAluno() {
-    //     api.delete(`/aluno/${id}`);
-    // }
+    function handleDeleteUsuario() {
+        api.delete(`/usuario/delete/${id}`);
+    }
 
     return (
         <UsuarioContext.Provider value={{
             name, username, password, admin, id,
             nameHandler, usernameHandler, passwordHandler, adminHandler,
-            btnOperation, formIsOk, handleClear, //handleSubmit,
-            handleClick, //handleDeleteAluno
+            btnOperation, formIsOk, handleClear, handleSubmit,
+            handleClick, handleDeleteUsuario
         }}>
             {children}
         </UsuarioContext.Provider>

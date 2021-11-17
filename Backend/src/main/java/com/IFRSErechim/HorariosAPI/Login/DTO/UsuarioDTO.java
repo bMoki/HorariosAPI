@@ -26,12 +26,13 @@ public class UsuarioDTO implements Serializable {
 
     private String password;
 
-    private Collection<RoleDTO> roles;
+    private Boolean admin;
+    //private Collection<RoleDTO> roles;
 
     public UsuarioDTO(Usuario entity){
         id = entity.getId();
         name = entity.getName();
         username = entity.getUsername();
-        roles = entity.getRoles().stream().map(x-> new RoleDTO(x)).collect(Collectors.toList());
+        admin = entity.getAdmin();
     }
 }

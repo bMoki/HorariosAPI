@@ -27,15 +27,22 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    private Boolean admin;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+    public void addRoles (Collection<Role> roles){
+        this.roles = roles;
+    }
 
     public Usuario(UsuarioDTO entity){
         id = entity.getId();
         name = entity.getName();
         username = entity.getUsername();
         password = entity.getPassword();
-        roles = entity.getRoles().stream().map(x-> new Role(x)).collect(Collectors.toList());
+        admin = entity.getAdmin();
+
+//        roles = entity.getRoles().stream().map(x-> new Role(x)).collect(Collectors.toList());
     }
 }

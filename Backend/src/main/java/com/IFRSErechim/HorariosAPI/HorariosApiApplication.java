@@ -30,16 +30,9 @@ public class HorariosApiApplication {
 			loginService.saveRole(new Role(null,"ROLE_USER"));
 			loginService.saveRole(new Role(null,"ROLE_ADMIN"));
 
-			loginService.saveUser(new UsuarioDTO(null,"John Travolta","john","1234",new ArrayList<>()));
-			loginService.saveUser(new UsuarioDTO(null,"Jim Carrey","jim","1234",new ArrayList<>()));
-			loginService.saveUser(new UsuarioDTO(null,"Arnold Schwarzenegger","arnold","1234",new ArrayList<>()));
-
-			loginService.addRoleToUser("john", "ROLE_USER");
-			loginService.addRoleToUser("jim", "ROLE_ADMIN");
-			loginService.addRoleToUser("arnold", "ROLE_ADMIN");
-			loginService.addRoleToUser("arnold", "ROLE_USER");
-
-
+			loginService.saveUser(new UsuarioDTO(null,"John Travolta","john","1234", false));
+			loginService.saveUser(new UsuarioDTO(null,"Jim Carrey","jim","1234",false));
+			loginService.saveUser(new UsuarioDTO(null,"Arnold Schwarzenegger","arnold","1234",true));
 
 		};
 	}

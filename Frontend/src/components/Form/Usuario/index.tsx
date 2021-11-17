@@ -10,7 +10,7 @@ import { UsuarioContext } from "contexts/UsuarioContext";
 function FormUsuario() {
 
     const { name, username,admin,
-        nameHandler, adminHandler,
+        nameHandler, adminHandler,usernameHandler,password,passwordHandler,
         handleSubmit, btnOperation, handleClear, formIsOk
     } = useContext(UsuarioContext);
 
@@ -25,12 +25,12 @@ function FormUsuario() {
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputUsername" className="form-label">Username</label>
-                    <input type="text" className="form-control" id="inputUsername"  />
+                    <input type="text" className="form-control" id="inputUsername"  value={username} onChange={usernameHandler} />
                 </div>
                 
                 <div className="col-6">
                     <label htmlFor="inputSenha" className="form-label">Senha</label>
-                    <input type="password" className="form-control" id="inputSenha"/>
+                    <input type="password" className="form-control" id="inputSenha" disabled={btnOperation} value={password} onChange={passwordHandler}/>
                 </div>
 
                 <div className="col-md-6 d-flex align-items-end mb-1">

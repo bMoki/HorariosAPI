@@ -16,7 +16,7 @@ export type UserDetail = {
     name?: string,
     username?: string,
     password?: string,
-    roles?: Roles[]
+    admin?: boolean
 }
 
 export type UserPage = {

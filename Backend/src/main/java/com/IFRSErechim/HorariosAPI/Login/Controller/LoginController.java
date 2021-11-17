@@ -1,10 +1,13 @@
 package com.IFRSErechim.HorariosAPI.Login.Controller;
 
 import com.IFRSErechim.HorariosAPI.Aluno.AlunoDTO;
+import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Service.LoginService;
+import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
@@ -53,8 +57,13 @@ public class LoginController {
     }
 
     @PostMapping("/save")
-    public MessageResponseDTO saveUser(@RequestBody UsuarioDTO user){
-        return loginService.saveUser(user);
+    public MessageResponseDTO saveUser(@RequestBody UsuarioDTO usuarioDTO){
+        return loginService.saveUser(usuarioDTO);
+    }
+
+    @PutMapping("/save/{id}")
+    public MessageResponseDTO updateUser(@PathVariable Long id, @RequestBody @Valid UsuarioDTO usuarioDTO) throws NotFoundException {
+        return loginService.updateUser(id,usuarioDTO);
     }
 
     @PostMapping("/role/save")
@@ -67,6 +76,11 @@ public class LoginController {
     public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUsuarioForm form){
         loginService.addRoleToUser(form.getUsername(), form.getRolename());
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException {
+        return loginService.delete(id);
     }
 
     @GetMapping("/token/refresh")
