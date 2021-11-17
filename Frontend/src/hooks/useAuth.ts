@@ -2,7 +2,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { User, UserDetail } from "types/user";
+import { User } from "types/user";
 
 
 export default function useAuth() {

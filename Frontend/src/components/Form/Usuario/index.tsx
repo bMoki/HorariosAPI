@@ -9,8 +9,8 @@ import { UsuarioContext } from "contexts/UsuarioContext";
 
 function FormUsuario() {
 
-    const { nomeCompleto, ativo,
-        nomeCompletoHandler, ativoHandler,
+    const { name, username,admin,
+        nameHandler, adminHandler,
         handleSubmit, btnOperation, handleClear, formIsOk
     } = useContext(UsuarioContext);
 
@@ -21,7 +21,7 @@ function FormUsuario() {
             <form className="row g-3" >
                 <div className="col-12">
                     <label htmlFor="inputName" className="form-label">Nome Completo</label>
-                    <input type="text" className={formIsOk ? "form-control" : nomeCompleto !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={nomeCompleto} onChange={nomeCompletoHandler} />
+                    <input type="text" className={formIsOk ? "form-control" : name !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={name} onChange={nameHandler} />
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputUsername" className="form-label">Username</label>
@@ -35,7 +35,7 @@ function FormUsuario() {
 
                 <div className="col-md-6 d-flex align-items-end mb-1">
                     <div className="form-check form-switch">
-                        <input className="form-check-input" type="checkbox" role="switch" id="inputAdmin" checked={ativo} onChange={ativoHandler} />
+                        <input className="form-check-input" type="checkbox" role="switch" id="inputAdmin" checked={admin} onChange={adminHandler} />
                         <label className="form-check-label" htmlFor="inputAdmin">
                             Administrador
                         </label>

@@ -22,7 +22,7 @@ function Horario() {
                         <div className="row">
 
 
-
+                            <h2>Horários</h2>
                             <div className="col-lg-4 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">

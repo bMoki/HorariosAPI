@@ -6,7 +6,7 @@ export type User = {
     admin?: boolean
 }
 
-type Roles = {
+export type Roles = {
     id?: number,
     name?: string
 }
@@ -17,4 +17,16 @@ export type UserDetail = {
     username?: string,
     password?: string,
     roles?: Roles[]
+}
+
+export type UserPage = {
+    content?: UserDetail[];
+    last: boolean;
+    totalPages: number;
+    totalElements: number;
+    number: number;
+    size?: number;
+    numberOfElements?: number;
+    first: boolean;
+    empty?: boolean;
 }

@@ -20,7 +20,8 @@ function Usuario() {
                     <div className="row d-flex justify-content-center">
 
                         <div className="row">
-                            <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-2 m-2 d-flex flex-column">
+                            <h2>Usuários</h2>
+                            <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
                                 <TableUsuario />
                             </div>
 

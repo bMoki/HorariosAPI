@@ -5,16 +5,16 @@ import { AlunoContext } from "contexts/AlunoContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
-import { AlunoPage } from "types/aluno";
-import { dataFormater } from "utils/dataFormater";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { UserPage } from "types/user";
 
 function TableUsuario() {
 
     const { handleClick } = useContext(AlunoContext);
 
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/aluno?page=${activePage}`);
-    const [aluno, setAluno] = useState<AlunoPage>({
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/usuario/info?page=${activePage}`);
+    const [userDetail, setUserDetail] = useState<UserPage>({
         first: true,
         last: true,
         number: 0,
@@ -24,7 +24,7 @@ function TableUsuario() {
 
 
     useEffect(() => {
-        setAluno(data);
+        setUserDetail(data);
     }, [data])
 
     return (
@@ -36,9 +36,9 @@ function TableUsuario() {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>}
-                {fetchError && <Error504Message size={300}/>}
+                {fetchError && <Error504Message size={300} />}
 
-                {!isLoading && !fetchError && (aluno.totalElements > 0 ?
+                {!isLoading && !fetchError && (userDetail.totalElements > 0 ?
                     <div className="table-responsive">
                         <table className="table table-hover align-middle">
                             <thead>
@@ -49,13 +49,16 @@ function TableUsuario() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {aluno.content?.map(item => (
-                                    <tr className={`${item.ativo ? "":"text-muted"}`}key={item.id} onClick={() => handleClick!(item)}>
-                                        <td className="align-middle" height="50px">{item.nomeCompleto}</td>
-                                        <td className="align-middle">{item.cpf}</td>
-                                        <td className="align-middle">{item.matricula}</td>
-                                        <td className="align-middle">{dataFormater(item.dataInativacao)}</td>
-                                        <td className="align-middle">{dataFormater(item.dataInclusao)}</td>
+                                {userDetail.content?.map(item => (
+                                    <tr key={item.id} onClick={() => handleClick!(item)}>
+                                        <td className="align-middle" height="50px">{item.name}</td>
+                                        <td className="align-middle">{item.username}</td>
+                                        <td className="align-middle">{
+                                            item.roles?.find(roles => roles.name === "ROLE_ADMIN") ?
+                                                <AiOutlineCheck className="text-primary fs-4" />
+                                                :
+                                                <AiOutlineClose className="text-danger fs-4" />
+                                        }</td>
                                     </tr>
                                 ))}
 
@@ -63,11 +66,11 @@ function TableUsuario() {
                             </tbody>
                         </table>
                     </div>
-                    : 
-                    <EmptyMessage text="Sem usuário para mostrar"/>
-                    )}
+                    :
+                    <EmptyMessage text="Sem usuário para mostrar" />
+                )}
             </div>
-            <Pagination page={aluno} onPageChange={changePage} />
+            <Pagination page={userDetail} onPageChange={changePage} />
         </>
     );
 }

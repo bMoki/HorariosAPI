@@ -1,8 +1,11 @@
 package com.IFRSErechim.HorariosAPI.Login.Controller;
 
+import com.IFRSErechim.HorariosAPI.Aluno.AlunoDTO;
+import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Service.LoginService;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -11,6 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,19 +42,19 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/info")
-    public ResponseEntity<List<Usuario>>getUsers(){
-        return ResponseEntity.ok().body(loginService.getUsers());
+    public ResponseEntity<Page<UsuarioDTO>>findAll(@PageableDefault(size = 6 ) Pageable pageable){
+        Page<UsuarioDTO> list = loginService.findAll(pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/info/{username}")
-    public ResponseEntity<Usuario>getUsersByUsername(@PathVariable String username){
-        return ResponseEntity.ok().body(loginService.getUser(username));
+    public ResponseEntity<UsuarioDTO>findByUsername(@PathVariable String username){
+        return ResponseEntity.ok().body(loginService.findByUsername(username));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Usuario>saveUser(@RequestBody Usuario user){
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/usuario/save").toUriString());
-        return ResponseEntity.created(uri).body(loginService.saveUser(user));
+    public MessageResponseDTO saveUser(@RequestBody UsuarioDTO user){
+        return loginService.saveUser(user);
     }
 
     @PostMapping("/role/save")
@@ -73,7 +79,7 @@ public class LoginController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                Usuario user = loginService.getUser(username);
+                Usuario user = new Usuario(loginService.findByUsername(username));
 
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())

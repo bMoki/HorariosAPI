@@ -1,11 +1,15 @@
 package com.IFRSErechim.HorariosAPI.Login.Service;
 
+import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Repository.RoleRepository;
 import com.IFRSErechim.HorariosAPI.Login.Repository.UsuarioRepository;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,32 +52,40 @@ public class LoginService implements UserDetailsService {
         );
     }
 
-    public Usuario saveUser(Usuario user) {
-        log.info("Saving new user {} to the database",user.getName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return usuarioRepository.save(user);
+    public MessageResponseDTO saveUser(UsuarioDTO user) {
+        Usuario userToSave = new Usuario(user);
+
+        userToSave.setPassword(passwordEncoder.encode(userToSave.getPassword()));
+        Usuario userSaved = usuarioRepository.save(userToSave);
+
+        return criaMessageResponse("Usuário "+userSaved.getName()+" cadastrado!");
     }
 
     public Role saveRole(Role role) {
-        log.info("Saving new role {} to the database",role.getName());
         return roleRepository.save(role);
     }
 
     public void addRoleToUser(String username, String roleName) {
-        log.info("Adding role {} to user {}",roleName,username);
         Usuario user = usuarioRepository.findByUsername(username);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
     }
 
-    public Usuario getUser(String username) {
-        log.info("Fetching user {}",username);
-        return usuarioRepository.findByUsername(username);
+    public UsuarioDTO findByUsername(String username) {
+        Usuario user =  usuarioRepository.findByUsername(username);
+        return new UsuarioDTO(user);
     }
 
-    public List<Usuario> getUsers() {
-        log.info("Fetching all users");
-        return usuarioRepository.findAll();
+    public Page<UsuarioDTO> findAll(Pageable pageable) {
+        Page<Usuario> result = usuarioRepository.findAll(pageable);
+        return result.map(x->new UsuarioDTO(x));
+    }
+
+    private MessageResponseDTO criaMessageResponse(String message) {
+        return MessageResponseDTO
+                .builder()
+                .message(message)
+                .build();
     }
 
 

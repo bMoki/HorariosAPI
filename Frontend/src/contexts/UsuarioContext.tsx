@@ -2,25 +2,22 @@ import useApi from "hooks/useApi";
 import { ChangeEvent, createContext, FC, useState } from "react";
 import { mask } from "remask";
 import { Aluno } from "types/aluno";
+import { UserDetail, Roles } from "types/user";
 import { dataFormater } from "utils/dataFormater";
 
 interface IUsuarioContext {
     id: number,
-    nomeCompleto: string,
-    cpf: string,
-    matricula: string,
-    ativo: boolean,
-    dataInativacao: string,
-    dataInclusao: string,
+    name: string,
+    username: string,
+    password: string,
+    admin: boolean,
     btnOperation: boolean,
     formIsOk: boolean,
 
-    nomeCompletoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    cpfHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    matriculaHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    dataInativacaoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    ativoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    dataInclusaoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    nameHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    passwordHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    usernameHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    adminHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     handleSubmit?: () => void,
     handleClear?: () => void,
     handleDeleteAluno?: () => void,
@@ -30,12 +27,10 @@ interface IUsuarioContext {
 
 const defaultState = {
     id: 0,
-    nomeCompleto: "",
-    cpf: "",
-    matricula: "",
-    ativo: true,
-    dataInativacao: "",
-    dataInclusao: "",
+    name: "",
+    username: "",
+    password: "",
+    admin: false,
     btnOperation: false,
     formIsOk: true,
 }
@@ -45,76 +40,68 @@ export const UsuarioContext = createContext<IUsuarioContext>(defaultState);
 const UsuarioContextProvider: FC = ({ children }) => {
     const api = useApi();
     const [id, setId] = useState(0),
-        [nomeCompleto, setNomeCompleto] = useState(""),
-        [cpf, setCpf] = useState(""),
-        [matricula, setMatricula] = useState(""),
-        [ativo, setAtivo] = useState(true),
-        [dataInativacao, setDataInativacao] = useState(""),
-        [dataInclusao, setDataInclusao] = useState(""),
+        [name, setName] = useState(""),
+        [username, setUsername] = useState(""),
+        [password, setPassword] = useState(""),
+        [admin, setAdmin] = useState(false),
+        [roles, setRoles] = useState<Roles[] | undefined>(undefined),
         [btnOperation, setBtnOperation] = useState(false),
         [formIsOk, setFormIsOk] = useState(true);
 
-    function nomeCompletoHandler(event: ChangeEvent<HTMLInputElement>) {
-        setNomeCompleto(event.target.value);
+    function nameHandler(event: ChangeEvent<HTMLInputElement>) {
+        setName(event.target.value);
     }
 
-    function cpfHandler(event: ChangeEvent<HTMLInputElement>) {
-        setCpf(mask(event.target.value, ['999.999.999-99']));
+    function usernameHandler(event: ChangeEvent<HTMLInputElement>) {
+        setUsername(event.target.value);
     }
 
-    function matriculaHandler(event: ChangeEvent<HTMLInputElement>) {
-        setMatricula(event.target.value);
+    function passwordHandler(event: ChangeEvent<HTMLInputElement>) {
+        setPassword(event.target.value);
     }
 
-    function ativoHandler(event: ChangeEvent<HTMLInputElement>) {
-        setAtivo(event.target.checked);
-    }
-    function dataInativacaoHandler(event: ChangeEvent<HTMLInputElement>) {
-        setDataInativacao(mask(event.target.value, ['99/99/9999']))
+    function adminHandler(event: ChangeEvent<HTMLInputElement>) {
+        event.target.checked ?
+            setRoles([{
+                id: 1,
+                name: "ROLE_USER"
+            },
+            {
+                id: 2,
+                name: "ROLE_ADMIN"
+            }])
+            :
+            setRoles([{
+                
+            }])
+        
     }
 
-    function dataInclusaoHandler(event: ChangeEvent<HTMLInputElement>) {
-        setDataInclusao(mask(event.target.value, ['99/99/9999']))
-    }
+    function handleClick(item: UserDetail) {
 
-    function handleClick(item: Aluno) {
-        const data = dataFormater(item.dataInclusao);
-        setDataInclusao(data === undefined ? "" : data);
         setId(item?.id === undefined ? 0 : item.id);
-        setNomeCompleto(item?.nomeCompleto === undefined ? "" : item.nomeCompleto);
-        setCpf(item?.cpf === undefined ? "" : item.cpf);
-        setMatricula(item?.matricula === undefined ? "" : item.matricula);
-        setAtivo(item?.ativo === undefined ? true : item.ativo);
+        setName(item?.name === undefined ? "" : item.name);
+        setUsername(item?.username === undefined ? "" : item.username);
+
         setBtnOperation(true);
     }
 
     function handleClear() {
         setId(0);
-        setNomeCompleto("");
-        setCpf("");
-        setMatricula("");
-        setAtivo(true);
+
+        setName("");
+        setUsername("");
         setBtnOperation(false);
-        setDataInativacao("");
-        setDataInclusao("");
         setFormIsOk(true);
     }
 
     function FormValidation() {
 
-        if (nomeCompleto === "") {
+        if (name === "") {
             return false;
         }
 
-        if (cpf.length < 14) {
-            return false;
-        }
-
-        if (matricula === "") {
-            return false;
-        }
-
-        if (dataInclusao.length < 10) {
+        if (username === "") {
             return false;
         }
 
@@ -122,54 +109,49 @@ const UsuarioContextProvider: FC = ({ children }) => {
 
     }
 
-    function handleSubmit() {
+    // function handleSubmit() {
 
-        const Ok = FormValidation();
-        setFormIsOk(Ok)
-        if (Ok) {
+    //     const Ok = FormValidation();
+    //     setFormIsOk(Ok)
+    //     if (Ok) {
 
-            const dtInativacao = dataFormater(dataInativacao);
-            const dtInclusao = dataFormater(dataInclusao);
+    //         if (btnOperation) {
 
-            if (btnOperation) {
+    //             const usuario = {
+    //                 id: id,
+    //                 name: name,
+    //                 username: username,
+    //                 password: password,
 
-                const aluno = {
-                    id: id,
-                    nomeCompleto: nomeCompleto,
-                    matricula: matricula,
-                    cpf: cpf,
-                    ativo: ativo,
-                    dataInativacao: dtInativacao,
-                    dataInclusao: dtInclusao
-                }
+    //             }
 
-                api.put(`/aluno/${aluno.id}`, aluno);
+    //             api.put(`/aluno/${aluno.id}`, aluno);
 
-            } else {
-                const aluno = {
-                    nomeCompleto: nomeCompleto,
-                    matricula: matricula,
-                    cpf: cpf,
-                    ativo: ativo,
-                    dataInativacao: dtInativacao,
-                    dataInclusao: dtInclusao
-                }
+    //         } else {
+    //             const aluno = {
+    //                 nomeCompleto: nomeCompleto,
+    //                 matricula: matricula,
+    //                 cpf: cpf,
+    //                 ativo: ativo,
+    //                 dataInativacao: dtInativacao,
+    //                 dataInclusao: dtInclusao
+    //             }
 
-                api.post(`/aluno`, aluno);
-            }
-        }
-    }
+    //             api.post(`/aluno`, aluno);
+    //         }
+    //     }
+    // }
 
-    function handleDeleteAluno() {
-        api.delete(`/aluno/${id}`);
-    }
+    // function handleDeleteAluno() {
+    //     api.delete(`/aluno/${id}`);
+    // }
 
     return (
         <UsuarioContext.Provider value={{
-            nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo, id,
-            nomeCompletoHandler, cpfHandler, matriculaHandler, ativoHandler, dataInativacaoHandler, dataInclusaoHandler,
-            btnOperation, formIsOk, handleClear, handleSubmit,
-            handleClick, handleDeleteAluno
+            name, username, password, admin, id,
+            nameHandler, usernameHandler, passwordHandler, adminHandler,
+            btnOperation, formIsOk, handleClear, //handleSubmit,
+            handleClick, //handleDeleteAluno
         }}>
             {children}
         </UsuarioContext.Provider>
