@@ -1,7 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Login.Domain;
 
 
-import com.IFRSErechim.HorariosAPI.Horario.Horario;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -22,7 +20,7 @@ public class Usuario {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String username;
     @Column(nullable = false)
     private String password;

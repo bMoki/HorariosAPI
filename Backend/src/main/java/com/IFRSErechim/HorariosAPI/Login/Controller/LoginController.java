@@ -1,20 +1,17 @@
 package com.IFRSErechim.HorariosAPI.Login.Controller;
 
-import com.IFRSErechim.HorariosAPI.Aluno.AlunoDTO;
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Service.LoginService;
-import com.IFRSErechim.HorariosAPI.Professor.ProfessorDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +28,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -57,7 +53,7 @@ public class LoginController {
     }
 
     @PostMapping("/save")
-    public MessageResponseDTO saveUser(@RequestBody UsuarioDTO usuarioDTO){
+    public MessageResponseDTO saveUser(@RequestBody UsuarioDTO usuarioDTO) throws AlreadyExistsException {
         return loginService.saveUser(usuarioDTO);
     }
 

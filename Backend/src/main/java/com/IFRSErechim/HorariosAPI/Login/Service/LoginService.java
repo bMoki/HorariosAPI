@@ -1,13 +1,12 @@
 package com.IFRSErechim.HorariosAPI.Login.Service;
 
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
+import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Usuario;
 import com.IFRSErechim.HorariosAPI.Login.Repository.RoleRepository;
 import com.IFRSErechim.HorariosAPI.Login.Repository.UsuarioRepository;
-import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +55,12 @@ public class LoginService implements UserDetailsService {
         return details;
     }
 
-    public MessageResponseDTO saveUser(UsuarioDTO usuarioDTO) {
+    public MessageResponseDTO saveUser(UsuarioDTO usuarioDTO) throws AlreadyExistsException {
         Usuario userToSave = new Usuario(usuarioDTO);
+        if(usuarioRepository.isUsernameRegistered(userToSave.getUsername()) > 0){
+            throw new AlreadyExistsException("Username já cadastrado!");
+        }
+
 
         Collection<Role> roles= new ArrayList<>();
         roles.add(roleRepository.findByName("ROLE_USER"));

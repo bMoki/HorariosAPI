@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-
 @SpringBootApplication
 public class HorariosApiApplication {
 
@@ -30,9 +28,7 @@ public class HorariosApiApplication {
 			loginService.saveRole(new Role(null,"ROLE_USER"));
 			loginService.saveRole(new Role(null,"ROLE_ADMIN"));
 
-			loginService.saveUser(new UsuarioDTO(null,"John Travolta","john","1234", false));
-			loginService.saveUser(new UsuarioDTO(null,"Jim Carrey","jim","1234",false));
-			loginService.saveUser(new UsuarioDTO(null,"Arnold Schwarzenegger","arnold","1234",true));
+			loginService.saveUser(new UsuarioDTO(null,"First User","admin","1234",true));
 
 		};
 	}
