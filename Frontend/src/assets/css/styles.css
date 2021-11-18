@@ -40,7 +40,7 @@ html, body {
 }
 
 .btn-success {
-    background-color: var(--color-success) !important;
+    /*background-color: var(--color-success) !important;*/
     border: none;
 }
 

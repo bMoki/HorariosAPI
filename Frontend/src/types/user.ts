@@ -6,11 +6,6 @@ export type User = {
     admin?: boolean
 }
 
-export type Roles = {
-    id?: number,
-    name?: string
-}
-
 export type UserDetail = {
     id?: number,
     name?: string,

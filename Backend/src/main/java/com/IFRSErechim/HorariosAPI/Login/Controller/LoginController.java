@@ -49,7 +49,7 @@ public class LoginController {
 
     @GetMapping("/info/{username}")
     public ResponseEntity<UsuarioDTO>findByUsername(@PathVariable String username){
-        return ResponseEntity.ok().body(loginService.findByUsername(username));
+        return ResponseEntity.ok().body(new UsuarioDTO(loginService.findByUsername(username)));
     }
 
     @PostMapping("/save")
@@ -89,7 +89,7 @@ public class LoginController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                Usuario user = new Usuario(loginService.findByUsername(username));
+                Usuario user = loginService.findByUsername(username);
 
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
@@ -106,9 +106,6 @@ public class LoginController {
                 tokens.put("refresh_token", refresh_token);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),tokens);
-
-
-
 
             }catch (Exception exception){
                 response.setHeader("error",exception.getMessage());

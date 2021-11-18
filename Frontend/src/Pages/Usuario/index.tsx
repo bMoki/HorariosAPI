@@ -28,7 +28,7 @@ function Usuario() {
                             {user?.admin && <div className="col-lg-4  p-3  mt-2 m-2">
                                 <div className="row">
                                     <div className=" col border shadow-sm p-3">
-                                        <FormUsuario />
+                                        <FormUsuario User={undefined} />
                                     </div>
                                 </div>
                             </div>}

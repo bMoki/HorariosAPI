@@ -1,27 +1,27 @@
 import useApi from "hooks/useApi";
 import { ChangeEvent, createContext, FC, useState } from "react";
-import { mask } from "remask";
-import { Aluno } from "types/aluno";
-import { UserDetail, Roles } from "types/user";
-import { dataFormater } from "utils/dataFormater";
+import { UserDetail } from "types/user";
+
 
 interface IUsuarioContext {
     id: number,
     name: string,
     username: string,
-    password: string | undefined,
+    password: string,
     admin: boolean,
     btnOperation: boolean,
     formIsOk: boolean,
+    changePassword: boolean,
 
     nameHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     passwordHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     usernameHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    changePasswordHandler?: () => void,
     adminHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     handleSubmit?: () => void,
     handleClear?: () => void,
     handleDeleteUsuario?: () => void,
-    handleClick?: (item: Aluno) => void,
+    handleClick?: (item: UserDetail) => void,
 
 }
 
@@ -29,10 +29,11 @@ const defaultState = {
     id: 0,
     name: "",
     username: "",
-    password: undefined,
+    password: "",
     admin: false,
     btnOperation: false,
     formIsOk: true,
+    changePassword: false
 }
 
 export const UsuarioContext = createContext<IUsuarioContext>(defaultState);
@@ -42,12 +43,15 @@ const UsuarioContextProvider: FC = ({ children }) => {
     const [id, setId] = useState(0),
         [name, setName] = useState(""),
         [username, setUsername] = useState(""),
-        [password, setPassword] = useState<string | undefined>(undefined),
+        [password, setPassword] = useState<string>(""),
         [admin, setAdmin] = useState(false),
-        [roles, setRoles] = useState<Roles[] | undefined>(undefined),
         [btnOperation, setBtnOperation] = useState(false),
-        [formIsOk, setFormIsOk] = useState(true);
+        [formIsOk, setFormIsOk] = useState(true),
+        [changePassword, setChangePassword] = useState(false);
 
+    function changePasswordHandler() {
+        setChangePassword(changePassword ? false : true);
+    }
     function nameHandler(event: ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
     }
@@ -104,27 +108,26 @@ const UsuarioContextProvider: FC = ({ children }) => {
 
         const Ok = FormValidation();
         setFormIsOk(Ok)
+
+        var usuario: UserDetail = {
+            id: id,
+            name: name,
+            username: username,
+            password: password,
+            admin: admin
+        }
+
         if (Ok) {
 
             if (btnOperation) {
 
-                const usuario = {
-                    id: id,
-                    name: name,
-                    username: username,
-                    password: password,
-                    admin: admin
-                }
+                if (!changePassword) delete usuario.password;
 
                 api.put(`/usuario/save/${usuario.id}`, usuario);
 
             } else {
-                const usuario = {
-                    name: name,
-                    username: username,
-                    password: password,
-                    admin: admin
-                }
+              
+                delete usuario.id;
 
                 api.post(`/usuario/save`, usuario);
             }
@@ -140,7 +143,7 @@ const UsuarioContextProvider: FC = ({ children }) => {
             name, username, password, admin, id,
             nameHandler, usernameHandler, passwordHandler, adminHandler,
             btnOperation, formIsOk, handleClear, handleSubmit,
-            handleClick, handleDeleteUsuario
+            handleClick, handleDeleteUsuario, changePassword, changePasswordHandler
         }}>
             {children}
         </UsuarioContext.Provider>

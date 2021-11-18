@@ -1,11 +1,21 @@
 import ImgIF from 'assets/img/logoIF.png';
 import { LoginContext } from 'contexts/LoginContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import { AiOutlineUser } from 'react-icons/ai';
+import { useAxiosFetchById } from 'hooks/useAxiosFetch';
+import { UserDetail } from 'types/user';
 
 function NavBar() {
     const { LogOut, user } = useContext(LoginContext);
+    const { data } = useAxiosFetchById(`/usuario/info/${user?.sub}`);
+    const [userDetail, setUserDetail] = useState<UserDetail>({});
+
+    useEffect(() => {
+        setUserDetail(data);
+    }, [data])
+
 
     return (
         <>
@@ -56,16 +66,38 @@ function NavBar() {
                                 :
                                 ""
                             }
+
                         </ul>
+
+
                         <ul className="navbar-nav me-5 ms-auto mb-2 mb-lg-0">
+                            <li className="nav-item dropstart">
 
-                            <li className="nav-item">
-                                <Link to="/Login" onClick={LogOut} className="nav-link text-danger fs-4" title="Sair"><FiLogOut /></Link>
+                                <div className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
+                                    <div className="d-inline align-self-bottom">
+                                        <AiOutlineUser className="text-primary fs-3 m-1" />
+                                        {userDetail && userDetail.name?.substr(0, userDetail.name.indexOf(' '))}
+                                    </div>
+
+                                </div>
+
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li className="dropdown-header text-center fw-bold ">{userDetail.admin ? "Administrador" : "Usuário"}</li>
+                                    <li className="dropdown-item disabled mx-2"><small>{userDetail.username}</small></li>
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <li className="nav-item ">
+                                        <Link to="/Perfil" className="nav-link fs-6 mx-3"> Perfil
+                                        </Link>
+                                    </li>
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <li className="nav-item">
+                                        <Link to="/Login" onClick={LogOut} className="nav-link fs-6 mx-3" title="Sair">Sair <FiLogOut className="text-danger fs-5 position-absolute end-0 me-3" /></Link>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
-
 
 
                     </div>

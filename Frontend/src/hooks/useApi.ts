@@ -47,7 +47,7 @@ const useApi = () => {
         };
 
         const response = await refresh();
-
+        
         if (response.status !== 200) {
             console.clear();
             handleLogout!(true);
@@ -60,7 +60,7 @@ const useApi = () => {
         setUser!(jwtDecode(response.data.access_token))
 
         req.headers.Authorization = `Bearer ${response.data.access_token}`
-
+        
 
         return req
     });

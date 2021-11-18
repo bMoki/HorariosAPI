@@ -113,9 +113,8 @@ public class LoginService implements UserDetailsService {
         user.getRoles().add(role);
     }
 
-    public UsuarioDTO findByUsername(String username) {
-        Usuario user =  usuarioRepository.findByUsername(username);
-        return new UsuarioDTO(user);
+    public Usuario findByUsername(String username) {
+        return usuarioRepository.findByUsername(username);
     }
 
     public Page<UsuarioDTO> findAll(Pageable pageable) {

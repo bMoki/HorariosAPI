@@ -80,9 +80,8 @@ public class HorarioService {
     }
 
     private Boolean isLimitExceeded (Integer periodo, List<Horario> horarios){
-        if(horarios.stream()
-                .filter(h -> h.getPeriodo() == periodo).collect(Collectors.toList()).size() == 5) return true;
-        return false;
+        return horarios.stream()
+                .filter(h -> h.getPeriodo() == periodo).collect(Collectors.toList()).size() == 5;
     }
 
     private MessageResponseDTO criaMessageResponse(String message) {

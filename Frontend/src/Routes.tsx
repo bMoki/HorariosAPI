@@ -11,6 +11,7 @@ import { LoginContext } from 'contexts/LoginContext';
 import { Toast } from 'utils/storageManager';
 import Usuario from 'Pages/Usuario';
 import Unauthorized from 'Pages/Unauthorized';
+import Perfil from 'Pages/Perfil';
 
 function CustomRoute({ isPrivate, isAdmin, ...rest }: any) {
     const { loading, authenticated, user } = useContext(LoginContext);
@@ -63,6 +64,9 @@ function Routes({ history }: any) {
                 </CustomRoute>
                 <CustomRoute path='/Login'>
                     <LoginPage />
+                </CustomRoute>
+                <CustomRoute path='/Perfil' isPrivate>
+                    <Perfil />
                 </CustomRoute>
                 <CustomRoute path='/Unauthorized'>
                     <Unauthorized />

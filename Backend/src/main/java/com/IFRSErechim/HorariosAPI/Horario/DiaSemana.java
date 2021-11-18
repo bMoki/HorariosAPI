@@ -8,7 +8,7 @@ public enum DiaSemana {
     SEXTA(4),
     SABADO(5);
 
-    private DiaSemana( Integer value) {
+    DiaSemana(Integer value) {
         this.value = value;
     }
 
@@ -16,5 +16,5 @@ public enum DiaSemana {
         return value;
     }
 
-    private Integer value;
+    private final Integer value;
 }
