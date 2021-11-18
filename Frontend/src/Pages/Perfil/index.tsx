@@ -44,7 +44,7 @@ function Perfil() {
                         {!isLoading && !fetchError ?
                             <>
                                 <div className="row">
-                                    <div className="col-lg-3 border-end">
+                                    <div className="col-lg-3 border-end mb-5 me-5">
                                         <h1>{userDetail?.name} </h1>
                                         <h2>{userDetail.admin ?
                                             <span className="badge bg-primary">Admin</span>
@@ -54,8 +54,8 @@ function Perfil() {
                                         <p className="fs-4 text-muted">{userDetail.username}</p>
                                     </div>
 
-                                    <div className="col d-flex justify-content-center">
-                                        <div className="col-6">
+                                    <div className="col ">
+                                        <div className="col-lg-6 col-md-12 col-sm-12">
                                             <FormUsuario User={userDetail} />
                                         </div>
                                     </div>

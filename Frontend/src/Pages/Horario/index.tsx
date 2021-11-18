@@ -5,10 +5,13 @@ import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import TableHorario from "components/Table/Horario";
 import HorarioContextProvider from "contexts/HorarioContext";
+import { LoginContext } from "contexts/LoginContext";
+import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 
 
 function Horario() {
+    const { user } = useContext(LoginContext);
     return (
         <>
             <HorarioContextProvider>
@@ -38,13 +41,16 @@ function Horario() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col  p-3 m-2 ">
-                                <div className="row">
-                                    <div className=" col border shadow-sm p-3">
-                                        <FormHorario />
+                            {user?.admin ?
+                                <div className="col  p-3 m-2 ">
+                                    <div className="row">
+                                        <div className=" col border shadow-sm p-3">
+                                            <FormHorario />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                : ""}
+
 
 
 
