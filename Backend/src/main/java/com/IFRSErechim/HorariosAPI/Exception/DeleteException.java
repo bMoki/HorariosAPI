@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class DeleteException extends Exception {
-    public DeleteException(Long id, String entidade) {
-        super(entidade+" com ID "+id+" ainda está sendo referenciada e não pode ser excluída ");
+    public DeleteException(String entidade) {
+        super(entidade+" ainda está sendo referenciada e não pode ser excluída ");
     }
 }

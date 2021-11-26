@@ -55,7 +55,7 @@ public class DisciplinaService {
       public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
             Disciplina disciplinaToDelete = verifyIfExists(id);
             if(disciplinaRepository.DisciplinaHasReference(id) > 0){
-                throw new DeleteException(id,"Disciplina");
+                throw new DeleteException("Disciplina");
             }
 
             disciplinaRepository.deleteById(id);

@@ -15,7 +15,7 @@ interface ICursoContext {
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     quantidadeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    selectedDisciplinaHandler?: (electedOption: any) => void,
+    selectedDisciplinaHandler?: (selectedOption: any) => void,
     handleClick?: (item: Curso) => void,
     handleClear?: () => void,
     handleDeleteCurso?: () => void,

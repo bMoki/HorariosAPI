@@ -2,6 +2,7 @@ import useApi from "hooks/useApi";
 import { ChangeEvent, createContext, FC, useState } from "react";
 import { mask } from "remask";
 import { Aluno } from "types/aluno";
+import { options } from "types/options";
 import { dataFormater } from "utils/dataFormater";
 
 interface IAlunoContext {
@@ -25,6 +26,8 @@ interface IAlunoContext {
     handleClear?: () => void,
     handleDeleteAluno?: () => void,
     handleClick?: (item: Aluno) => void,
+    selectedDisciplinaHandler?:(selelectedOption:any) => void,
+    disciplinas: options[],
 
 }
 
@@ -38,6 +41,7 @@ const defaultState = {
     dataInclusao: "",
     btnOperation: false,
     formIsOk: true,
+    disciplinas:[]
 }
 
 export const AlunoContext = createContext<IAlunoContext>(defaultState);
@@ -52,7 +56,22 @@ const AlunoContextProvider: FC = ({ children }) => {
         [dataInativacao, setDataInativacao] = useState(""),
         [dataInclusao, setDataInclusao] = useState(""),
         [btnOperation, setBtnOperation] = useState(false),
-        [formIsOk, setFormIsOk] = useState(true);
+        [formIsOk, setFormIsOk] = useState(true),
+        [disciplinas, setDisciplinas] = useState<options[]>([]);
+
+
+
+        function selectedDisciplinaHandler(selectedOption?: options[]) {
+    
+            setDisciplinas(selectedOption === undefined ? [] :
+                selectedOption.map((item) => {
+                    return {
+                        value: item.value,
+                        label: item.label
+                    }
+                }));
+    
+        }
 
     function nomeCompletoHandler(event: ChangeEvent<HTMLInputElement>) {
         setNomeCompleto(event.target.value);
@@ -86,6 +105,12 @@ const AlunoContextProvider: FC = ({ children }) => {
         setMatricula(item?.matricula === undefined ? "" : item.matricula);
         setAtivo(item?.ativo === undefined ? true : item.ativo);
         setBtnOperation(true);
+        setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina) => {
+            return {
+                value: disciplina.id,
+                label: disciplina.nome
+            }
+        }));
     }
 
     function handleClear() {
@@ -140,7 +165,12 @@ const AlunoContextProvider: FC = ({ children }) => {
                     cpf: cpf,
                     ativo: ativo,
                     dataInativacao: dtInativacao,
-                    dataInclusao: dtInclusao
+                    dataInclusao: dtInclusao,
+                    disciplinas: disciplinas.map((x => {
+                        return {
+                            id: x.value
+                        }
+                    }))
                 }
 
                 api.put(`/aluno/${aluno.id}`, aluno);
@@ -152,7 +182,12 @@ const AlunoContextProvider: FC = ({ children }) => {
                     cpf: cpf,
                     ativo: ativo,
                     dataInativacao: dtInativacao,
-                    dataInclusao: dtInclusao
+                    dataInclusao: dtInclusao,
+                    disciplinas: disciplinas.map((x => {
+                        return {
+                            id: x.value
+                        }
+                    }))
                 }
 
                 api.post(`/aluno`, aluno);
@@ -169,7 +204,7 @@ const AlunoContextProvider: FC = ({ children }) => {
             nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo, id,
             nomeCompletoHandler, cpfHandler, matriculaHandler, ativoHandler, dataInativacaoHandler, dataInclusaoHandler,
             btnOperation, formIsOk, handleClear, handleSubmit,
-            handleClick, handleDeleteAluno
+            handleClick, handleDeleteAluno,disciplinas,selectedDisciplinaHandler
         }}>
             {children}
         </AlunoContext.Provider>

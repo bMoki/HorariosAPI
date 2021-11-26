@@ -124,7 +124,8 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     }
 
     function handleDeleteDisciplina() {
-        api.delete(`/disciplina${id}`);
+        console.log(id);
+        api.delete(`/disciplina/${id}`);
     }
 
 

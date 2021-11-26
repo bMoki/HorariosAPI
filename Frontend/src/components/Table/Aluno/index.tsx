@@ -46,7 +46,7 @@ function TableAluno() {
                                     <th scope="col">Nome</th>
                                     <th scope="col">CPF</th>
                                     <th scope="col">Matricula</th>
-                                    <th scope="col">Inativação</th>
+                                    <th scope="col" className="col-4">Disciplinas</th>
                                     <th scope="col">Inclusão</th>
                                 </tr>
                             </thead>
@@ -56,7 +56,15 @@ function TableAluno() {
                                         <td className="align-middle" height="50px">{item.nomeCompleto}</td>
                                         <td className="align-middle">{item.cpf}</td>
                                         <td className="align-middle">{item.matricula}</td>
-                                        <td className="align-middle">{dataFormater(item.dataInativacao)}</td>
+                                        <td className="">
+                                            {item.disciplinas?.length ?
+                                                item.disciplinas.map(disciplina => (
+                                                    <span className="badge rounded-pill bg-primary p-2 px-3 mx-1 mb-1 mt-1 fw-normal fs-6" key={disciplina.id}>{disciplina.nome}</span>
+                                                ))
+                                                :
+                                                <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1 fs-6"> Nenhuma </span>
+                                            }
+                                        </td>
                                         <td className="align-middle">{dataFormater(item.dataInclusao)}</td>
                                     </tr>
                                 ))}

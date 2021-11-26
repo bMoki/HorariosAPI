@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { DisciplinaPage } from "types/disciplina";
-import { CursoContext } from "contexts/CursoContext";
+import { options } from "types/options";
 
+type IProps = {
+    Handler: any,
+    disciplinas: options[]
+}
 
-function ComboBoxDisciplina() {
-
-    const { selectedDisciplinaHandler, disciplinas
-    } = useContext(CursoContext);
+function ComboBoxDisciplina({Handler,disciplinas}:IProps) {
 
     const { data, fetchError, isLoading } = useAxiosFetchPage(`/disciplina?paged=false`);
     const [disciplina, setDisciplina] = useState<DisciplinaPage>({
@@ -49,13 +50,10 @@ function ComboBoxDisciplina() {
                     isSearchable
                     isLoading={isLoading}
                     noOptionsMessage={() => 'Não há disciplina'}
-                    onChange={selectedDisciplinaHandler}
+                    onChange={Handler}
                     closeMenuOnSelect={false}
                 />
             </div>
-
-
-
         </>
     );
 };

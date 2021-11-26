@@ -53,7 +53,7 @@ public class ProfessorService {
     public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
         Professor professorToDelete = verifyIfExistsById(id);
         if(professorRepository.ProfessorHasReference(id) > 0){
-            throw new DeleteException(id,"Professor");
+            throw new DeleteException("Professor");
         }
 
         professorRepository.deleteById(id);

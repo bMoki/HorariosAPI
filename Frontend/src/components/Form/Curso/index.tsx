@@ -10,7 +10,7 @@ import { CursoContext } from "contexts/CursoContext";
 
 function FormCurso() {
 
-    const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk
+    const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk,selectedDisciplinaHandler,disciplinas
     } = useContext(CursoContext);
 
 
@@ -24,7 +24,7 @@ function FormCurso() {
                 </div>
 
                 <div className="col-lg-12 col-md-6">
-                    <ComboBoxDisciplina />
+                    <ComboBoxDisciplina Handler={selectedDisciplinaHandler} disciplinas={disciplinas}/>
                 </div>
 
                 <div className="col-lg-12 col-md-6">

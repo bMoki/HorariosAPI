@@ -1,3 +1,5 @@
+import { Disciplina } from "./disciplina"
+
 export type Aluno = {
     id?: number;
     nomeCompleto?: string;
@@ -6,6 +8,7 @@ export type Aluno = {
     dataInclusao?: string;
     matricula?: string;
     ativo?:boolean;
+    disciplinas?:Disciplina[];
 }
 
 export type AlunoPage = {

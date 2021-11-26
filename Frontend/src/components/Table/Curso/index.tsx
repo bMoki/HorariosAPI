@@ -60,9 +60,6 @@ function TableCurso() {
                                                 :
                                                 <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1 fs-6"> Nenhuma </span>
                                             }
-
-
-
                                         </td>
                                         <td className="align-middle">{item.quantidadeTurma}</td>
                                     </tr>

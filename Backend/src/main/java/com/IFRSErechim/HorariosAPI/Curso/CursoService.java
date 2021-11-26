@@ -91,7 +91,7 @@ public class CursoService {
      public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
                 Curso cursoToDelete = verifyIfExists(id);
                 if(cursoRepository.CursoHasReference(id) > 0){
-                    throw new DeleteException(id,"Curso");
+                    throw new DeleteException("Curso");
                 }
 
                 cursoRepository.deleteById(id);
