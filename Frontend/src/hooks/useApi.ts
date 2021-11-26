@@ -3,8 +3,7 @@ import { LoginContext } from "contexts/LoginContext";
 import jwtDecode from "jwt-decode";
 import { useContext } from "react";
 import { User } from "types/user";
-
-const BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
+import { BASE_URL } from "utils/BASE_URL";
 
 async function checkToken(user: User | undefined) {
     if (user?.exp !== undefined) {
@@ -15,8 +14,6 @@ async function checkToken(user: User | undefined) {
     }
     return true;
 }
-
-
 
 const useApi = () => {
     const { user, setUser, setAuthTokens, authTokens, handleLogout } = useContext(LoginContext)

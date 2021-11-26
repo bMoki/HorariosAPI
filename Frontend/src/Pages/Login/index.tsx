@@ -12,6 +12,7 @@ function LoginPage() {
 
     return (
         <>
+        <h1>{`${process.env.REACT_APP_BACKEND_URL}`}</h1>
             <div className="container h-100">
                 <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
                 <div className="row align-items-center  h-100">

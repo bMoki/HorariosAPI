@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { User } from "types/user";
+import { BASE_URL } from "utils/BASE_URL";
 
 
 export default function useAuth() {
@@ -28,7 +29,7 @@ export default function useAuth() {
 
         async function Login() {
             try {
-                const res = await axios.post(`http://localhost:8080/login`, params, config);
+                const res = await axios.post(`${BASE_URL}/login`, params, config);
                 return res;
             } catch (err: any) {
                 return err;
