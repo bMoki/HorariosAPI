@@ -175,13 +175,13 @@ const HorarioContextProvider: FC = ({ children }) => {
                         id: professorOptions.value
                     },
                     turma: {
-                        id: turma?.id
+                        id: turma?.id,
+                        
                     }
                 }
 
-
-
-                api.post(`/horario`, horario);
+               
+               api.post(`/horario`, horario);
             }
         }
     }

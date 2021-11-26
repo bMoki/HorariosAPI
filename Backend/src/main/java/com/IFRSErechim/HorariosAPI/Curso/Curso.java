@@ -2,12 +2,15 @@ package com.IFRSErechim.HorariosAPI.Curso;
 
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,11 +20,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Data
 @Builder
-public class Curso {
+public class Curso  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Turma> turmas = new ArrayList<>();
@@ -56,5 +60,11 @@ public class Curso {
             disciplinas = entity.getDisciplinas().stream().map(x-> new Disciplina(x)).collect(Collectors.toList());
             turmas = entity.getTurmas().stream().map(x -> new Turma(x)).collect(Collectors.toList());
      }
+
+    public Curso(CursoID entity) {
+        id = entity.getId();
+    }
+
+
 
 }

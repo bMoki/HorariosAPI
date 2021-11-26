@@ -44,3 +44,4 @@ public class CursoDTO implements Serializable {
         turmas = entity.getTurmas().stream().map(x -> new TurmaDTO(x)).collect(Collectors.toList());
     }
 }
+

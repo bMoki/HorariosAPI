@@ -26,7 +26,7 @@ public class Disciplina {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="professor_disciplina",
             joinColumns = @JoinColumn(name = "disciplina_id"),
@@ -34,9 +34,9 @@ public class Disciplina {
     )
     private List<Professor> professores = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "disciplinas")
-    private  List<Curso> cursos = new ArrayList<>();
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.LAZY , mappedBy = "disciplinas")
+//    private  List<Curso> cursos = new ArrayList<>();
 
     @Column
     private Long codMoodle;

@@ -3,6 +3,7 @@ package com.IFRSErechim.HorariosAPI.Horario;
 import com.IFRSErechim.HorariosAPI.Exception.LimitHorarioExceeded;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Turma.FilterTurmaDTO;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
 import com.IFRSErechim.HorariosAPI.Turma.TurmaService;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,10 +36,11 @@ public class HorarioService {
         return new HorarioDTO(horario);
     }
 
+   @Transactional
     public MessageResponseDTO criaHorario (HorarioDTO horarioDTO) throws NotFoundException, LimitHorarioExceeded{
 
             Horario salvarHorario = new Horario(horarioDTO);
-            Turma turmaToAddHorario = turmaService.verifyIfExistsById(horarioDTO.getTurma().getId());
+            FilterTurmaDTO turmaToAddHorario = turmaService.verifyIfExistsById(horarioDTO.getTurma().getId());
 
             if(turmaToAddHorario.getHorarios().size() == 10){
                 throw new LimitHorarioExceeded(turmaToAddHorario.getId());
@@ -46,13 +49,18 @@ public class HorarioService {
                     throw new LimitHorarioExceeded(turmaToAddHorario.getId());
 
             }
+
             Horario HorarioSalvo = horarioRepository.save(salvarHorario);
-            turmaToAddHorario.addHorario(HorarioSalvo);
-            turmaService.save(turmaToAddHorario);
+            Turma turma = new Turma(turmaToAddHorario);
+
+            turma.addHorario(HorarioSalvo);
+            turmaService.save(turma);
 
             return criaMessageResponse("Horario cadastrado!");
 
         }
+
+
 
         public MessageResponseDTO UpdateById(Long id,HorarioDTO horarioDTO) throws NotFoundException{
                 verifyIfExists(id);
@@ -65,10 +73,7 @@ public class HorarioService {
         }
 
          public MessageResponseDTO delete(Long id) throws NotFoundException {
-                    Horario horarioToRemove = verifyIfExists(id);
-                    Turma turmaToRemoveHorario = turmaService.verifyIfExistsById(horarioToRemove.getTurma().getId());
-
-                    turmaToRemoveHorario.removeHorario(horarioToRemove);
+                    verifyIfExists(id);
 
                     horarioRepository.deleteById(id);
                     return criaMessageResponse("Horario deletado!");
@@ -79,7 +84,7 @@ public class HorarioService {
                     .orElseThrow(() -> new NotFoundException("Horario"));
     }
 
-    private Boolean isLimitExceeded (Integer periodo, List<Horario> horarios){
+    private Boolean isLimitExceeded (Integer periodo, List<FilterHorarioDTO> horarios){
         return horarios.stream()
                 .filter(h -> h.getPeriodo() == periodo).collect(Collectors.toList()).size() == 5;
     }
@@ -90,4 +95,6 @@ public class HorarioService {
                     .message(message)
                     .build();
     }
+
+
 }

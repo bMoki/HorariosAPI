@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import { useContext } from "react";
 import { User } from "types/user";
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
 
 async function checkToken(user: User | undefined) {
     if (user?.exp !== undefined) {

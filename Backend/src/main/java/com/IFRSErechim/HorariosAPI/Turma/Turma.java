@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Data
 @Builder
-public class Turma {
+public class Turma  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +29,7 @@ public class Turma {
     @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "turma" ,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Horario> horarios = new ArrayList<>();
 
     public void addHorario(Horario horario){
@@ -46,8 +45,19 @@ public class Turma {
     public Turma(TurmaDTO entity){
         id = entity.getId();
         nome = entity.getNome();
-        if(entity.getCurso() != null) curso = new Curso(entity.getCurso());
+        //if(entity.getCurso() != null) curso = new Curso(entity.getCurso());
         horarios = entity.getHorarios().stream().map(x -> new Horario(x)).collect(Collectors.toList());
+    }
+
+    public Turma(FilterTurmaDTO entity){
+        id = entity.getId();
+        nome = entity.getNome();
+        curso = new Curso(entity.getCurso());
+        horarios = entity.getHorarios().stream().map(x -> new Horario(x)).collect(Collectors.toList());
+    }
+
+    public Turma(TurmaID entity){
+        id = entity.getId();
     }
 
 

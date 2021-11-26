@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -18,11 +20,13 @@ public class CursoService {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @Transactional(readOnly = true)
     public Page<CursoDTO> findAll(Pageable pageable){
         Page<Curso> result = cursoRepository.findAll(pageable);
         return result.map(x -> new CursoDTO(x));
     }
 
+    @Transactional(readOnly = true)
     public CursoDTO findById(Long id) throws NotFoundException {
         Curso curso = verifyIfExists(id);
 

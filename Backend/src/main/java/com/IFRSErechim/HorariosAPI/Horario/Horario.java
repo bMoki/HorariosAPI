@@ -1,6 +1,5 @@
 package com.IFRSErechim.HorariosAPI.Horario;
 
-import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Turma.Turma;
@@ -48,6 +47,15 @@ public class Horario {
         periodo = entity.getPeriodo();
         diaSemana = entity.getDiaSemana();
         //curso = entity.getCurso();
+        disciplina = new Disciplina(entity.getDisciplina());
+        professor = new Professor(entity.getProfessor());
+        //turma = new Turma(entity.getTurma());
+    }
+
+    public Horario(FilterHorarioDTO entity){
+        id = entity.getId();
+        periodo = entity.getPeriodo();
+        diaSemana = entity.getDiaSemana();
         disciplina = new Disciplina(entity.getDisciplina());
         professor = new Professor(entity.getProfessor());
         turma = new Turma(entity.getTurma());

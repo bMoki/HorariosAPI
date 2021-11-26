@@ -13,9 +13,10 @@ public class TurmaService {
     @Autowired
     private TurmaRepository turmaRepository;
 
-    public Turma verifyIfExistsById(Long id) throws NotFoundException {
-        return turmaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Turma"));
+
+    public FilterTurmaDTO verifyIfExistsById(Long id) throws NotFoundException {
+        FilterTurmaDTO turma = new FilterTurmaDTO(turmaRepository.findById(id).orElseThrow(() -> new NotFoundException("Turma")));
+        return turma;
     }
 
 

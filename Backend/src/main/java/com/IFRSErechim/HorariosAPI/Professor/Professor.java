@@ -41,9 +41,9 @@ public class Professor {
     @Column
     private String SIAPE;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "professores")
-    private List<Disciplina> disciplinas = new ArrayList<>();
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "professores")
+//    private List<Disciplina> disciplinas = new ArrayList<>();
 
     public Professor(ProfessorDTO entity) {
         id = entity.getId();
