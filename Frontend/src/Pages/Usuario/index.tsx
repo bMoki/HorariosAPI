@@ -1,5 +1,4 @@
 import FormUsuario from "components/Form/Usuario";
-import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import TableUsuario from "components/Table/Usuario";
 import { LoginContext } from "contexts/LoginContext";
@@ -40,7 +39,7 @@ function Usuario() {
 
 
                 </div>
-                <Modal message="Tem certeza que deseja excluir o usuário?" context="usuario" />
+              
             </UsuarioContextProvider>
         </>
     );

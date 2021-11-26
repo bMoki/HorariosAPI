@@ -1,5 +1,6 @@
 import ComboBoxDisciplinaFiltered from "components/ComboBox/Disciplina/Filtered";
 import ComboBoxProfFiltered from "components/ComboBox/Professor/Filtered";
+import Modal from "components/Modal";
 import { HorarioContext } from "contexts/HorarioContext";
 import { useContext, useEffect, useRef } from "react";
 import { AiOutlineClear } from "react-icons/ai";
@@ -7,7 +8,7 @@ import { FiTrash2 } from "react-icons/fi";
 
 function FormHorario() {
 
-    const { dia, periodo, turma, btnOperation, handleClear, handleSubmit,formIsOk } = useContext(HorarioContext);
+    const { dia, periodo, turma, btnOperation, handleClear, handleSubmit,formIsOk,handleDeleteHorario } = useContext(HorarioContext);
     const formRef = useRef<HTMLButtonElement>(null);
 
     useEffect(()=>{
@@ -50,7 +51,7 @@ function FormHorario() {
 
 
             </form>
-
+            <Modal message="Tem certeza que deseja excluir o horário?" deleteFunction={handleDeleteHorario} />
         </>
     );
 };

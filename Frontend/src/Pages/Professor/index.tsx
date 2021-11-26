@@ -1,5 +1,4 @@
 import FormProf from "components/Form/Professor";
-import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 //import SearchProf from "components/Search/Professor";
 import TableProf from "components/Table/Professor";
@@ -39,7 +38,7 @@ function Professor() {
 
 
                 </div>
-                <Modal message="Tem certeza que deseja excluir o professor?" context="professor" />
+               
             </ProfessorContextProvider>
         </>
     );

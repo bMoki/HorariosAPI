@@ -1,5 +1,4 @@
 import FormAluno from "components/Form/Aluno";
-import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import TableAluno from "components/Table/Aluno";
 import AlunoContextProvider from "contexts/AlunoContext";
@@ -33,11 +32,7 @@ function Aluno() {
 
                         </div>
                     </div>
-
-
-
                 </div>
-                <Modal message="Tem certeza que deseja excluir o aluno?" context="aluno" />
             </AlunoContextProvider>
         </>
     );

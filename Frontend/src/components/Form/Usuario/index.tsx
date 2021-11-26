@@ -3,6 +3,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import { UsuarioContext } from "contexts/UsuarioContext";
 import { UserDetail } from "types/user";
+import Modal from "components/Modal";
 
 
 
@@ -15,7 +16,7 @@ function FormUsuario({ User }: IProps) {
     const { name, username, admin,
         nameHandler, adminHandler, usernameHandler, password, passwordHandler,
         handleSubmit, btnOperation, handleClear, formIsOk, handleClick,
-        changePassword,changePasswordHandler
+        changePassword,changePasswordHandler,handleDeleteUsuario
     } = useContext(UsuarioContext);
 
     
@@ -76,7 +77,7 @@ function FormUsuario({ User }: IProps) {
 
                 </div>
             </form>
-
+            <Modal message="Tem certeza que deseja excluir o usuário?" deleteFunction={handleDeleteUsuario} />
         </>
     );
 };

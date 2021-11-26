@@ -3,14 +3,11 @@ import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import ComboBoxDisciplina from "components/ComboBox/Disciplina";
 import { CursoContext } from "contexts/CursoContext";
-
-
-
-
+import Modal from "components/Modal";
 
 function FormCurso() {
 
-    const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk,selectedDisciplinaHandler,disciplinas
+    const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk,selectedDisciplinaHandler,disciplinas,handleDeleteCurso
     } = useContext(CursoContext);
 
 
@@ -49,7 +46,7 @@ function FormCurso() {
                 </div>
 
             </form>
-
+            <Modal message="Tem certeza que deseja excluir o curso?" deleteFunction={handleDeleteCurso} />
         </>
     );
 };

@@ -1,5 +1,4 @@
 import FormDisciplina from "components/Form/Disciplina";
-import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import TableDisciplina from "components/Table/Disciplina";
 import DisciplinaContextProvider from "contexts/DisciplinaContext";
@@ -34,9 +33,8 @@ function Disciplina() {
                         </div>
                     </div>
                 </div>
-                <Modal message="Tem certeza que deseja excluir a disciplina?" context="disciplina" />
+               
             </DisciplinaContextProvider>
-
         </>
     );
 }

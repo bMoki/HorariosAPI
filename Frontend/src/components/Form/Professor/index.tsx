@@ -1,14 +1,14 @@
 import { useContext } from "react";
-
 import { ProfessorContext } from "contexts/ProfessorContext";
 import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
+import Modal from "components/Modal";
 
 function FormProf() {
 
     const { nome, cpf, email, sobrenome, dataNascimento, siape,
         nomeHandler, sobrenomeHandler, cpfHandler, emailHandler, dataNascimentoHandler, siapeHandler,
-        handleSubmit, btnOperation, handleClear, formIsOk
+        handleSubmit, btnOperation, handleClear, formIsOk, handleDeleteProfessor
     } = useContext(ProfessorContext);
     
 
@@ -52,7 +52,7 @@ function FormProf() {
                     </div>
                 </div>
             </form>
-
+            <Modal message="Tem certeza que deseja excluir o professor?" deleteFunction={handleDeleteProfessor} />
         </>
     );
 };

@@ -3,6 +3,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 import ComboBoxProf from "components/ComboBox/Professor";
+import Modal from "components/Modal";
 
 
 
@@ -10,7 +11,7 @@ import ComboBoxProf from "components/ComboBox/Professor";
 
 function FormDisciplina() {
 
-    const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle
+    const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle, handleDeleteDisciplina
     } = useContext(DisciplinaContext);
 
 
@@ -50,7 +51,7 @@ function FormDisciplina() {
                 </div>
 
             </form>
-
+            <Modal message="Tem certeza que deseja excluir a disciplina?" deleteFunction={handleDeleteDisciplina} />
         </>
     );
 };

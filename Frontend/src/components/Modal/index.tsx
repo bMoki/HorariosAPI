@@ -1,47 +1,9 @@
-import { ProfessorContext } from "contexts/ProfessorContext";
-import { DisciplinaContext } from "contexts/DisciplinaContext";
-import { useContext } from "react";
-import { CursoContext } from "contexts/CursoContext";
-import { HorarioContext } from "contexts/HorarioContext";
-import { AlunoContext } from "contexts/AlunoContext";
-import { UsuarioContext } from "contexts/UsuarioContext";
-
 interface IProps {
     message: string;
-    context: string;
+    deleteFunction: any;
 }
 
-function Modal({ message, context }: IProps) {
-    const { handleDeleteProfessor } = useContext(ProfessorContext);
-    const { handleDeleteDisciplina } = useContext(DisciplinaContext);
-    const { handleDeleteCurso } = useContext(CursoContext);
-    const { handleDeleteHorario } = useContext(HorarioContext);
-    const { handleDeleteAluno } = useContext(AlunoContext);
-    const { handleDeleteUsuario } = useContext(UsuarioContext);
-
-    const onClickFunction = (context: string) => {
-        switch (context) {
-            case "professor":
-                handleDeleteProfessor!();
-                break;
-            case "disciplina":
-                handleDeleteDisciplina!();
-                break;
-            case "curso":
-                handleDeleteCurso!();
-                break;
-            case "horario":
-                handleDeleteHorario!();
-                break;
-            case "aluno":
-                handleDeleteAluno!();
-                break;
-            case "usuario":
-                handleDeleteUsuario!();
-                break;
-        }
-    }
-
+function Modal({ message, deleteFunction }: IProps) {
     return (
         <>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,7 +18,7 @@ function Modal({ message, context }: IProps) {
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
                             <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Não</button>
-                            <button type="button" className="btn btn-danger" onClick={() => onClickFunction(context)}>Sim</button>
+                            <button type="button" className="btn btn-danger" onClick={deleteFunction}>Sim</button>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ function FormAluno() {
 
     const { nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo,
         matriculaHandler, cpfHandler, nomeCompletoHandler, dataInativacaoHandler, dataInclusaoHandler, ativoHandler,
-        handleSubmit, btnOperation, handleClear, formIsOk, disciplinas, selectedDisciplinaHandler
+        handleSubmit, btnOperation, handleClear, formIsOk, disciplinas, selectedDisciplinaHandler,handleDeleteAluno
     } = useContext(AlunoContext);
 
 
@@ -64,7 +64,7 @@ function FormAluno() {
                     </div>
                 </div>
             </form>
-            <Modal message="Tem certeza que deseja excluir o aluno?" context="aluno" />
+            <Modal message="Tem certeza que deseja excluir o aluno?" deleteFunction={handleDeleteAluno} />
         </>
     );
 };

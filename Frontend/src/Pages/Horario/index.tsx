@@ -1,7 +1,6 @@
 import ComboBoxCurso from "components/ComboBox/Curso";
 import ComboBoxTurma from "components/ComboBox/Turma";
 import FormHorario from "components/Form/Horario";
-import Modal from "components/Modal";
 import NavBar from "components/NavBar";
 import TableHorario from "components/Table/Horario";
 import HorarioContextProvider from "contexts/HorarioContext";
@@ -19,12 +18,7 @@ function Horario() {
                 <div className="container">
                     <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
                     <div className="row d-flex justify-content-center">
-
-
-
                         <div className="row">
-
-
                             <h2>Horários</h2>
                             <div className="col-lg-4 col-md-12 col-sm-12  p-3 m-2 ">
                                 <div className="row">
@@ -50,25 +44,13 @@ function Horario() {
                                     </div>
                                 </div>
                                 : ""}
-
-
-
-
                             <div className="row">
                                 <TableHorario />
                             </div>
-
-
-
                         </div>
-
-
-
                     </div>
-
-
                 </div>
-                <Modal message="Tem certeza que deseja excluir o horário?" context="horario" />
+               
             </HorarioContextProvider>
 
         </>
