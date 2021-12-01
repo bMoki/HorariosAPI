@@ -1,3 +1,4 @@
+import ExportBtn from "components/Export";
 import FormProf from "components/Form/Professor";
 import NavBar from "components/NavBar";
 //import SearchProf from "components/Search/Professor";
@@ -15,6 +16,7 @@ function Professor() {
 
                 <NavBar />
                 <div className="container">
+                    <h2>Professores</h2>
                     <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
                     {/* <div className="row">
                         <div className="col-md-12 col-lg-7 col-sm-12  border shadow-sm p-3 m-2 mt-4">
@@ -22,12 +24,34 @@ function Professor() {
                         </div>
                     </div> */}
                     <div className="row">
-                        <h2>Professores</h2>
-                        <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
+                        <div className="col-md-12 col-lg col-sm-12 p-3 pb-0 m-2 mt-4">
+
+                        </div>
+                        <div className="col-lg-4 border shadow-sm p-3  mt-4 m-2 d-flex">
+
+                            <div className="p-1 me-3 fs-4">
+                                Exportar
+                            </div>
+                            <div className="p-1 mx-auto">
+                                <ExportBtn dataUrl='professor?paged=false' fileName='ProfessorReport' type='.csv' btnClassName='btn btn-primary px-4' />
+                            </div>
+                            <div className="p-1 mx-auto">
+                                <button type='button' className="btn btn-danger px-4">.pdf</button>
+                            </div>
+                            <div className="p-1 mx-auto">
+                                <ExportBtn dataUrl='professor?paged=false' fileName='ProfessorReport' type='.xlsx' btnClassName='btn btn-success px-4' />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="row">
+
+                        <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0 m-2 d-flex flex-column">
                             <TableProf />
                         </div>
+
                         {user?.admin &&
-                            <div className="col-lg-4 border shadow-sm p-3  mt-4 m-2">
+                            <div className="col-lg-4 border shadow-sm p-3 m-2">
                                 <FormProf />
                             </div>
                         }
@@ -37,8 +61,10 @@ function Professor() {
 
 
 
+
+
                 </div>
-               
+
             </ProfessorContextProvider>
         </>
     );
