@@ -4,6 +4,8 @@ import { AiOutlineClear } from "react-icons/ai";
 import { AlunoContext } from "contexts/AlunoContext";
 import ComboBoxDisciplina from "components/ComboBox/Disciplina";
 import Modal from "components/Modal";
+import { LoginContext } from "contexts/LoginContext";
+import LoadingSpinner from "components/Loading";
 
 
 
@@ -15,6 +17,8 @@ function FormAluno() {
         matriculaHandler, cpfHandler, nomeCompletoHandler, dataInativacaoHandler, dataInclusaoHandler, ativoHandler,
         handleSubmit, btnOperation, handleClear, formIsOk, disciplinas, selectedDisciplinaHandler,handleDeleteAluno
     } = useContext(AlunoContext);
+
+    const {loadingSubmit} = useContext(LoginContext);
 
 
 
@@ -54,7 +58,7 @@ function FormAluno() {
                 </div>
                 <div className="d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> : btnOperation ? "Alterar" : "Cadastrar"}</button>
                     </div>
                     <div className="p-2 ">
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>

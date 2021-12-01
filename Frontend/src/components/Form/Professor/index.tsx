@@ -3,6 +3,8 @@ import { ProfessorContext } from "contexts/ProfessorContext";
 import { FiTrash2 } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import Modal from "components/Modal";
+import { LoginContext } from "contexts/LoginContext";
+import LoadingSpinner from "components/Loading";
 
 function FormProf() {
 
@@ -10,7 +12,9 @@ function FormProf() {
         nomeHandler, sobrenomeHandler, cpfHandler, emailHandler, dataNascimentoHandler, siapeHandler,
         handleSubmit, btnOperation, handleClear, formIsOk, handleDeleteProfessor
     } = useContext(ProfessorContext);
-    
+
+    const { loadingSubmit } = useContext(LoginContext);
+
 
     return (
         <>
@@ -42,7 +46,7 @@ function FormProf() {
                 </div>
                 <div className="d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> : btnOperation ? "Alterar" : "Cadastrar"}</button>
                     </div>
                     <div className="p-2 ">
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>

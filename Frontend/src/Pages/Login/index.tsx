@@ -3,7 +3,6 @@ import LoginImg from "assets/img/Login.png"
 import { ToastContainer, Zoom } from "react-toastify";
 import { useEffect } from "react";
 import { Toast } from "utils/storageManager";
-import { BASE_URL } from "utils/BASE_URL";
 
 function LoginPage() {
 
@@ -13,7 +12,6 @@ function LoginPage() {
 
     return (
         <>
-        <h1>{`${BASE_URL}`}</h1>
             <div className="container h-100">
                 <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
                 <div className="row align-items-center  h-100">

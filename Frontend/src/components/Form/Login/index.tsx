@@ -1,9 +1,10 @@
+import LoadingSpinner from "components/Loading";
 import { LoginContext } from "contexts/LoginContext";
 import { ChangeEvent, useContext, useState } from "react";
 import { useHistory } from "react-router";
 
 function FormLogin() {
-    const { handleLogin } = useContext(LoginContext);
+    const { handleLogin, loadingSubmit } = useContext(LoginContext);
     const history = useHistory();
 
     const [username, setUsername] = useState(""),
@@ -28,7 +29,6 @@ function FormLogin() {
 
     return (
         <>
-
             <form className="row g-3" >
                 <h2 className='d-flex justify-content-center'>Login</h2>
                 <div className="col-12">
@@ -42,7 +42,7 @@ function FormLogin() {
 
                 <div className="col-12 mt-5">
                     <div className="d-grid gap-2 col-12 mx-auto">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={Login}>Entrar</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={Login}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> : 'Entrar'}</button>
                     </div>
 
                 </div>

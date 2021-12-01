@@ -1,9 +1,14 @@
+import LoadingSpinner from "components/Loading";
+import { LoginContext } from "contexts/LoginContext";
+import { useContext } from "react";
+
 interface IProps {
     message: string;
     deleteFunction: any;
 }
 
 function Modal({ message, deleteFunction }: IProps) {
+    const { loadingSubmit } = useContext(LoginContext);
     return (
         <>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -14,7 +19,7 @@ function Modal({ message, deleteFunction }: IProps) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <h5>{message}</h5>
+                            <h5>{loadingSubmit ? <LoadingSpinner margin="mt-1 mb-1"/> : message}</h5>
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
                             <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Não</button>

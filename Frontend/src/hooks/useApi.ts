@@ -16,7 +16,7 @@ async function checkToken(user: User | undefined) {
 }
 
 const useApi = () => {
-    const { user, setUser, setAuthTokens, authTokens, handleLogout } = useContext(LoginContext)
+    const { user, setUser, setAuthTokens, authTokens, handleLogout,setLoadingSubmit} = useContext(LoginContext)
 
     const axiosInstance = axios.create({
         baseURL: BASE_URL
@@ -36,7 +36,8 @@ const useApi = () => {
 
 
     axiosInstance.interceptors.request.use(async req => {
-
+        if(req.method !=="get") setLoadingSubmit!(true);
+        
         const isExpired = await checkToken(user);
         if (isExpired === false) {
             req.headers.Authorization = `Bearer ${JSON.parse(authTokens!).access_token}`

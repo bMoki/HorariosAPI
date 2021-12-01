@@ -1,5 +1,6 @@
 import EmptyMessage from "components/EmptyMessage";
 import Error504Message from "components/Error/Error504Message";
+import LoadingSpinner from "components/Loading";
 import Pagination from "components/Pagination";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 import { useAxiosFetchPage } from "hooks/useAxiosFetch";
@@ -33,10 +34,8 @@ function TableDisciplina() {
             <div className="row">
 
                 {isLoading &&
-                    <div className="d-flex justify-content-center mt-5 mb-5">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
+                    <div className="d-flex justify-content-center">
+                       <LoadingSpinner margin="mt-5 mb-5"/>
                     </div>}
                 {fetchError &&<Error504Message size={300}/>}
                 {!isLoading && !fetchError && (disciplina.content?.length ?

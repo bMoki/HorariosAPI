@@ -4,6 +4,8 @@ import { AiOutlineClear } from "react-icons/ai";
 import { UsuarioContext } from "contexts/UsuarioContext";
 import { UserDetail } from "types/user";
 import Modal from "components/Modal";
+import LoadingSpinner from "components/Loading";
+import { LoginContext } from "contexts/LoginContext";
 
 
 
@@ -18,6 +20,8 @@ function FormUsuario({ User }: IProps) {
         handleSubmit, btnOperation, handleClear, formIsOk, handleClick,
         changePassword,changePasswordHandler,handleDeleteUsuario
     } = useContext(UsuarioContext);
+
+    const {loadingSubmit} = useContext(LoginContext);
 
     
 
@@ -62,7 +66,7 @@ function FormUsuario({ User }: IProps) {
 
                 <div className="d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? User ? "Salvar " : "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> :btnOperation ? User ? "Salvar " : "Alterar" : "Cadastrar"}</button>
                     </div>
                     {User ? "" :
                         <>

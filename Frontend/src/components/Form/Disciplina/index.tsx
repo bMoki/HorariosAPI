@@ -4,6 +4,8 @@ import { AiOutlineClear } from "react-icons/ai";
 import { DisciplinaContext } from "contexts/DisciplinaContext";
 import ComboBoxProf from "components/ComboBox/Professor";
 import Modal from "components/Modal";
+import LoadingSpinner from "components/Loading";
+import { LoginContext } from "contexts/LoginContext";
 
 
 
@@ -13,7 +15,8 @@ function FormDisciplina() {
 
     const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle, handleDeleteDisciplina
     } = useContext(DisciplinaContext);
-
+    
+    const {loadingSubmit} = useContext(LoginContext);
 
 
     return (
@@ -40,7 +43,7 @@ function FormDisciplina() {
 
                 <div className=" d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> :btnOperation ? "Alterar" : "Cadastrar"}</button>
                     </div>
                     <div className="p-2 ">
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>

@@ -1,3 +1,4 @@
+import LoadingSpinner from "components/Loading";
 import { HorarioContext } from "contexts/HorarioContext";
 import { useAxiosFetchById } from "hooks/useAxiosFetch";
 import { useContext, useEffect, useState } from "react";
@@ -32,10 +33,8 @@ function TableHorario() {
     return (
         <>
             {isLoading &&
-                <div className="d-flex justify-content-center mt-5 mb-5">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
+                <div className="d-flex justify-content-center">
+                   <LoadingSpinner margin="mt-5 mb-5"/>
                 </div>}
             {fetchError && <p>{fetchError}</p>}
 

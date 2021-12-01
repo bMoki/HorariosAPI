@@ -4,12 +4,15 @@ import { AiOutlineClear } from "react-icons/ai";
 import ComboBoxDisciplina from "components/ComboBox/Disciplina";
 import { CursoContext } from "contexts/CursoContext";
 import Modal from "components/Modal";
+import LoadingSpinner from "components/Loading";
+import { LoginContext } from "contexts/LoginContext";
 
 function FormCurso() {
 
     const { nome, nomeHandler,quantidadeHandler,quantidade, btnOperation, handleClear, handleSubmit, formIsOk,selectedDisciplinaHandler,disciplinas,handleDeleteCurso
     } = useContext(CursoContext);
 
+    const {loadingSubmit} = useContext(LoginContext);
 
 
     return (
@@ -35,7 +38,7 @@ function FormCurso() {
 
                 <div className=" d-flex">
                     <div className="me-auto p-2">
-                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{btnOperation ? "Alterar" : "Cadastrar"}</button>
+                        <button type="button" className="btn btn-success" id="submit" title="Salvar" onClick={handleSubmit}>{loadingSubmit ? <LoadingSpinner margin="m-1" small/> :btnOperation ? "Alterar" : "Cadastrar"}</button>
                     </div>
                     <div className="p-2 ">
                         <button type="button" className={btnOperation ? "btn btn-danger" : "invisible"} title="Excluir" data-bs-toggle="modal" data-bs-target="#exampleModal"><FiTrash2 /></button>

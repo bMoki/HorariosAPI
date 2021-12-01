@@ -10,11 +10,13 @@ export default function useAuth() {
     const [authenticated, setAuthenticated] = useState(false),
         [loading, setLoading] = useState(true),
         [user, setUser] = useState<User | undefined>(undefined),
-        [authTokens, setAuthTokens] = useState<string | null>(() => localStorage.getItem('tokens') ? localStorage.getItem('tokens') : null);
+        [authTokens, setAuthTokens] = useState<string | null>(() => localStorage.getItem('tokens') ? localStorage.getItem('tokens') : null),
+        [loadingSubmit, setLoadingSubmit] = useState(false);
 
 
 
     async function handleLogin(username: string, password: string, history: any) {
+        setLoadingSubmit(true);
         const params = new URLSearchParams();
         params.append('username', username);
         params.append('password', password);
@@ -50,6 +52,7 @@ export default function useAuth() {
         } else {
             toast.error("Erro no login");
         }
+        setLoadingSubmit(false);
     }
 
     function LogOut() {
@@ -78,5 +81,5 @@ export default function useAuth() {
 
 
 
-    return { authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser, LogOut }
+    return { authenticated, loading, handleLogin, handleLogout, user, authTokens, setAuthTokens, setUser, LogOut,loadingSubmit,setLoadingSubmit }
 }
