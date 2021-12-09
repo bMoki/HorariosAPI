@@ -3,8 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,700;1,200&display=swap');
 :root {
     --color-primary: #1861cf;
+    --color-primary-hover: #11499c;
     --color-success: #3cb331;
     --color-secondary: #6c757d9f;
+    --color-info:#487ecf;
 }
 
 html, body {
@@ -39,9 +41,18 @@ html, body {
     background-color: var(--color-primary) !important;
 }
 
-.btn-success {
-    /*background-color: var(--color-success) !important;*/
-    /*border: none;*/
+.btn-info {
+    background-color: var(--color-info) !important;
+    border-color: var(--color-info) !important;
+    /* border-radius: 10% !important; */
+}
+
+.btn-info:hover {
+    background-color: var(--color-primary) !important;  
+}
+
+.btn-primary:hover{
+    background-color: var(--color-primary-hover) !important;    
 }
 
 .error-toast{

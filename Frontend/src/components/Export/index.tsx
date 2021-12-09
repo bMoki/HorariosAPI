@@ -5,15 +5,16 @@ import useApi from "hooks/useApi";
 import { useState } from "react";
 import { useRef } from "react";
 import { CSVLink } from "react-csv";
+import { FaDownload } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-type IProps={
+type IProps = {
     dataUrl: string,
     fileName: string,
-    type:string,
-    btnClassName:string
+    btnClassName: string,
+    id: string
 }
-function ExportBtn({dataUrl,fileName,type,btnClassName}:IProps) {
+function ExportBtn({ dataUrl, fileName, btnClassName, id }: IProps) {
 
     //const dataUrl = `professor?paged=false`;
     const api = useApi();
@@ -45,7 +46,7 @@ function ExportBtn({dataUrl,fileName,type,btnClassName}:IProps) {
             }
         } finally {
             isMounted && setIsLoading(false);
-             
+
         }
 
         const cleanUp = () => {
@@ -67,21 +68,24 @@ function ExportBtn({dataUrl,fileName,type,btnClassName}:IProps) {
     ];
     return (
         <>
-            <button className={btnClassName} onClick={fetchData}> {isLoading ? <div className="d-flex justify-content-center">
+
+            <button className={btnClassName} onClick={fetchData}> {isLoading ? <div className="d-flex justify-content-center" id={id}>
                 <div className="spinner-border spinner-border-sm" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div>
-            </div> : type}</button>
+            </div> : <div className="d-flex px-1">Exportar<FaDownload  className="ms-3 mt-1"/></div>}</button>
+
+
 
             <CSVLink
-                filename={`${fileName}${type}`}
+                filename={`${fileName}.csv`}
                 data={data}
                 ref={btnRef}
                 className="invisible"
                 headers={headers}
                 onClick={() => {
                     if (data.length === 0) {
-                        toast.error(fetchError ? fetchError :"Não há professor!")
+                        toast.error(fetchError ? fetchError : "Não há professor!")
                         return false;
                     }
                 }}

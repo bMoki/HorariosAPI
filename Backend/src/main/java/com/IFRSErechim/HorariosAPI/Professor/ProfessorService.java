@@ -1,15 +1,23 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
-import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
+import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.univocity.parsers.common.record.Record;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,6 +30,70 @@ public class ProfessorService {
     public Page<ProfessorDTO> findAll(Pageable pageable){
         Page<Professor> result = professorRepository.findAll(pageable);
         return result.map(x -> new ProfessorDTO(x));
+    }
+
+    public MessageResponseDTO importProfessor (MultipartFile file) throws LimitError, ParseError, AlreadyExistsException {
+        List<Professor> professorList = new ArrayList<>();
+
+
+        List<Integer> linhasError = new ArrayList<>();
+        List<Record> parseAllRecords = criaParsedRecords(file);
+        for(int i=0;i<parseAllRecords.size();i++){
+            Record record = parseAllRecords.get(i);
+            Professor professor = new Professor();
+
+            if(!(record.getString("nome") == null || record.getString("sobrenome")== null || record.getString("email")== null ||
+                    record.getString("cpf")== null || record.getString("siape")== null || record.getString("DataNascimento")== null))
+            {
+                professor.setNome(record.getString("nome"));
+                professor.setSobrenome(record.getString("sobrenome"));
+                professor.setEmail(record.getString("email"));
+                professor.setCpf(record.getString("cpf"));
+                professor.setSIAPE(record.getString("siape"));
+                professor.setDataNascimento(LocalDate.parse(record.getString("dataNascimento")));
+
+                professorList.add(professor);
+            }else{
+                linhasError.add((i+1));
+            }
+        }
+        parseAllRecords.forEach(record-> {
+
+
+        });
+
+        if(linhasError.size() > 5){
+            throw new LimitError(linhasError);
+        }
+        try{
+            List<Professor> professoresCriados = professorRepository.saveAll(professorList);
+            if(linhasError.size()>0){
+                String warn;
+                if(linhasError.size() == 1){
+                    warn = "A linha "+ linhasError +" não foi inserida, verifique-a!";
+                }else{
+                    warn = "As linhas "+ linhasError +" não foram inseridas, verifique-as!";
+                }
+                return criaMessageResponseWithWarning("Importação de "+professoresCriados.size()+" professores concluída!",warn );
+            }
+            return criaMessageResponse("Importação de "+professoresCriados.size()+" professores concluída!");
+        }catch (DataIntegrityViolationException e){
+            throw new AlreadyExistsException("Existe um CPF já cadastrado no arquivo!");
+        }
+    }
+
+    public List<Record> criaParsedRecords (MultipartFile file) throws ParseError {
+        try{
+            InputStream inputStream = file.getInputStream();
+            CsvParserSettings settings = new CsvParserSettings();
+            settings.setHeaderExtractionEnabled(true);
+            CsvParser parser = new CsvParser(settings);
+            List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
+
+            return parseAllRecords;
+        }catch (Exception e){
+            throw new ParseError(e.getMessage());
+        }
     }
 
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
@@ -71,4 +143,14 @@ public class ProfessorService {
                 .message(message)
                 .build();
     }
+
+    private MessageResponseDTO criaMessageResponseWithWarning(String message,String warning) {
+        return MessageResponseDTO
+                .builder()
+                .message(message)
+                .warning(warning)
+                .build();
+    }
+
+
 }

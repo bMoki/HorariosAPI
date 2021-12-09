@@ -1,8 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
-import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
-import com.IFRSErechim.HorariosAPI.Exception.DeleteException;
-import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
+import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -32,6 +31,11 @@ public class ProfessorController {
         Page<ProfessorDTO> list = professorService.findAll(pageable);
         return ResponseEntity.ok(list);
 
+    }
+
+    @PostMapping("/upload")
+    public MessageResponseDTO importProf(@RequestParam("file")MultipartFile file) throws AlreadyExistsException, ParseError, LimitError {
+        return professorService.importProfessor(file);
     }
 
     @PostMapping
