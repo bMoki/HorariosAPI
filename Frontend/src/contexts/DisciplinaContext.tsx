@@ -9,10 +9,11 @@ interface IDisciplinaContext {
     btnOperation: boolean,
     professores: options[],
     formIsOk: boolean,
-    codMoodle: number | undefined,
+    codMoodle:string,
 
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    codMoodleHandler?:(event: ChangeEvent<HTMLInputElement>) => void,
     selectedProfHandler?: (electedOption: any) => void,
     handleClick?: (item: Disciplina) => void,
     handleClear?: () => void,
@@ -28,7 +29,7 @@ const defaultState = {
     index: 0,
     professores: [],
     formIsOk: true,
-    codMoodle: undefined
+    codMoodle: ""
 }
 
 export const DisciplinaContext = createContext<IDisciplinaContext>(defaultState);
@@ -41,7 +42,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         [btnOperation, setBtnOperation] = useState(false),
         [formIsOk, setFormIsOk] = useState(true),
         [professores, setProfessores] = useState<options[]>([]),
-        [codMoodle, setCodMoodle] = useState<number | undefined>(undefined);
+        [codMoodle, setCodMoodle] = useState("");
 
     function selectedProfHandler(selectedOption?: options[]) {
         setProfessores(selectedOption === undefined ? [] :
@@ -58,6 +59,10 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         setNome(event.target.value);
     }
 
+    function codMoodleHandler(event: ChangeEvent<HTMLInputElement>) {
+        setCodMoodle(event.target.value);
+    }
+
     function handleClick(item: Disciplina) {
         setNome(item?.nome === undefined ? "" : item.nome);
         setId(item?.id === undefined ? 0 : item.id);
@@ -67,7 +72,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                 label: prof.nome + ' ' + prof.sobrenome
             }
         }));
-        setCodMoodle(item.codMoodle);
+        setCodMoodle(item?.codMoodle === undefined ? "" : item.codMoodle);
         setBtnOperation(true);
     }
 
@@ -76,7 +81,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
         setId(0);
         setProfessores([]);
         setBtnOperation(false);
-        setCodMoodle(undefined);
+        setCodMoodle("");
         setFormIsOk(true);
     }
 
@@ -101,6 +106,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
                 const disciplina = {
                     id: id,
                     nome: nome,
+                    codMoodle:codMoodle,
                     professores: professores.map((x => {
                         return {
                             id: x.value
@@ -112,6 +118,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
             } else {
                 const disciplina = {
                     nome: nome,
+                    codMoodle:codMoodle,
                     professores: professores.map((x => {
                         return {
                             id: x.value
@@ -133,7 +140,7 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     return (
         <DisciplinaContext.Provider value={{
             id, nome, professores, formIsOk, codMoodle,
-            nomeHandler, handleClick,
+            nomeHandler, handleClick,codMoodleHandler,
             btnOperation,
             handleClear,
             handleDeleteDisciplina,

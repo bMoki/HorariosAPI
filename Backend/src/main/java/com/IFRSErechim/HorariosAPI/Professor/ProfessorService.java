@@ -1,10 +1,9 @@
 package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.*;
+import com.IFRSErechim.HorariosAPI.ParsedRecords.ParsedRecords;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.univocity.parsers.common.record.Record;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class ProfessorService {
 
 
         List<Integer> linhasError = new ArrayList<>();
-        List<Record> parseAllRecords = criaParsedRecords(file);
+        List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
             Record record = parseAllRecords.get(i);
             Professor professor = new Professor();
@@ -79,20 +77,6 @@ public class ProfessorService {
             return criaMessageResponse("Importação de "+professoresCriados.size()+" professores concluída!");
         }catch (DataIntegrityViolationException e){
             throw new AlreadyExistsException("Existe um CPF já cadastrado no arquivo!");
-        }
-    }
-
-    public List<Record> criaParsedRecords (MultipartFile file) throws ParseError {
-        try{
-            InputStream inputStream = file.getInputStream();
-            CsvParserSettings settings = new CsvParserSettings();
-            settings.setHeaderExtractionEnabled(true);
-            CsvParser parser = new CsvParser(settings);
-            List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
-
-            return parseAllRecords;
-        }catch (Exception e){
-            throw new ParseError(e.getMessage());
         }
     }
 

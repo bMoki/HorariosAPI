@@ -4,7 +4,7 @@ export type Disciplina = {
     id?:number;
     nome?:string;
     professores?:Prof[];
-    codMoodle?:number;
+    codMoodle?:string;
 }
 
 export type DisciplinaPage = {

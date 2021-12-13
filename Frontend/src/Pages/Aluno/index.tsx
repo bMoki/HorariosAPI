@@ -1,4 +1,6 @@
+import ExportBtn from "components/Export";
 import FormAluno from "components/Form/Aluno";
+import ImportBtn from "components/Import";
 import NavBar from "components/NavBar";
 import TableAluno from "components/Table/Aluno";
 import AlunoContextProvider from "contexts/AlunoContext";
@@ -15,24 +17,46 @@ function Aluno() {
                 <NavBar />
                 <div className="container">
                     <ToastContainer draggable={false} transition={Zoom} autoClose={5000} />
-                    <div className="row d-flex justify-content-center">
-                        <div className="row">
+
+                    <div className="row">
+                        <div className="col-md-12 col-lg col-sm-12 p-3 pb-0 m-2 mt-4">
                             <h2>Alunos</h2>
-                            <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
-                                <TableAluno />
-                            </div>
-                            {user?.admin && <div className="col-lg-4 col-md-12 col-sm-12 p-3 m-2">
-                                <div className="row">
-                                    <div className=" col border shadow-sm p-3">
-                                        <FormAluno />
-                                    </div>
-                                </div>
-                            </div>}
-
-
                         </div>
+                        <div className="col-lg-4 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
+                            <div className="p-1 align-self-center">
+                                <ExportBtn dataUrl='aluno?paged=false' fileName='AlunoReport' btnClassName='btn btn-success' id="btn-csv" 
+                                headers={[
+                                    { label: 'Nome', key: 'nome' },
+                                    { label: 'CPF', key: 'cpf' },
+                                    { label: 'Matricula', key: 'matricula' },
+                                    { label: 'Data de Inclusão', key: 'dataInclusao' },
+                                    { label: 'Data de Inativação', key: 'dataInativacao'}
+                                ]}
+                                />
+                            </div>
+
+                            <div className="p-1 align-self-center">
+                                <ImportBtn dataUrl="aluno" btnClassName="btn btn-primary " disabled></ImportBtn>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0 m-2 d-flex flex-column">
+                            <TableAluno />
+                        </div>
+                        {user?.admin &&
+                            <div className=" col-lg-4 border shadow-sm p-3 m-2">
+                            <FormAluno />
+                        </div>
+                             
+                           
+                            }
+
+
                     </div>
                 </div>
+             
             </AlunoContextProvider>
         </>
     );

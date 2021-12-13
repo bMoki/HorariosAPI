@@ -10,9 +10,10 @@ import { toast } from "react-toastify";
 
 type IProps = {
     dataUrl: string,
-    btnClassName: string
+    btnClassName: string,
+    disabled?: boolean
 }
-function ImportBtn({ dataUrl, btnClassName }: IProps) {
+function ImportBtn({ dataUrl, btnClassName,disabled }: IProps) {
 
 
     const api = useApi();
@@ -45,7 +46,7 @@ function ImportBtn({ dataUrl, btnClassName }: IProps) {
     return (
         <>
             <div className="btn-group">
-                <label htmlFor="file-upload" className="btn btn-primary">
+                <label htmlFor="file-upload" className={`btn btn-primary ${disabled?"disabled":""}`}>
                     {file?.name ? file.name : "Importar"}
                 </label>
                 <button type="button" className="btn btn-info" onClick={submitFile} disabled={file ? false : true}>

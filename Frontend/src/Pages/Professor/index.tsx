@@ -32,7 +32,15 @@ function Professor() {
                         </div>
                         <div className="col-lg-4 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
                             <div className="p-1 align-self-center">
-                                <ExportBtn dataUrl='professor?paged=false' fileName='ProfessorReport' btnClassName='btn btn-success' id="btn-csv" />
+                                <ExportBtn dataUrl='professor?paged=false' fileName='ProfessorReport' btnClassName='btn btn-success' id="btn-csv" 
+                                 headers={[
+                                    { label: 'Nome', key: 'nome' },
+                                    { label: 'Sobrenome', key: 'sobrenome' },
+                                    { label: 'CPF', key: 'cpf' },
+                                    { label: 'Siape', key: 'siape' },
+                                    { label: 'Data de Nascimento', key: 'dataNascimento' }
+                                ]}
+                                />
                             </div>
 
                             <div className="p-1 align-self-center">

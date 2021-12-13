@@ -13,7 +13,7 @@ import { LoginContext } from "contexts/LoginContext";
 
 function FormDisciplina() {
 
-    const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle, handleDeleteDisciplina
+    const { nome, nomeHandler, btnOperation, handleClear, handleSubmit, formIsOk, codMoodle, handleDeleteDisciplina,codMoodleHandler
     } = useContext(DisciplinaContext);
     
     const {loadingSubmit} = useContext(LoginContext);
@@ -36,7 +36,7 @@ function FormDisciplina() {
 
                 <div className="col-lg-6">
                     <label htmlFor="inputCodMoodle" className="form-label" >Código Moodle</label>
-                    <input type="text" className="form-control"  disabled id="inputCodMoodle" defaultValue={codMoodle} />
+                    <input type="text" className="form-control"  id="inputCodMoodle" value={codMoodle} onChange={codMoodleHandler} />
                 </div>
 
 

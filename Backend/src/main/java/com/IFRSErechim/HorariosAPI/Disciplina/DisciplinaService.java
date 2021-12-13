@@ -26,6 +26,7 @@ public class DisciplinaService {
         return result.map(x -> new DisciplinaDTO(x));
     }
 
+
     public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) throws AlreadyExistsException{
         if(disciplinaRepository.findByNome(disciplinaDTO.getNome()) > 0){
                     throw new AlreadyExistsException("Disciplina já cadastrada!");

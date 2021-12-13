@@ -7,14 +7,19 @@ import { useRef } from "react";
 import { CSVLink } from "react-csv";
 import { FaDownload } from "react-icons/fa";
 import { toast } from "react-toastify";
+type headers = {
+    label:string,
+    key:string
+}
 
 type IProps = {
     dataUrl: string,
     fileName: string,
     btnClassName: string,
-    id: string
+    id: string,
+    headers:headers[]
 }
-function ExportBtn({ dataUrl, fileName, btnClassName, id }: IProps) {
+function ExportBtn({ dataUrl, fileName, btnClassName, id , headers}: IProps) {
 
     //const dataUrl = `professor?paged=false`;
     const api = useApi();
@@ -57,15 +62,6 @@ function ExportBtn({ dataUrl, fileName, btnClassName, id }: IProps) {
         return cleanUp;
     }
 
-
-
-    const headers = [
-        { label: 'Nome', key: 'nome' },
-        { label: 'Sobrenome', key: 'sobrenome' },
-        { label: 'CPF', key: 'cpf' },
-        { label: 'Siape', key: 'siape' },
-        { label: 'Data de Nascimento', key: 'dataNascimento' }
-    ];
     return (
         <>
 
@@ -85,7 +81,7 @@ function ExportBtn({ dataUrl, fileName, btnClassName, id }: IProps) {
                 headers={headers}
                 onClick={() => {
                     if (data.length === 0) {
-                        toast.error(fetchError ? fetchError : "Não há professor!")
+                        toast.error(fetchError ? fetchError : "Documento vazio!")
                         return false;
                     }
                 }}
