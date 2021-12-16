@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.IFRS-Erechim</groupId>
 	<artifactId>HorariosAPI</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-BETA</version>
 	<name>HorariosAPI</name>
 	<description>API para disciplinas, horários, cursos e professores.</description>
 	<properties>
