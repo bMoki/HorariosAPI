@@ -1,8 +1,6 @@
 package com.IFRSErechim.HorariosAPI.Disciplina;
 
-import com.IFRSErechim.HorariosAPI.Curso.Curso;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,10 +31,6 @@ public class Disciplina {
             inverseJoinColumns = @JoinColumn(name = "professor_id")
     )
     private List<Professor> professores = new ArrayList<>();
-
-//    @JsonIgnore
-//    @ManyToMany(fetch = FetchType.LAZY , mappedBy = "disciplinas")
-//    private  List<Curso> cursos = new ArrayList<>();
 
     @Column
     private Long codMoodle;

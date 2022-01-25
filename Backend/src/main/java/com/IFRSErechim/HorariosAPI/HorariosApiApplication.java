@@ -21,7 +21,6 @@ public class HorariosApiApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-
 	@Bean
 	CommandLineRunner run (LoginService loginService){
 		return args -> {
@@ -32,5 +31,6 @@ public class HorariosApiApplication {
 
 		};
 	}
+
 
 }

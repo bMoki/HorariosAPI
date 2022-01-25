@@ -63,12 +63,12 @@ public class ExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(LimitError.class)
-    public ResponseEntity<StandardError> importLimitError(LimitError e, HttpServletRequest request) {
+    @org.springframework.web.bind.annotation.ExceptionHandler(WrongCollumnsException.class)
+    public ResponseEntity<StandardError> wrongCollumnsError(WrongCollumnsException e, HttpServletRequest request) {
         StandardError err = new StandardError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "To many lines gone wrong",
+                "Collumns not matched",
                 e.getMessage(),
                 request.getRequestURI()
         );

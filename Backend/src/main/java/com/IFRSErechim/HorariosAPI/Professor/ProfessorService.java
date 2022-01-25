@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,54 +31,83 @@ public class ProfessorService {
         return result.map(x -> new ProfessorDTO(x));
     }
 
-    public MessageResponseDTO importProfessor (MultipartFile file) throws LimitError, ParseError, AlreadyExistsException {
-        List<Professor> professorList = new ArrayList<>();
-
+    public MessageResponseDTO importProfessor (MultipartFile file) throws ParseError, WrongCollumnsException {
+        Integer linhasAtualizadas=0;
+        Integer linhasInseridas=0;
 
         List<Integer> linhasError = new ArrayList<>();
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
             Record record = parseAllRecords.get(i);
             Professor professor = new Professor();
+            try{
+                if((record.getString("nome") != null)  || (record.getString("cpf")!= null))
+                {
+                    if(!(record.getString("cpf")==null)){
+                        professor.setCpf(record.getString("cpf"));
+                    }
 
-            if(!(record.getString("nome") == null || record.getString("sobrenome")== null || record.getString("email")== null ||
-                    record.getString("cpf")== null || record.getString("siape")== null || record.getString("DataNascimento")== null))
-            {
-                professor.setNome(record.getString("nome"));
-                professor.setSobrenome(record.getString("sobrenome"));
-                professor.setEmail(record.getString("email"));
-                professor.setCpf(record.getString("cpf"));
-                professor.setSIAPE(record.getString("siape"));
-                professor.setDataNascimento(LocalDate.parse(record.getString("dataNascimento")));
+                    if(!(record.getString("nome")==null)){
+                        String nomeCompleto = record.getString("nome");
+                        byte[] bytes = nomeCompleto.getBytes(StandardCharsets.UTF_8);
+                        String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
 
-                professorList.add(professor);
-            }else{
-                linhasError.add((i+1));
-            }
-        }
-        parseAllRecords.forEach(record-> {
+                        String nome = utf8EncodedString.substring(0, utf8EncodedString.indexOf(' '));
+                        String sobrenome = utf8EncodedString.substring(utf8EncodedString.indexOf(' ') + 1);
 
+                        professor.setNome(nome);
+                        professor.setSobrenome(sobrenome);
+                    }
 
-        });
+                    Professor professorDB = professorRepository.findByNomeAndSobrenomeOrCpf(professor.getNome(),professor.getSobrenome(), professor.getCpf());
+                    if(professorDB != null){
+                        if(professor.getCpf()==null){
+                            professor = professorDB;
+                        }else{
+                            professor.setId(professorDB.getId());
+                        }
+                        linhasAtualizadas++;
+                    }else{
+                        linhasInseridas++;
+                    }
 
-        if(linhasError.size() > 5){
-            throw new LimitError(linhasError);
-        }
-        try{
-            List<Professor> professoresCriados = professorRepository.saveAll(professorList);
-            if(linhasError.size()>0){
-                String warn;
-                if(linhasError.size() == 1){
-                    warn = "A linha "+ linhasError +" não foi inserida, verifique-a!";
+                    if(!(record.getString("email")== null)){
+                        professor.setEmail(record.getString("email"));
+                    }
+                    if(!(record.getString("DataNascimento")== null)){
+                        professor.setDataNascimento(LocalDate.parse(record.getString("dataNascimento")));
+                    }
+                    if(!(record.getString("siape")== null)){
+                        professor.setSIAPE(record.getString("siape"));
+                    }
+
+                    if(professor.getCpf()==null){
+                        linhasError.add((i+2));
+                        linhasInseridas--;
+                    }else{
+                        professorRepository.save(professor);
+                    }
+
                 }else{
-                    warn = "As linhas "+ linhasError +" não foram inseridas, verifique-as!";
+                    linhasError.add((i+2));
                 }
-                return criaMessageResponseWithWarning("Importação de "+professoresCriados.size()+" professores concluída!",warn );
+            }catch(IllegalArgumentException e){
+                throw new WrongCollumnsException("O arquivo deve conter as colunas nome, cpf, email, siape e dataNascimento");
             }
-            return criaMessageResponse("Importação de "+professoresCriados.size()+" professores concluída!");
-        }catch (DataIntegrityViolationException e){
-            throw new AlreadyExistsException("Existe um CPF já cadastrado no arquivo!");
+
         }
+
+        if(linhasError.size()>0){
+            String warn;
+            if(linhasError.size() == 1){
+                warn = "A linha "+ linhasError +" não foi inserida, verifique-a!";
+            }else{
+                warn = "As linhas "+ linhasError +" não foram inseridas, verifique-as!";
+            }
+            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!",warn );
+        }
+        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!");
+
     }
 
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
@@ -114,6 +144,10 @@ public class ProfessorService {
 
         professorRepository.deleteById(id);
         return criaMessageResponse("Professor "+professorToDelete.getNome()+" "+professorToDelete.getSobrenome()+ " deletado!");
+    }
+
+    public Long findByCpf (String cpf){
+        return professorRepository.findByCpf(cpf);
     }
 
     private Professor verifyIfExistsById(Long id) throws NotFoundException {

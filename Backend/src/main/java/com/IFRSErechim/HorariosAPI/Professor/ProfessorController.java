@@ -34,7 +34,7 @@ public class ProfessorController {
     }
 
     @PostMapping("/upload")
-    public MessageResponseDTO importProf(@RequestParam("file")MultipartFile file) throws AlreadyExistsException, ParseError, LimitError {
+    public MessageResponseDTO importProf(@RequestParam("file")MultipartFile file) throws  ParseError, WrongCollumnsException {
         return professorService.importProfessor(file);
     }
 
