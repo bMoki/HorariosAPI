@@ -36,6 +36,8 @@ public class ProfessorService {
         Integer linhasInseridas=0;
 
         List<Integer> linhasError = new ArrayList<>();
+        List<Integer> linhasProfessorNaoExiste = new ArrayList<>();
+
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
             Record record = parseAllRecords.get(i);
@@ -44,16 +46,21 @@ public class ProfessorService {
                 if((record.getString("nome") != null)  || (record.getString("cpf")!= null))
                 {
                     if(!(record.getString("cpf")==null)){
-                        professor.setCpf(record.getString("cpf"));
+                       String cpf = record.getString("cpf");
+                        if(cpf.length()==11){
+                            StringBuffer cpfFormated = new StringBuffer(record.getString("professor_cpf"));
+                            cpfFormated.insert(2 + 1, ".");
+                            cpfFormated.insert(6 + 1, ".");
+                            cpfFormated.insert(10 + 1, "-");
+                            cpf = cpfFormated.toString();
+                        }
+                        professor.setCpf(cpf);
                     }
 
                     if(!(record.getString("nome")==null)){
                         String nomeCompleto = record.getString("nome");
-                        byte[] bytes = nomeCompleto.getBytes(StandardCharsets.UTF_8);
-                        String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
-
-                        String nome = utf8EncodedString.substring(0, utf8EncodedString.indexOf(' '));
-                        String sobrenome = utf8EncodedString.substring(utf8EncodedString.indexOf(' ') + 1);
+                        String nome = nomeCompleto.substring(0, nomeCompleto.indexOf(' '));
+                        String sobrenome = nomeCompleto.substring(nomeCompleto.indexOf(' ') + 1);
 
                         professor.setNome(nome);
                         professor.setSobrenome(sobrenome);
@@ -82,7 +89,7 @@ public class ProfessorService {
                     }
 
                     if(professor.getCpf()==null){
-                        linhasError.add((i+2));
+                        linhasProfessorNaoExiste.add((i+2));
                         linhasInseridas--;
                     }else{
                         professorRepository.save(professor);
@@ -97,12 +104,31 @@ public class ProfessorService {
 
         }
 
-        if(linhasError.size()>0){
-            String warn;
-            if(linhasError.size() == 1){
-                warn = "A linha "+ linhasError +" não foi inserida, verifique-a!";
+        if(linhasError.size() > 0 || linhasProfessorNaoExiste.size() > 0){
+            String warn="";
+            String warn2="";
+            if(linhasProfessorNaoExiste.size() == 1){
+                warn2 = "Professor da linha "+linhasProfessorNaoExiste+" não existe";
             }else{
-                warn = "As linhas "+ linhasError +" não foram inseridas, verifique-as!";
+                if(linhasProfessorNaoExiste.size() != 0){
+                    warn2 = "Professores das linhas "+linhasProfessorNaoExiste+" não existem";
+                }
+            }
+            if(linhasError.size() == 1){
+                warn = "A linha "+ linhasError +" não foi inserida";
+
+            }else{
+                if(linhasError.size() != 0){
+                    warn = "As linhas "+ linhasError +" não foram inseridas";
+                }
+            }
+
+            if(!warn2.isEmpty()){
+                if(!warn.isEmpty()){
+                    warn = warn+" e "+warn2;
+                }else{
+                    warn = warn2;
+                }
             }
             return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!",warn );
         }
@@ -148,6 +174,10 @@ public class ProfessorService {
 
     public Long findByCpf (String cpf){
         return professorRepository.findByCpf(cpf);
+    }
+
+    public Professor findByNomeAndSobrenomeOrCpf (String nome, String sobrenome,String cpf){
+        return professorRepository.findByNomeAndSobrenomeOrCpf(nome,sobrenome,cpf);
     }
 
     private Professor verifyIfExistsById(Long id) throws NotFoundException {

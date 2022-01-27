@@ -13,9 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -32,64 +35,110 @@ public class DisciplinaService {
         return result.map(x -> new DisciplinaDTO(x));
     }
 
-    public MessageResponseDTO importDisciplina (MultipartFile file) throws  ParseError, WrongCollumnsException, NotFoundException {
-        List<Disciplina> disciplinaList = new ArrayList<>();
-        Professor professor = new Professor();
+    public MessageResponseDTO importDisciplina (MultipartFile file) throws  ParseError, WrongCollumnsException {
+        Integer linhasAtualizadas=0;
+        Integer linhasInseridas=0;
 
         List<Integer> linhasError = new ArrayList<>();
+        List<Integer> linhasProfessorNaoExiste = new ArrayList<>();
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
             Record record = parseAllRecords.get(i);
             Disciplina disciplina = new Disciplina();
             try{
-                if(!(record.getString("nome") == null || record.getString("codMoodle")== null))
+                if((record.getString("nome") != null)  || (record.getString("codMoodle")!= null))
                 {
-                    disciplina.setNome(record.getString("nome"));
-                    disciplina.setCodMoodle(Long.parseLong(record.getString("codMoodle")));
-
-                    if(!(record.getString("professor")== null)){
-                        Long id = professorService.findByCpf(record.getString("professor"));
-                        if(id==0) linhasError.add(i+1);
-                        professor.setId(id);
+                    if(!(record.getString("nome")==null)){
+                        disciplina.setNome(record.getString("nome"));
                     }
 
-                    disciplinaList.add(disciplina);
+                    if(!(record.getString("codMoodle")==null)){
+                        disciplina.setCodMoodle(record.getString("codMoodle"));
+                    }
+
+                    Disciplina disciplinaDB = disciplinaRepository.findByNomeOrCodMoodle(disciplina.getNome(), disciplina.getCodMoodle());
+                    if(disciplinaDB != null){
+                        disciplina = disciplinaDB;
+                        linhasAtualizadas++;
+                    }else{
+                        linhasInseridas++;
+                    }
+
+                    if((record.getString("professor_cpf")!= null) || (record.getString("professor_nome")!=null)){
+                        String cpf=null;
+                        String nome=null;
+                        String sobrenome=null;
+
+                        if(record.getString("professor_cpf") != null){
+                            cpf = record.getString("professor_cpf");
+                            if(cpf.length()==11){
+                                StringBuffer cpfFormated = new StringBuffer(record.getString("professor_cpf"));
+                                cpfFormated.insert(2 + 1, ".");
+                                cpfFormated.insert(6 + 1, ".");
+                                cpfFormated.insert(10 + 1, "-");
+                                cpf = cpfFormated.toString();
+                            }
+                        }
+                        if(record.getString("professor_nome")!=null){
+                            String nomeCompleto = record.getString("professor_nome");
+                            nome = nomeCompleto.substring(0, nomeCompleto.indexOf(' '));
+                            sobrenome = nomeCompleto.substring(nomeCompleto.indexOf(' ') + 1);
+                        }
+                        Professor professor = professorService.findByNomeAndSobrenomeOrCpf(nome,sobrenome,cpf);
+                        if(professor!=null){
+                            Set<Professor> professorSet = new HashSet<>(disciplina.getProfessores());
+                            professorSet.add(professor);
+                            List<Professor> professorList = new ArrayList<>(professorSet);
+                            disciplina.setProfessores(professorList);
+                        }else{
+                            linhasProfessorNaoExiste.add((i+2));
+                        }
+                    }
+
+                    if(disciplina.getNome()==null){
+                        linhasError.add((i+2));
+                        linhasInseridas--;
+                    }else{
+                        disciplinaRepository.save(disciplina);
+                    }
+
                 }else{
-                    linhasError.add((i+1));
+                    linhasError.add((i+2));
                 }
             }catch(IllegalArgumentException e){
-                throw new WrongCollumnsException("O arquivo deve conter as colunas nome, codMoodle e professor");
+                throw new WrongCollumnsException("O arquivo deve conter as colunas nome, codMoodle, professor_cpf e professor_nome");
             }
         }
 
-        Integer linhasInseridas = 0;
-        Integer linhasAtualizadas = 0;
-
-
-        for(Disciplina disciplina : disciplinaList){
-            Long id = disciplinaRepository.findByCodMoodle(disciplina.getCodMoodle());
-            if(id>0){
-                disciplina = verifyIfExists(id);
-                if(!(professor.getId()==0)){
-                    disciplina.getProfessores().add(professor);
+        if(linhasError.size() > 0 || linhasProfessorNaoExiste.size() > 0){
+            String warn="";
+            String warn2="";
+            if(linhasProfessorNaoExiste.size() == 1){
+                warn2 = "Professor da linha "+linhasProfessorNaoExiste+" não existe";
+            }else{
+                if(linhasProfessorNaoExiste.size() != 0){
+                    warn2 = "Professores das linhas "+linhasProfessorNaoExiste+" não existem";
                 }
-                linhasAtualizadas++;
-            }else{
-                linhasInseridas++;
             }
-            disciplinaRepository.save(disciplina);
-        }
-
-        if(linhasError.size()>0){
-            String warn;
             if(linhasError.size() == 1){
-                warn = "A linha "+ linhasError +" não foi inserida, verifique-a!";
+                warn = "A linha "+ linhasError +" não foi inserida";
+
             }else{
-                warn = "As linhas "+ linhasError +" não foram inseridas, verifique-as!";
+                if(linhasError.size() != 0){
+                    warn = "As linhas "+ linhasError +" não foram inseridas";
+                }
             }
-            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!",warn );
+
+            if(!warn2.isEmpty()){
+                if(!warn.isEmpty()){
+                    warn = warn+" e "+warn2;
+                }else{
+                    warn = warn2;
+                }
+            }
+            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" disciplinas concluída!",warn );
         }
-        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!");
+        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" disciplinas concluída!");
 
     }
 

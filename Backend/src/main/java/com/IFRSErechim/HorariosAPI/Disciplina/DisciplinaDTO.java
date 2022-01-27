@@ -31,7 +31,7 @@ public class DisciplinaDTO implements Serializable {
     @JsonIgnore
     private List<CursoDTO> cursos = new ArrayList<>();
 
-    private Long codMoodle;
+    private String codMoodle;
 
     public DisciplinaDTO(Disciplina entity) {
         id = entity.getId();

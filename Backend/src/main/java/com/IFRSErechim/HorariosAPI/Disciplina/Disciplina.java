@@ -33,7 +33,7 @@ public class Disciplina {
     private List<Professor> professores = new ArrayList<>();
 
     @Column
-    private Long codMoodle;
+    private String codMoodle;
 
     public Disciplina(DisciplinaDTO entity) {
         id = entity.getId();

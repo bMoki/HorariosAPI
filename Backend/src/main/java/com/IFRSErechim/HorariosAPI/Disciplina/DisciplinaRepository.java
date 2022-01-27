@@ -18,7 +18,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina,Long> {
     @Query(value = "SELECT COUNT(nome) FROM disciplina WHERE UPPER(nome) = UPPER(?)",nativeQuery = true)
     Integer findByNome(String nome);
 
-    @Query(value= "SELECT IFNULL((SELECT id FROM disciplina WHERE codMoodle = ?), 0) as id", nativeQuery = true)
-    Long findByCodMoodle(Long codMoodle);
+    @Query("SELECT d FROM Disciplina d WHERE d.nome = ?1 OR d.codMoodle = ?2")
+    Disciplina findByNomeOrCodMoodle(String nome,String codMoodle);
 
 }
