@@ -70,10 +70,9 @@ public class ProfessorService {
                     Professor professorDB = professorRepository.findByNomeAndSobrenomeOrCpf(professor.getNome(),professor.getSobrenome(), professor.getCpf());
                     if(professorDB != null){
                         if(professor.getCpf()==null){
-                            professor = professorDB;
-                        }else{
-                            professor.setId(professorDB.getId());
+                            professor.setCpf(professorDB.getCpf());
                         }
+                        professor.setId(professorDB.getId());
                         linhasAtualizadas++;
                     }else{
                         linhasInseridas++;
