@@ -71,7 +71,7 @@ public class DisciplinaService {
                         if(record.getString("professor_cpf") != null){
                             cpf = record.getString("professor_cpf");
                             if(cpf.length()==11){
-                                StringBuffer cpfFormated = new StringBuffer(record.getString("professor_cpf"));
+                                StringBuffer cpfFormated = new StringBuffer(cpf);
                                 cpfFormated.insert(2 + 1, ".");
                                 cpfFormated.insert(6 + 1, ".");
                                 cpfFormated.insert(10 + 1, "-");
@@ -175,15 +175,18 @@ public class DisciplinaService {
         return disciplinaDTO;
     }
 
-      public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
-            Disciplina disciplinaToDelete = verifyIfExists(id);
-            if(disciplinaRepository.DisciplinaHasReference(id) > 0){
-                throw new DeleteException("Disciplina");
-            }
-
-            disciplinaRepository.deleteById(id);
-            return criaMessageResponse("Disciplina "+ disciplinaToDelete.getNome()+ " deletada!");
+  public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
+        Disciplina disciplinaToDelete = verifyIfExists(id);
+        if(disciplinaRepository.DisciplinaHasReference(id) > 0){
+            throw new DeleteException("Disciplina");
         }
+
+        disciplinaRepository.deleteById(id);
+        return criaMessageResponse("Disciplina "+ disciplinaToDelete.getNome()+ " deletada!");
+    }
+    public Disciplina findByNomeOrCodMoodle(String nome,String codMoodle){
+        return disciplinaRepository.findByNomeOrCodMoodle(nome,codMoodle);
+    }
 
 
     private Disciplina verifyIfExists(Long id) throws NotFoundException {

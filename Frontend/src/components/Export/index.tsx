@@ -72,7 +72,6 @@ function ExportBtn({ dataUrl, fileName, btnClassName, id , headers}: IProps) {
             </div> : <div className="d-flex px-1">Exportar<FaDownload  className="ms-3 mt-1"/></div>}</button>
 
 
-
             <CSVLink
                 filename={`${fileName}.csv`}
                 data={data}

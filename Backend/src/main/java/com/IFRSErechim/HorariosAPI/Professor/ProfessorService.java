@@ -49,7 +49,7 @@ public class ProfessorService {
                     if(!(record.getString("cpf")==null)){
                        String cpf = record.getString("cpf");
                         if(cpf.length()==11){
-                            StringBuffer cpfFormated = new StringBuffer(record.getString("professor_cpf"));
+                            StringBuffer cpfFormated = new StringBuffer(cpf);
                             cpfFormated.insert(2 + 1, ".");
                             cpfFormated.insert(6 + 1, ".");
                             cpfFormated.insert(10 + 1, "-");
