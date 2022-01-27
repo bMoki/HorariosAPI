@@ -95,7 +95,8 @@ public class ProfessorService {
                         if (professorDB != null) {
                             if (Objects.equals(professor.getEmail(), professorDB.getEmail()) && Objects.equals(professor.getNome(), professorDB.getNome()) &&
                                     Objects.equals(professor.getSobrenome(), professorDB.getSobrenome()) && Objects.equals(professor.getSIAPE(), professorDB.getSIAPE()) &&
-                                    Objects.equals(professor.getDataNascimento(), professorDB.getDataNascimento())) {
+                                    Objects.equals(professor.getDataNascimento(), professorDB.getDataNascimento()))
+                            {
                                 linhasAtualizadas--;
                             } else {
                                 professorRepository.save(professor);

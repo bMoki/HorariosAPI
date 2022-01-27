@@ -15,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -58,7 +55,9 @@ public class DisciplinaService {
 
                     Disciplina disciplinaDB = disciplinaRepository.findByNomeOrCodMoodle(disciplina.getNome(), disciplina.getCodMoodle());
                     if(disciplinaDB != null){
-                        disciplina = disciplinaDB;
+                        disciplina.setId(disciplinaDB.getId());
+                        disciplina.setNome(disciplinaDB.getNome());
+                        disciplina.setProfessores(disciplinaDB.getProfessores());
                         linhasAtualizadas++;
                     }else{
                         linhasInseridas++;
@@ -94,14 +93,22 @@ public class DisciplinaService {
                             linhasProfessorNaoExiste.add((i+2));
                         }
                     }
-
                     if(disciplina.getNome()==null){
                         linhasError.add((i+2));
                         linhasInseridas--;
                     }else{
-                        disciplinaRepository.save(disciplina);
+                        if(disciplinaDB!=null){
+                            if(Objects.equals(disciplina.getCodMoodle(),disciplinaDB.getCodMoodle()) &&
+                                    Objects.equals(disciplina.getProfessores(),disciplinaDB.getProfessores()))
+                            {
+                                linhasAtualizadas--;
+                            }else{
+                                disciplinaRepository.save(disciplina);
+                            }
+                        }else{
+                            disciplinaRepository.save(disciplina);
+                        }
                     }
-
                 }else{
                     linhasError.add((i+2));
                 }
