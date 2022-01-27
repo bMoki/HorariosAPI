@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -91,10 +92,19 @@ public class ProfessorService {
                     if(professor.getCpf()==null){
                         linhasProfessorNaoExiste.add((i+2));
                         linhasInseridas--;
-                    }else{
-                        professorRepository.save(professor);
+                    }else {
+                        if (professorDB != null) {
+                            if (Objects.equals(professor.getEmail(), professorDB.getEmail()) && Objects.equals(professor.getNome(), professorDB.getNome()) &&
+                                    Objects.equals(professor.getSobrenome(), professorDB.getSobrenome()) && Objects.equals(professor.getSIAPE(), professorDB.getSIAPE()) &&
+                                    Objects.equals(professor.getDataNascimento(), professorDB.getDataNascimento())) {
+                                linhasAtualizadas--;
+                            } else {
+                                professorRepository.save(professor);
+                            }
+                        } else {
+                            professorRepository.save(professor);
+                        }
                     }
-
                 }else{
                     linhasError.add((i+2));
                 }
