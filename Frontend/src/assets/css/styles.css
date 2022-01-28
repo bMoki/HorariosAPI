@@ -66,3 +66,12 @@ html, body {
 .table-horario:hover {
    transform: scale(1.1);
 }
+
+.table-status th{
+    text-align: center; 
+ }
+ 
+ .table-status {
+    margin: auto;
+    width: 80% !important; 
+ }

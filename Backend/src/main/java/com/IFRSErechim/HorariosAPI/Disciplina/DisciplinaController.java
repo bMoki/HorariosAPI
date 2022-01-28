@@ -2,6 +2,7 @@ package com.IFRSErechim.HorariosAPI.Disciplina;
 
 import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class DisciplinaController {
     }
 
     @PostMapping("/upload")
-    public MessageResponseDTO importDisciplina(@RequestParam("file") MultipartFile file) throws ParseError, WrongCollumnsException, NotFoundException {
+    public MessageResponseImportDTO importDisciplina(@RequestParam("file") MultipartFile file) throws ParseError, WrongCollumnsException, NotFoundException {
         return disciplinaService.importDisciplina(file);
     }
 

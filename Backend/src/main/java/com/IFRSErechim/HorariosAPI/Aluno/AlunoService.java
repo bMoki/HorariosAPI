@@ -7,6 +7,7 @@ import com.IFRSErechim.HorariosAPI.ParsedRecords.ParsedRecords;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorService;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,16 @@ public class AlunoService {
 
         return new AlunoDTO(aluno);
     }
-    public MessageResponseDTO importAluno(MultipartFile file) throws ParseError, WrongCollumnsException {
-        Integer linhasAtualizadas=0;
-        Integer linhasInseridas=0;
+    public MessageResponseImportDTO importAluno(MultipartFile file) throws ParseError, WrongCollumnsException {
+        Integer atualizadas=0;
+        Integer inseridas=0;
+        Integer erros=0;
+        Integer naoExistem=0;
+        List<HashMap> errorFile = new ArrayList<>();
 
-        List<Integer> linhasError = new ArrayList<>();
-        List<Integer> linhasDisciplinaNaoExiste = new ArrayList<>();
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
+            HashMap<String,String> errorLine = new HashMap<>();
             Record record = parseAllRecords.get(i);
             Aluno aluno = new Aluno();
             try{
@@ -56,7 +59,7 @@ public class AlunoService {
                     if(!(record.getString("cpf")==null)){
                         String cpf = record.getString("cpf");
                         if(cpf.length()==11){
-                            StringBuffer cpfFormated = new StringBuffer(record.getString("professor_cpf"));
+                            StringBuffer cpfFormated = new StringBuffer(record.getString("cpf"));
                             cpfFormated.insert(2 + 1, ".");
                             cpfFormated.insert(6 + 1, ".");
                             cpfFormated.insert(10 + 1, "-");
@@ -74,9 +77,9 @@ public class AlunoService {
                         aluno.setId(alunoDB.getId());
                         aluno.setNomeCompleto(alunoDB.getNomeCompleto());
                         aluno.setDisciplinas(alunoDB.getDisciplinas());
-                        linhasAtualizadas++;
+                        atualizadas++;
                     }else{
-                        linhasInseridas++;
+                        inseridas++;
                     }
 
                     if((record.getString("disciplina_nome")!= null) || (record.getString("disciplina_cod")!=null)){
@@ -96,7 +99,12 @@ public class AlunoService {
                             List<Disciplina> disciplinaList = new ArrayList<>(disciplinaSet);
                             aluno.setDisciplinas(disciplinaList);
                         }else{
-                            linhasDisciplinaNaoExiste.add((i+2));
+                            errorLine.put("nome", record.getString("nome"));
+                            errorLine.put("matricula", record.getString("matricula"));
+                            errorLine.put("cpf", record.getString("cpf"));
+                            errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
+                            errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                            naoExistem++;
                         }
                     }
                     if(record.getString("matricula")!=null){
@@ -104,15 +112,20 @@ public class AlunoService {
                     }
 
                     if(aluno.getNomeCompleto()==null){
-                        linhasError.add((i+2));
-                        linhasInseridas--;
+                        errorLine.put("nome", record.getString("nome"));
+                        errorLine.put("matricula", record.getString("matricula"));
+                        errorLine.put("cpf", record.getString("cpf"));
+                        errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
+                        errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                        inseridas--;
+                        erros++;
                     }else{
                         if(alunoDB!=null){
                             if(Objects.equals(aluno.getNomeCompleto(),alunoDB.getNomeCompleto()) &&
                                     Objects.equals(aluno.getDisciplinas(),alunoDB.getDisciplinas()) &&
                                     Objects.equals(aluno.getMatricula(),aluno.getMatricula()))
                             {
-                                linhasAtualizadas--;
+                                atualizadas--;
                             }else{
                                 alunoRepository.save(aluno);
                             }
@@ -121,43 +134,21 @@ public class AlunoService {
                         }
                     }
                 }else{
-                    linhasError.add((i+2));
+                    errorLine.put("nome", record.getString("nome"));
+                    errorLine.put("matricula", record.getString("matricula"));
+                    errorLine.put("cpf", record.getString("cpf"));
+                    errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
+                    errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                    erros++;
                 }
             }catch(IllegalArgumentException e){
                 throw new WrongCollumnsException("O arquivo deve conter as colunas nome, matricula, cpf, disciplina_cod e disciplina_nome");
             }
+            if(!errorLine.isEmpty()){
+                errorFile.add(errorLine);
+            }
         }
-
-        if(linhasError.size() > 0 || linhasDisciplinaNaoExiste.size() > 0){
-            String warn="";
-            String warn2="";
-            if(linhasDisciplinaNaoExiste.size() == 1){
-                warn2 = "Disciplina da linha "+linhasDisciplinaNaoExiste+" não existe";
-            }else{
-                if(linhasDisciplinaNaoExiste.size() != 0){
-                    warn2 = "Disciplinas das linhas "+linhasDisciplinaNaoExiste+" não existem";
-                }
-            }
-            if(linhasError.size() == 1){
-                warn = "A linha "+ linhasError +" não foi inserida";
-
-            }else{
-                if(linhasError.size() != 0){
-                    warn = "As linhas "+ linhasError +" não foram inseridas";
-                }
-            }
-
-            if(!warn2.isEmpty()){
-                if(!warn.isEmpty()){
-                    warn = warn+" e "+warn2;
-                }else{
-                    warn = warn2;
-                }
-            }
-            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" alunos concluída!",warn );
-        }
-        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" alunos concluída!");
-
+        return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
     }
 
     public MessageResponseDTO criaAluno (AlunoDTO alunoDTO) throws AlreadyExistsException {
@@ -201,11 +192,14 @@ public class AlunoService {
                     .message(message)
                     .build();
     }
-    private MessageResponseDTO criaMessageResponseWithWarning(String message,String warning) {
-        return MessageResponseDTO
+    private MessageResponseImportDTO criaMessageResponseImport(Integer inseridas, Integer atualizadas, Integer erros, Integer naoExistem, List<HashMap> file) {
+        return MessageResponseImportDTO
                 .builder()
-                .message(message)
-                .warning(warning)
+                .inseridas(inseridas)
+                .atualizadas(atualizadas)
+                .erros(erros)
+                .naoExistem(naoExistem)
+                .file(file)
                 .build();
     }
 }

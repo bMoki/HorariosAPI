@@ -1,6 +1,7 @@
 import ExportBtn from "components/Export";
 import FormAluno from "components/Form/Aluno";
 import ImportBtn from "components/Import";
+import ImportStatus from "components/ImportStatus";
 import NavBar from "components/NavBar";
 import TableAluno from "components/Table/Aluno";
 import AlunoContextProvider from "contexts/AlunoContext";
@@ -36,7 +37,15 @@ function Aluno() {
                             </div>
 
                             <div className="p-1 align-self-center">
-                                <ImportBtn dataUrl="aluno" btnClassName="btn btn-primary " disabled></ImportBtn>
+                                <ImportBtn dataUrl="aluno" 
+                                    table={{
+                                            titulos:["nome","cpf","matricula","disciplina_cod","disciplina_nome"],
+                                            exemplo:["aluno ifrs","123.456.789-10","12345","COD12","disciplina1"]
+                                            }}
+                                    dicas={["Para que os alunos sejam associados com a disciplina, deve-se antes importar disciplinas"]}
+                                  
+                                    ></ImportBtn>
+                                
                             </div>
                         </div>
 
@@ -56,7 +65,14 @@ function Aluno() {
 
                     </div>
                 </div>
-             
+                <ImportStatus headers={[
+                                    { label: 'Nome', key: 'nome' },
+                                    { label: 'CPF', key: 'cpf' },
+                                    { label: 'Matricula', key: 'matricula' },
+                                    { label: 'Codigo Disciplina', key: 'disciplina_cod' },
+                                    { label: 'Nome Disciplina', key: 'disciplina_nome'}
+                                ]} 
+                                naoExistem="Disciplinas não encontradas"></ImportStatus>
             </AlunoContextProvider>
         </>
     );

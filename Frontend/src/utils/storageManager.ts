@@ -15,15 +15,20 @@ export const Toast = () => {
             if(res.data.warning){
                 toast.warn(res.data.warning);
             }
-            toast.success(res.data.message)
+            if(res.data.message){
+                toast.success(res.data.message)
+            }
+            
         }
-        sessionStorage.removeItem("response");
+        if(res.data.inseridas === undefined){
+            sessionStorage.removeItem("response");
+        }   
     }
 
     if (sessionStorage.getItem("logout")) {
         const res = sessionStorage.getItem("logout");
-        sessionStorage.removeItem("logout");
         toast.info(res);
+        sessionStorage.removeItem("logout");
     }
 
     if (sessionStorage.getItem("login")) {

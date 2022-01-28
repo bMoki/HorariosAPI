@@ -66,13 +66,13 @@ const DisciplinaContextProvider: FC = ({ children }) => {
     function handleClick(item: Disciplina) {
         setNome(item?.nome === undefined ? "" : item.nome);
         setId(item?.id === undefined ? 0 : item.id);
-        setProfessores(item?.professores === undefined ? [] : item.professores.map((prof) => {
+        setProfessores(item?.professores === undefined ? [] : item.professores === null ? [] : item.professores.map((prof) => {
             return {
                 value: prof.id,
                 label: prof.nome + ' ' + prof.sobrenome
             }
         }));
-        setCodMoodle(item?.codMoodle === undefined ? "" : item.codMoodle);
+        setCodMoodle(item?.codMoodle === undefined ? "" : item.codMoodle === null ? "" : item.codMoodle);
         setBtnOperation(true);
     }
 

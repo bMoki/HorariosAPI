@@ -142,13 +142,13 @@ const ProfessorContextProvider: FC = ({ children }) => {
 
     function handleClick(item: Prof) {
         const data = dataFormater(item.dataNascimento);
-        setNome(item?.nome === undefined ? "" : item.nome);
-        setSobrenome(item?.sobrenome === undefined ? "" : item.sobrenome);
-        setCPF(item?.cpf === undefined ? "" : item.cpf);
-        setEmail(item?.email === undefined ? "" : item.email);
-        setDataNascimento(data === undefined ? "" : data);
-        setSiape(item?.siape === undefined ? "" : item.siape);
-        setId(item?.id === undefined ? 0 : item.id);
+        setNome(item?.nome === undefined ? "" : item.nome === null ? "" : item.nome);
+        setSobrenome(item?.sobrenome === undefined ? "" : item.sobrenome === null ? "" : item.sobrenome);
+        setCPF(item?.cpf === undefined ? "" : item.cpf === null ? "" : item.cpf);
+        setEmail(item?.email === undefined ? "" : item.email === null ? "" : item.email);
+        setDataNascimento(data === undefined ? "" : data === null ? "" : data);
+        setSiape(item?.siape === undefined ? "" : item.siape === null ? "" : item.siape);
+        setId(item?.id === undefined ? 0 : item.id === null ? 0 : item.id);
         setBtnOperation(true)
     }
 

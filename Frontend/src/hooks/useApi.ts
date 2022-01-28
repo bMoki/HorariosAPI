@@ -38,6 +38,7 @@ const useApi = () => {
     axiosInstance.interceptors.request.use(async req => {
         if(req.method !=="get") setLoadingSubmit!(true);
         
+        
         const isExpired = await checkToken(user);
         if (isExpired === false) {
             req.headers.Authorization = `Bearer ${JSON.parse(authTokens!).access_token}`
@@ -66,6 +67,9 @@ const useApi = () => {
     axiosInstance.interceptors.response.use(function (response) {
         if (response.config.method !== "get") {
             sessionStorage.setItem("response", JSON.stringify(response));
+            // if(response.config.url?.search("upload")=== -1){
+            //     window.location.reload();
+            // }
             window.location.reload();
         }
         return response;

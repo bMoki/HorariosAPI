@@ -2,6 +2,7 @@ package com.IFRSErechim.HorariosAPI.Professor;
 
 import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ public class ProfessorController {
     }
 
     @PostMapping("/upload")
-    public MessageResponseDTO importProf(@RequestParam("file")MultipartFile file) throws  ParseError, WrongCollumnsException {
+    public MessageResponseImportDTO importProf(@RequestParam("file")MultipartFile file) throws  ParseError, WrongCollumnsException {
         return professorService.importProfessor(file);
     }
 

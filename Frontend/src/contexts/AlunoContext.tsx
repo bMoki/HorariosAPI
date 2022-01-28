@@ -98,14 +98,14 @@ const AlunoContextProvider: FC = ({ children }) => {
 
     function handleClick(item: Aluno) {
         const data = dataFormater(item.dataInclusao);
-        setDataInclusao(data === undefined ? "" : data);
-        setId(item?.id === undefined ? 0 : item.id);
-        setNomeCompleto(item?.nomeCompleto === undefined ? "" : item.nomeCompleto);
-        setCpf(item?.cpf === undefined ? "" : item.cpf);
-        setMatricula(item?.matricula === undefined ? "" : item.matricula);
-        setAtivo(item?.ativo === undefined ? true : item.ativo);
+        setDataInclusao(data === undefined ? "" : data === null ? "" : data);
+        setId(item?.id === undefined ? 0 : item.id === null ? 0 : item.id);
+        setNomeCompleto(item?.nomeCompleto === undefined ? "" : item.nomeCompleto === null ? "" : item.nomeCompleto);
+        setCpf(item?.cpf === undefined ? "" : item.cpf === null ? "" : item.cpf);
+        setMatricula(item?.matricula === undefined ? "" : item.matricula === null ? "" : item.matricula);
+        setAtivo(item?.ativo === undefined ? true : item.ativo === null ? true : item.ativo);
         setBtnOperation(true);
-        setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas.map((disciplina) => {
+        setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas === null ? [] : item.disciplinas.map((disciplina) => {
             return {
                 value: disciplina.id,
                 label: disciplina.nome

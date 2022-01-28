@@ -1,6 +1,7 @@
 import ExportBtn from "components/Export";
 import FormProf from "components/Form/Professor";
 import ImportBtn from "components/Import";
+import ImportStatus from "components/ImportStatus";
 import NavBar from "components/NavBar";
 //import SearchProf from "components/Search/Professor";
 import TableProf from "components/Table/Professor";
@@ -38,13 +39,20 @@ function Professor() {
                                     { label: 'Sobrenome', key: 'sobrenome' },
                                     { label: 'CPF', key: 'cpf' },
                                     { label: 'Siape', key: 'siape' },
+                                    { label: 'Email', key: 'email'},
                                     { label: 'Data de Nascimento', key: 'dataNascimento' }
                                 ]}
                                 />
                             </div>
 
                             <div className="p-1 align-self-center">
-                                <ImportBtn dataUrl="professor" btnClassName="btn btn-primary "></ImportBtn>
+                                <ImportBtn dataUrl="professor"
+                                    table={{
+                                        titulos:["nome","cpf","siape","dataNascimento","email"],
+                                        exemplo:["Will Smith","123.456.789-10","12345","1990-04-03","will@edu.br"]
+                                    }}
+                                  
+                                ></ImportBtn>
                             </div>
                         </div>
 
@@ -63,7 +71,14 @@ function Professor() {
 
                     </div>
                 </div>
-
+            <ImportStatus headers={[
+                                    { label: 'Nome', key: 'nome' },
+                                    { label: 'CPF', key: 'cpf' },
+                                    { label: 'Siape', key: 'siape' },
+                                    { label: 'Email', key: 'email'},
+                                    { label: 'Data de Nascimento', key: 'dataNascimento' },
+                                ]}
+                                naoExistem="Professores não encontrados"></ImportStatus>
             </ProfessorContextProvider>
         </>
     );

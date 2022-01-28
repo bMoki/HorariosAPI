@@ -3,8 +3,11 @@ package com.IFRSErechim.HorariosAPI.Professor;
 import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.ParsedRecords.ParsedRecords;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,15 +36,16 @@ public class ProfessorService {
         return result.map(x -> new ProfessorDTO(x));
     }
 
-    public MessageResponseDTO importProfessor (MultipartFile file) throws ParseError, WrongCollumnsException {
-        Integer linhasAtualizadas=0;
-        Integer linhasInseridas=0;
-
-        List<Integer> linhasError = new ArrayList<>();
-        List<Integer> linhasProfessorNaoExiste = new ArrayList<>();
+    public MessageResponseImportDTO importProfessor (MultipartFile file) throws ParseError, WrongCollumnsException {
+        Integer atualizadas=0;
+        Integer inseridas=0;
+        Integer erros=0;
+        Integer naoExistem=0;
+        List<HashMap> errorFile = new ArrayList<>();
 
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
+            HashMap<String,String> errorLine = new HashMap<>();
             Record record = parseAllRecords.get(i);
             Professor professor = new Professor();
             try{
@@ -73,9 +78,9 @@ public class ProfessorService {
                             professor.setCpf(professorDB.getCpf());
                         }
                         professor.setId(professorDB.getId());
-                        linhasAtualizadas++;
+                        atualizadas++;
                     }else{
-                        linhasInseridas++;
+                        inseridas++;
                     }
 
                     if(!(record.getString("email")== null)){
@@ -89,15 +94,20 @@ public class ProfessorService {
                     }
 
                     if(professor.getCpf()==null){
-                        linhasProfessorNaoExiste.add((i+2));
-                        linhasInseridas--;
+                        errorLine.put("nome", record.getString("nome"));
+                        errorLine.put("cpf", record.getString("cpf"));
+                        errorLine.put("siape", record.getString("siape"));
+                        errorLine.put("email", record.getString("email"));
+                        errorLine.put("dataNascimento", record.getString("dataNascimento"));
+                        naoExistem++;
+                        inseridas--;
                     }else {
                         if (professorDB != null) {
                             if (Objects.equals(professor.getEmail(), professorDB.getEmail()) && Objects.equals(professor.getNome(), professorDB.getNome()) &&
                                     Objects.equals(professor.getSobrenome(), professorDB.getSobrenome()) && Objects.equals(professor.getSIAPE(), professorDB.getSIAPE()) &&
                                     Objects.equals(professor.getDataNascimento(), professorDB.getDataNascimento()))
                             {
-                                linhasAtualizadas--;
+                                atualizadas--;
                             } else {
                                 professorRepository.save(professor);
                             }
@@ -106,44 +116,21 @@ public class ProfessorService {
                         }
                     }
                 }else{
-                    linhasError.add((i+2));
+                    errorLine.put("nome", record.getString("nome"));
+                    errorLine.put("cpf", record.getString("cpf"));
+                    errorLine.put("siape", record.getString("siape"));
+                    errorLine.put("email", record.getString("email"));
+                    errorLine.put("dataNascimento", record.getString("dataNascimento"));
+                    erros++;
                 }
             }catch(IllegalArgumentException e){
                 throw new WrongCollumnsException("O arquivo deve conter as colunas nome, cpf, email, siape e dataNascimento");
             }
-
+            if(!errorLine.isEmpty()){
+                errorFile.add(errorLine);
+            }
         }
-
-        if(linhasError.size() > 0 || linhasProfessorNaoExiste.size() > 0){
-            String warn="";
-            String warn2="";
-            if(linhasProfessorNaoExiste.size() == 1){
-                warn2 = "Professor da linha "+linhasProfessorNaoExiste+" não existe";
-            }else{
-                if(linhasProfessorNaoExiste.size() != 0){
-                    warn2 = "Professores das linhas "+linhasProfessorNaoExiste+" não existem";
-                }
-            }
-            if(linhasError.size() == 1){
-                warn = "A linha "+ linhasError +" não foi inserida";
-
-            }else{
-                if(linhasError.size() != 0){
-                    warn = "As linhas "+ linhasError +" não foram inseridas";
-                }
-            }
-
-            if(!warn2.isEmpty()){
-                if(!warn.isEmpty()){
-                    warn = warn+" e "+warn2;
-                }else{
-                    warn = warn2;
-                }
-            }
-            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!",warn );
-        }
-        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" professores concluída!");
-
+        return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
     }
 
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
@@ -202,13 +189,15 @@ public class ProfessorService {
                 .build();
     }
 
-    private MessageResponseDTO criaMessageResponseWithWarning(String message,String warning) {
-        return MessageResponseDTO
+    private MessageResponseImportDTO criaMessageResponseImport(Integer inseridas, Integer atualizadas, Integer erros, Integer naoExistem, List<HashMap> file) {
+        return MessageResponseImportDTO
                 .builder()
-                .message(message)
-                .warning(warning)
+                .inseridas(inseridas)
+                .atualizadas(atualizadas)
+                .erros(erros)
+                .naoExistem(naoExistem)
+                .file(file)
                 .build();
     }
-
-
 }
+

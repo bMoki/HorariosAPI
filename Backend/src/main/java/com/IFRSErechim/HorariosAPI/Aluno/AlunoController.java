@@ -2,6 +2,7 @@ package com.IFRSErechim.HorariosAPI.Aluno;
 
 import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class AlunoController {
     }
 
     @PostMapping("/upload")
-    public MessageResponseDTO importAluno(@RequestParam("file") MultipartFile file) throws ParseError, WrongCollumnsException {
+    public MessageResponseImportDTO importAluno(@RequestParam("file") MultipartFile file) throws ParseError, WrongCollumnsException {
         return alunoService.importAluno(file);
     }
 

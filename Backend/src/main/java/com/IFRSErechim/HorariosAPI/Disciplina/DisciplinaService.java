@@ -5,6 +5,7 @@ import com.IFRSErechim.HorariosAPI.ParsedRecords.ParsedRecords;
 import com.IFRSErechim.HorariosAPI.Professor.Professor;
 import com.IFRSErechim.HorariosAPI.Professor.ProfessorService;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
+import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,16 @@ public class DisciplinaService {
         return result.map(x -> new DisciplinaDTO(x));
     }
 
-    public MessageResponseDTO importDisciplina (MultipartFile file) throws  ParseError, WrongCollumnsException {
-        Integer linhasAtualizadas=0;
-        Integer linhasInseridas=0;
+    public MessageResponseImportDTO importDisciplina (MultipartFile file) throws  ParseError, WrongCollumnsException {
+        Integer atualizadas=0;
+        Integer inseridas=0;
+        Integer erros=0;
+        Integer naoExistem=0;
+        List<HashMap> errorFile = new ArrayList<>();
 
-        List<Integer> linhasError = new ArrayList<>();
-        List<Integer> linhasProfessorNaoExiste = new ArrayList<>();
         List<Record> parseAllRecords = new ParsedRecords(file).getRecords();
         for(int i=0;i<parseAllRecords.size();i++){
+            HashMap<String,String> errorLine = new HashMap<>();
             Record record = parseAllRecords.get(i);
             Disciplina disciplina = new Disciplina();
             try{
@@ -58,9 +61,9 @@ public class DisciplinaService {
                         disciplina.setId(disciplinaDB.getId());
                         disciplina.setNome(disciplinaDB.getNome());
                         disciplina.setProfessores(disciplinaDB.getProfessores());
-                        linhasAtualizadas++;
+                        atualizadas++;
                     }else{
-                        linhasInseridas++;
+                        inseridas++;
                     }
 
                     if((record.getString("professor_cpf")!= null) || (record.getString("professor_nome")!=null)){
@@ -90,18 +93,25 @@ public class DisciplinaService {
                             List<Professor> professorList = new ArrayList<>(professorSet);
                             disciplina.setProfessores(professorList);
                         }else{
-                            linhasProfessorNaoExiste.add((i+2));
+                            errorLine.put("nome", record.getString("nome"));
+                            errorLine.put("codMoodle", record.getString("codMoodle"));
+                            errorLine.put("professor_nome", record.getString("professor_nome"));
+                            errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                            naoExistem++;
                         }
                     }
                     if(disciplina.getNome()==null){
-                        linhasError.add((i+2));
-                        linhasInseridas--;
+                        errorLine.put("nome", record.getString("nome"));
+                        errorLine.put("codMoodle", record.getString("codMoodle"));
+                        errorLine.put("professor_nome", record.getString("professor_nome"));
+                        errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                        inseridas--;
                     }else{
                         if(disciplinaDB!=null){
                             if(Objects.equals(disciplina.getCodMoodle(),disciplinaDB.getCodMoodle()) &&
                                     Objects.equals(disciplina.getProfessores(),disciplinaDB.getProfessores()))
                             {
-                                linhasAtualizadas--;
+                                atualizadas--;
                             }else{
                                 disciplinaRepository.save(disciplina);
                             }
@@ -110,42 +120,20 @@ public class DisciplinaService {
                         }
                     }
                 }else{
-                    linhasError.add((i+2));
+                    errorLine.put("nome", record.getString("nome"));
+                    errorLine.put("codMoodle", record.getString("codMoodle"));
+                    errorLine.put("professor_nome", record.getString("professor_nome"));
+                    errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                    erros++;
                 }
             }catch(IllegalArgumentException e){
                 throw new WrongCollumnsException("O arquivo deve conter as colunas nome, codMoodle, professor_cpf e professor_nome");
             }
+            if(!errorLine.isEmpty()){
+                errorFile.add(errorLine);
+            }
         }
-
-        if(linhasError.size() > 0 || linhasProfessorNaoExiste.size() > 0){
-            String warn="";
-            String warn2="";
-            if(linhasProfessorNaoExiste.size() == 1){
-                warn2 = "Professor da linha "+linhasProfessorNaoExiste+" não existe";
-            }else{
-                if(linhasProfessorNaoExiste.size() != 0){
-                    warn2 = "Professores das linhas "+linhasProfessorNaoExiste+" não existem";
-                }
-            }
-            if(linhasError.size() == 1){
-                warn = "A linha "+ linhasError +" não foi inserida";
-
-            }else{
-                if(linhasError.size() != 0){
-                    warn = "As linhas "+ linhasError +" não foram inseridas";
-                }
-            }
-
-            if(!warn2.isEmpty()){
-                if(!warn.isEmpty()){
-                    warn = warn+" e "+warn2;
-                }else{
-                    warn = warn2;
-                }
-            }
-            return criaMessageResponseWithWarning("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" disciplinas concluída!",warn );
-        }
-        return criaMessageResponse("Inserção de "+linhasInseridas+" e atualização de "+linhasAtualizadas+" disciplinas concluída!");
+        return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
 
     }
 
@@ -201,11 +189,14 @@ public class DisciplinaService {
                 .build();
     }
 
-    private MessageResponseDTO criaMessageResponseWithWarning(String message,String warning) {
-        return MessageResponseDTO
+    private MessageResponseImportDTO criaMessageResponseImport(Integer inseridas, Integer atualizadas, Integer erros, Integer naoExistem, List<HashMap> file) {
+        return MessageResponseImportDTO
                 .builder()
-                .message(message)
-                .warning(warning)
+                .inseridas(inseridas)
+                .atualizadas(atualizadas)
+                .erros(erros)
+                .naoExistem(naoExistem)
+                .file(file)
                 .build();
     }
 }

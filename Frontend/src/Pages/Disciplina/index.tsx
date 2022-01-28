@@ -1,6 +1,7 @@
 import ExportBtn from "components/Export";
 import FormDisciplina from "components/Form/Disciplina";
 import ImportBtn from "components/Import";
+import ImportStatus from "components/ImportStatus";
 import NavBar from "components/NavBar";
 import TableDisciplina from "components/Table/Disciplina";
 import DisciplinaContextProvider from "contexts/DisciplinaContext";
@@ -34,7 +35,13 @@ function Disciplina() {
                                 </div>
 
                                 <div className="p-1 align-self-center">
-                                    <ImportBtn dataUrl="aluno" btnClassName="btn btn-primary " disabled></ImportBtn>
+                                    <ImportBtn dataUrl="disciplina"
+                                        table={{
+                                            titulos: ["nome", "codMoodle", "professor_cpf", "professor_nome"],
+                                            exemplo: ["Matematica", "MAT123", "123.456.789-10", "Will Smith"]
+                                        }}
+                                        dicas={["Para que as disciplinas sejam associadas com o professor, deve-se antes importar professores"]}
+                                    ></ImportBtn>
                                 </div>
                             </div>
 
@@ -56,7 +63,13 @@ function Disciplina() {
                         </div>
                     </div>
                 </div>
-
+                <ImportStatus headers={[
+                    { label: 'Nome', key: 'nome' },
+                    { label: 'Codigo Moodle', key: 'codMoodle' },
+                    { label: 'Professor Nome', key: 'professor_nome'},
+                    { label: 'Professor CPF', key: 'professor_cpf'}
+                ]}
+                naoExistem="Professores não encontrados"></ImportStatus>
             </DisciplinaContextProvider>
         </>
     );
