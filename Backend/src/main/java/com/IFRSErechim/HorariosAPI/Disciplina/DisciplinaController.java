@@ -24,7 +24,7 @@ public class DisciplinaController {
 
     @GetMapping
     public ResponseEntity<Page<DisciplinaDTO>>  findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,
-                                                        @PageableDefault(size = 12 ) Pageable pageable){
+                                                        @PageableDefault(size = 6 ) Pageable pageable){
         if(!paged) pageable = Pageable.unpaged();
 
         Page<DisciplinaDTO> list = disciplinaService.findAll(pageable);
