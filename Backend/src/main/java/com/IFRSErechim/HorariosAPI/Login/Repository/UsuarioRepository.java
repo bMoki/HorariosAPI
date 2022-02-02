@@ -11,4 +11,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query(value= "SELECT COUNT(*) FROM usuario WHERE username = ?", nativeQuery = true)
     Integer isUsernameRegistered(String username);
+
 }

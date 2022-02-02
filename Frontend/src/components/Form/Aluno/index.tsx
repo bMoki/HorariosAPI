@@ -15,7 +15,7 @@ function FormAluno() {
 
     const { nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo,
         matriculaHandler, cpfHandler, nomeCompletoHandler, dataInativacaoHandler, dataInclusaoHandler, ativoHandler,
-        handleSubmit, btnOperation, handleClear, formIsOk, disciplinas, selectedDisciplinaHandler,handleDeleteAluno
+        handleSubmit, btnOperation, handleClear, formIsOk, disciplinas, selectedDisciplinaHandler,handleDeleteAluno,email,emailHandler
     } = useContext(AlunoContext);
 
     const {loadingSubmit} = useContext(LoginContext);
@@ -40,6 +40,10 @@ function FormAluno() {
                 <div className="col-6">
                     <label htmlFor="inputData" className="form-label">Data de inativação</label>
                     <input type="text" className="form-control" id="inputData" value={dataInativacao} onChange={dataInativacaoHandler} />
+                </div>
+                <div className="col-md-12">
+                    <label htmlFor="inputEmail" className="form-label">Email</label>
+                    <input type="email" className={formIsOk ? "form-control" : email !== "" ? "form-control" : "form-control is-invalid"} id="inputEmail" value={email} onChange={emailHandler} />
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputMatricula" className="form-label">Matricula</label>

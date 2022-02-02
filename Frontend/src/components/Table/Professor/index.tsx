@@ -43,7 +43,6 @@ function TableProf() {
                                 <tr>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Sobrenome</th>
-                                    <th scope="col">Email</th>
                                     <th scope="col">CPF</th>
                                     <th scope="col">SIAPE</th>
                                 </tr>
@@ -53,7 +52,6 @@ function TableProf() {
                                     <tr key={item.id} onClick={() => handleClick!(item)}>
                                         <td className="align-middle" height="50px">{item.nome}</td>
                                         <td className="align-middle">{item.sobrenome}</td>
-                                        <td className="align-middle">{item.email}</td>
                                         <td className="align-middle">{item.cpf}</td>
                                         <td className="align-middle">{item.siape}</td>
                                     </tr>

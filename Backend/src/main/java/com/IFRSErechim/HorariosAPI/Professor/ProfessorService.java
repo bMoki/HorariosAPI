@@ -6,17 +6,13 @@ import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +31,6 @@ public class ProfessorService {
         Page<Professor> result = professorRepository.findAll(pageable);
         return result.map(x -> new ProfessorDTO(x));
     }
-
     public MessageResponseImportDTO importProfessor (MultipartFile file) throws ParseError, WrongCollumnsException {
         Integer atualizadas=0;
         Integer inseridas=0;
@@ -53,12 +48,9 @@ public class ProfessorService {
                 {
                     if(!(record.getString("cpf")==null)){
                        String cpf = record.getString("cpf");
-                        if(cpf.length()==11){
-                            StringBuffer cpfFormated = new StringBuffer(cpf);
-                            cpfFormated.insert(2 + 1, ".");
-                            cpfFormated.insert(6 + 1, ".");
-                            cpfFormated.insert(10 + 1, "-");
-                            cpf = cpfFormated.toString();
+                        if(cpf.length()>11){
+                            cpf = cpf.replace(".","");
+                            cpf = cpf.replace("-","");
                         }
                         professor.setCpf(cpf);
                     }
@@ -132,12 +124,18 @@ public class ProfessorService {
         }
         return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
     }
-
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
 
         if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
             throw new AlreadyExistsException("CPF já cadastrado!");
         }
+
+        String cpf = professorDTO.getCpf();
+        if(cpf.length()>11){
+            cpf = cpf.replace(".","");
+            cpf = cpf.replace("-","");
+        }
+        professorDTO.setCpf(cpf);
 
         Professor salvarProfessor = new Professor(professorDTO);
         Professor ProfessorSalvo = professorRepository.save(salvarProfessor);
@@ -149,16 +147,21 @@ public class ProfessorService {
 
         return professorDTO;
     }
-
     public MessageResponseDTO updateById(Long id, ProfessorDTO professorDTO) throws NotFoundException {
 
         verifyIfExistsById(id);
+
+        String cpf = professorDTO.getCpf();
+        if(cpf.length()>11){
+            cpf = cpf.replace(".","");
+            cpf = cpf.replace("-","");
+        }
+        professorDTO.setCpf(cpf);
         Professor professorToUpdate = new Professor(professorDTO);
 
         Professor updatedProfessor = professorRepository.save(professorToUpdate);
         return criaMessageResponse("Professor "+updatedProfessor.getNome()+" "+updatedProfessor.getSobrenome()+" atualizado!");
     }
-
     public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
         Professor professorToDelete = verifyIfExistsById(id);
         if(professorRepository.ProfessorHasReference(id) > 0){
@@ -168,15 +171,9 @@ public class ProfessorService {
         professorRepository.deleteById(id);
         return criaMessageResponse("Professor "+professorToDelete.getNome()+" "+professorToDelete.getSobrenome()+ " deletado!");
     }
-
-    public Long findByCpf (String cpf){
-        return professorRepository.findByCpf(cpf);
-    }
-
     public Professor findByNomeAndSobrenomeOrCpf (String nome, String sobrenome,String cpf){
         return professorRepository.findByNomeAndSobrenomeOrCpf(nome,sobrenome,cpf);
     }
-
     private Professor verifyIfExistsById(Long id) throws NotFoundException {
         return professorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Professor"));
@@ -188,7 +185,6 @@ public class ProfessorService {
                 .message(message)
                 .build();
     }
-
     private MessageResponseImportDTO criaMessageResponseImport(Integer inseridas, Integer atualizadas, Integer erros, Integer naoExistem, List<HashMap> file) {
         return MessageResponseImportDTO
                 .builder()

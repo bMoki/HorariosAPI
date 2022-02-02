@@ -8,6 +8,7 @@ export type Aluno = {
     dataInclusao?: string;
     matricula?: string;
     ativo?:boolean;
+    email?:string,
     disciplinas?:Disciplina[];
 }
 

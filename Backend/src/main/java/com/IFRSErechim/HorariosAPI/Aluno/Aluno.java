@@ -33,6 +33,9 @@ public class Aluno {
     private String matricula;
 
     @Column
+    private String email;
+
+    @Column
     private Boolean ativo;
 
     @Column
@@ -54,6 +57,7 @@ public class Aluno {
         nomeCompleto = entity.getNomeCompleto();
         cpf = entity.getCpf();
         matricula = entity.getMatricula();
+        email = entity.getEmail();
         ativo = entity.getAtivo();
         dataInativacao = entity.getDataInativacao();
         dataInclusao = entity.getDataInclusao();

@@ -63,7 +63,7 @@ public class LoginController {
     }
 
     @PostMapping("/role/save")
-    public ResponseEntity<Role>saveRole(@RequestBody Role role){
+    public ResponseEntity<Role>saveRole(@RequestBody Role role) throws AlreadyExistsException {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/usuario/role/save").toUriString());
         return ResponseEntity.created(uri).body(loginService.saveRole(role));
     }

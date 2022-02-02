@@ -103,7 +103,11 @@ public class LoginService implements UserDetailsService {
                 .orElseThrow(() -> new NotFoundException("Usuário"));
     }
 
-    public Role saveRole(Role role) {
+    public Role saveRole(Role role) throws AlreadyExistsException {
+        if(roleRepository.findByName(role.getName()) != null){
+            throw new AlreadyExistsException("Role já cadastrado!");
+        }
+
         return roleRepository.save(role);
     }
 

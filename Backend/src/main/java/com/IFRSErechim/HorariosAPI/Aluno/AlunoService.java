@@ -4,8 +4,6 @@ import com.IFRSErechim.HorariosAPI.Disciplina.Disciplina;
 import com.IFRSErechim.HorariosAPI.Disciplina.DisciplinaService;
 import com.IFRSErechim.HorariosAPI.Exception.*;
 import com.IFRSErechim.HorariosAPI.ParsedRecords.ParsedRecords;
-import com.IFRSErechim.HorariosAPI.Professor.Professor;
-import com.IFRSErechim.HorariosAPI.Professor.ProfessorService;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseDTO;
 import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
@@ -31,7 +29,6 @@ public class AlunoService {
         Page<Aluno> result = alunoRepository.findAll(pageable);
         return result.map(x -> new AlunoDTO(x));
     }
-
     public AlunoDTO findById(Long id) throws NotFoundException {
         Aluno aluno = verifyIfExists(id);
 
@@ -58,12 +55,9 @@ public class AlunoService {
 
                     if(!(record.getString("cpf")==null)){
                         String cpf = record.getString("cpf");
-                        if(cpf.length()==11){
-                            StringBuffer cpfFormated = new StringBuffer(record.getString("cpf"));
-                            cpfFormated.insert(2 + 1, ".");
-                            cpfFormated.insert(6 + 1, ".");
-                            cpfFormated.insert(10 + 1, "-");
-                            cpf = cpfFormated.toString();
+                        if(cpf.length()>11){
+                            cpf = cpf.replace(".","");
+                            cpf = cpf.replace("-","");
                         }
                         aluno.setCpf(cpf);
                     }
@@ -150,42 +144,47 @@ public class AlunoService {
         }
         return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
     }
-
     public MessageResponseDTO criaAluno (AlunoDTO alunoDTO) throws AlreadyExistsException {
         if(alunoRepository.findByCpf(alunoDTO.getCpf()) > 0){
             throw new AlreadyExistsException("Aluno já cadastrado!");
         }
+        String cpf = alunoDTO.getCpf();
+        if(cpf.length()>11){
+            cpf = cpf.replace(".","");
+            cpf = cpf.replace("-","");
+        }
+        alunoDTO.setCpf(cpf);
         Aluno salvarAluno = new Aluno(alunoDTO);
 
         Aluno alunoSalvo = alunoRepository.save(salvarAluno);
 
         return criaMessageResponse("Aluno "+alunoSalvo.getNomeCompleto()+" cadastrado!");
     }
-
     public MessageResponseDTO UpdateById(Long id,AlunoDTO alunoDTO) throws NotFoundException{
             verifyIfExists(id);
+
+            String cpf = alunoDTO.getCpf();
+            if(cpf.length()>11){
+                cpf = cpf.replace(".","");
+                cpf = cpf.replace("-","");
+            }
+            alunoDTO.setCpf(cpf);
             Aluno alunoToUpdate = new Aluno(alunoDTO);
 
             Aluno updatedAluno = alunoRepository.save(alunoToUpdate);
             return criaMessageResponse("Aluno "+updatedAluno.getNomeCompleto()+" atualizado!");
     }
+    public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
+            Aluno alunoToDelete = verifyIfExists(id);
 
-     public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
-                Aluno alunoToDelete = verifyIfExists(id);
-//                if(alunoRepository.AlunoHasReference(id) > 0){
-//                    throw new DeleteException(id,"Aluno");
-//                }
-
-                alunoRepository.deleteById(id);
-                return criaMessageResponse("Aluno "+alunoToDelete.getNomeCompleto()+" deletado!");
+            alunoRepository.deleteById(id);
+            return criaMessageResponse("Aluno "+alunoToDelete.getNomeCompleto()+" deletado!");
     }
-
 
     private Aluno verifyIfExists(Long id) throws NotFoundException {
             return alunoRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Aluno"));
     }
-
     private MessageResponseDTO criaMessageResponse(String message) {
             return MessageResponseDTO
                     .builder()

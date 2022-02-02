@@ -32,6 +32,8 @@ public class AlunoDTO implements Serializable {
 
     private String matricula;
 
+    private String email;
+
     private Boolean ativo;
 
     private LocalDate dataInativacao;
@@ -44,6 +46,7 @@ public class AlunoDTO implements Serializable {
         id = entity.getId();
         nomeCompleto = entity.getNomeCompleto();
         matricula = entity.getMatricula();
+        email = entity.getEmail();
         ativo = entity.getAtivo();
         dataInativacao = entity.getDataInativacao();
         dataInclusao = entity.getDataInclusao();

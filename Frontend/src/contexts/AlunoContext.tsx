@@ -15,6 +15,7 @@ interface IAlunoContext {
     dataInclusao: string,
     btnOperation: boolean,
     formIsOk: boolean,
+    email: string,
 
     nomeCompletoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     cpfHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -22,6 +23,7 @@ interface IAlunoContext {
     dataInativacaoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     ativoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     dataInclusaoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
+    emailHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     handleSubmit?: () => void,
     handleClear?: () => void,
     handleDeleteAluno?: () => void,
@@ -41,6 +43,7 @@ const defaultState = {
     dataInclusao: "",
     btnOperation: false,
     formIsOk: true,
+    email:"",
     disciplinas:[]
 }
 
@@ -57,6 +60,7 @@ const AlunoContextProvider: FC = ({ children }) => {
         [dataInclusao, setDataInclusao] = useState(""),
         [btnOperation, setBtnOperation] = useState(false),
         [formIsOk, setFormIsOk] = useState(true),
+        [email, setEmail] = useState(""),
         [disciplinas, setDisciplinas] = useState<options[]>([]);
 
 
@@ -96,6 +100,10 @@ const AlunoContextProvider: FC = ({ children }) => {
         setDataInclusao(mask(event.target.value, ['99/99/9999']))
     }
 
+    function emailHandler(event: ChangeEvent<HTMLInputElement>) {
+        setEmail(event.target.value);
+    }
+
     function handleClick(item: Aluno) {
         const data = dataFormater(item.dataInclusao);
         setDataInclusao(data === undefined ? "" : data === null ? "" : data);
@@ -105,6 +113,7 @@ const AlunoContextProvider: FC = ({ children }) => {
         setMatricula(item?.matricula === undefined ? "" : item.matricula === null ? "" : item.matricula);
         setAtivo(item?.ativo === undefined ? true : item.ativo === null ? true : item.ativo);
         setBtnOperation(true);
+        setEmail(item?.email === undefined ? "" : item.email === null ? "" : item.email);
         setDisciplinas(item?.disciplinas === undefined ? [] : item.disciplinas === null ? [] : item.disciplinas.map((disciplina) => {
             return {
                 value: disciplina.id,
@@ -123,6 +132,7 @@ const AlunoContextProvider: FC = ({ children }) => {
         setDataInativacao("");
         setDataInclusao("");
         setFormIsOk(true);
+        setEmail("");
     }
 
     function FormValidation() {
@@ -164,6 +174,7 @@ const AlunoContextProvider: FC = ({ children }) => {
                     matricula: matricula,
                     cpf: cpf,
                     ativo: ativo,
+                    email:email,
                     dataInativacao: dtInativacao,
                     dataInclusao: dtInclusao,
                     disciplinas: disciplinas.map((x => {
@@ -181,6 +192,7 @@ const AlunoContextProvider: FC = ({ children }) => {
                     matricula: matricula,
                     cpf: cpf,
                     ativo: ativo,
+                    email:email,
                     dataInativacao: dtInativacao,
                     dataInclusao: dtInclusao,
                     disciplinas: disciplinas.map((x => {
@@ -201,8 +213,8 @@ const AlunoContextProvider: FC = ({ children }) => {
 
     return (
         <AlunoContext.Provider value={{
-            nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo, id,
-            nomeCompletoHandler, cpfHandler, matriculaHandler, ativoHandler, dataInativacaoHandler, dataInclusaoHandler,
+            nomeCompleto, cpf, matricula, dataInativacao, dataInclusao, ativo, email, id,
+            nomeCompletoHandler, cpfHandler, matriculaHandler, ativoHandler, dataInativacaoHandler, dataInclusaoHandler, emailHandler,
             btnOperation, formIsOk, handleClear, handleSubmit,
             handleClick, handleDeleteAluno,disciplinas,selectedDisciplinaHandler
         }}>
