@@ -3,14 +3,16 @@ import FormDisciplina from "components/Form/Disciplina";
 import ImportBtn from "components/Import";
 import ImportStatus from "components/ImportStatus";
 import NavBar from "components/NavBar";
+import Search from "components/Search";
 import TableDisciplina from "components/Table/Disciplina";
 import DisciplinaContextProvider from "contexts/DisciplinaContext";
 import { LoginContext } from "contexts/LoginContext";
+import { useSearch } from "hooks/useSearch";
 import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 
 function Disciplina() {
-
+    const { search, searchHandler } = useSearch();
     const { user } = useContext(LoginContext);
     return (
         <>
@@ -23,6 +25,9 @@ function Disciplina() {
                         <div className="row">
                             <div className="col-md-12 col-lg col-sm-12 p-3 pb-0 m-2 mt-4">
                                 <h2>Disciplinas</h2>
+                            </div>
+                            <div className="col-md-6 col-lg col-sm-12  pt-3 pe-2 mt-4 ">
+                                <Search search={search} searchHandler={searchHandler} />
                             </div>
                             <div className="col-lg-5 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
                                 <div className="p-1 align-self-center">
@@ -48,7 +53,7 @@ function Disciplina() {
                         </div>
                         <div className="row">
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0   m-2 d-flex flex-column">
-                                <TableDisciplina />
+                                <TableDisciplina search={search}/>
                             </div>
                             {user?.admin &&
                                 <div className="col-lg-5 col-md-12 col-sm-12  m-2 ">
@@ -66,10 +71,10 @@ function Disciplina() {
                 <ImportStatus headers={[
                     { label: 'Nome', key: 'nome' },
                     { label: 'Codigo Moodle', key: 'codMoodle' },
-                    { label: 'Professor Nome', key: 'professor_nome'},
-                    { label: 'Professor CPF', key: 'professor_cpf'}
+                    { label: 'Professor Nome', key: 'professor_nome' },
+                    { label: 'Professor CPF', key: 'professor_cpf' }
                 ]}
-                naoExistem="Professores não encontrados"></ImportStatus>
+                    naoExistem="Professores não encontrados"></ImportStatus>
             </DisciplinaContextProvider>
         </>
     );

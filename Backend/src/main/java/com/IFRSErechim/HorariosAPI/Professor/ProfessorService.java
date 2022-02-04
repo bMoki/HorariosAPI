@@ -27,8 +27,8 @@ public class ProfessorService {
     private ProfessorRepository professorRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProfessorDTO> findAll(Pageable pageable){
-        Page<Professor> result = professorRepository.findAll(pageable);
+    public Page<ProfessorDTO> findAll(Pageable pageable,String search){
+        Page<Professor> result = professorRepository.findAllProfessores(pageable,search);
         return result.map(x -> new ProfessorDTO(x));
     }
     public MessageResponseImportDTO importProfessor (MultipartFile file) throws ParseError, WrongCollumnsException {

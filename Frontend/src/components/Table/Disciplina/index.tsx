@@ -8,8 +8,10 @@ import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { DisciplinaPage } from "types/disciplina";
 
-
-function TableDisciplina() {
+type IProps = {
+    search: string;
+}
+function TableDisciplina({ search }: IProps) {
 
     const { handleClick } = useContext(DisciplinaContext);
     const { activePage, changePage } = usePage();
@@ -21,7 +23,7 @@ function TableDisciplina() {
         totalPages: 0
     });
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/disciplina?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/disciplina?page=${activePage}&search=${search}`);
 
 
     useEffect(() => {
@@ -35,9 +37,9 @@ function TableDisciplina() {
 
                 {isLoading &&
                     <div className="d-flex justify-content-center">
-                       <LoadingSpinner margin="mt-5 mb-5"/>
+                        <LoadingSpinner margin="mt-5 mb-5" />
                     </div>}
-                {fetchError &&<Error504Message size={300}/>}
+                {fetchError && <Error504Message size={300} />}
                 {!isLoading && !fetchError && (disciplina.content?.length ?
                     <div className="table-responsive">
                         <table className="table table-hover align-middle">

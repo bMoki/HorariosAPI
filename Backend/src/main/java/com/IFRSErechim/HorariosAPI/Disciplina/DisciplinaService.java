@@ -28,11 +28,10 @@ public class DisciplinaService {
 
     private ProfessorService professorService;
 
-    public Page<DisciplinaDTO> findAll(Pageable pageable){
-        Page<Disciplina> result = disciplinaRepository.findAll(pageable);
+    public Page<DisciplinaDTO> findAll(Pageable pageable,String search){
+        Page<Disciplina> result = disciplinaRepository.findAllDisciplinas(pageable,search);
         return result.map(x -> new DisciplinaDTO(x));
     }
-
     public MessageResponseImportDTO importDisciplina (MultipartFile file) throws  ParseError, WrongCollumnsException {
         Integer atualizadas=0;
         Integer inseridas=0;
@@ -136,7 +135,6 @@ public class DisciplinaService {
         return criaMessageResponseImport(inseridas,atualizadas,erros,naoExistem,errorFile);
 
     }
-
     public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) throws AlreadyExistsException{
         if(disciplinaRepository.findByNome(disciplinaDTO.getNome()) > 0){
                     throw new AlreadyExistsException("Disciplina já cadastrada!");
@@ -146,7 +144,6 @@ public class DisciplinaService {
         Disciplina DisciplinaSalva = disciplinaRepository.save(salvarDisciplina);
         return criaMessageResponse("Disciplina " +DisciplinaSalva.getNome()+ " cadastrada!");
     }
-
     public MessageResponseDTO UpdateById(Long id,DisciplinaDTO disciplinaDTO) throws NotFoundException {
         verifyIfExists(id);
 
@@ -155,15 +152,13 @@ public class DisciplinaService {
         Disciplina updatedDisciplina = disciplinaRepository.save(disciplinaToUpdate);
         return criaMessageResponse("Disciplina " +updatedDisciplina.getNome()+ " atualizada!");
     }
-
     public DisciplinaDTO findById(Long id) throws NotFoundException {
         Disciplina disciplina = verifyIfExists(id);
         DisciplinaDTO disciplinaDTO = new DisciplinaDTO(disciplina);
 
         return disciplinaDTO;
     }
-
-  public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
+    public MessageResponseDTO delete(Long id) throws NotFoundException, DeleteException {
         Disciplina disciplinaToDelete = verifyIfExists(id);
         if(disciplinaRepository.DisciplinaHasReference(id) > 0){
             throw new DeleteException("Disciplina");
@@ -176,19 +171,16 @@ public class DisciplinaService {
         return disciplinaRepository.findByNomeOrCodMoodle(nome,codMoodle);
     }
 
-
     private Disciplina verifyIfExists(Long id) throws NotFoundException {
         return disciplinaRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Disciplina"));
     }
-
     private MessageResponseDTO criaMessageResponse(String message) {
         return MessageResponseDTO
                 .builder()
                 .message(message)
                 .build();
     }
-
     private MessageResponseImportDTO criaMessageResponseImport(Integer inseridas, Integer atualizadas, Integer erros, Integer naoExistem, List<HashMap> file) {
         return MessageResponseImportDTO
                 .builder()

@@ -42,8 +42,9 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/info")
-    public ResponseEntity<Page<UsuarioDTO>>findAll(@PageableDefault(size = 6 ) Pageable pageable){
-        Page<UsuarioDTO> list = loginService.findAll(pageable);
+    public ResponseEntity<Page<UsuarioDTO>>findAll(@PageableDefault(size = 6 ) Pageable pageable,
+                                                   @RequestParam(value = "search", defaultValue = "", required = false)String search){
+        Page<UsuarioDTO> list = loginService.findAll(pageable,search);
         return ResponseEntity.ok(list);
     }
 

@@ -9,12 +9,15 @@ import { useContext, useEffect, useState } from "react";
 import { AlunoPage } from "types/aluno";
 import { dataFormater } from "utils/dataFormater";
 
-function TableAluno() {
+type IProps = {
+    search: string;
+}
+function TableAluno({ search }: IProps) {
 
     const { handleClick } = useContext(AlunoContext);
 
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/aluno?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/aluno?page=${activePage}&search=${search}`);
     const [aluno, setAluno] = useState<AlunoPage>({
         first: true,
         last: true,
@@ -33,9 +36,9 @@ function TableAluno() {
             <div className="row">
                 {isLoading &&
                     <div className="d-flex justify-content-center ">
-                        <LoadingSpinner margin="mt-5 mb-5"/>
+                        <LoadingSpinner margin="mt-5 mb-5" />
                     </div>}
-                {fetchError && <Error504Message size={300}/>}
+                {fetchError && <Error504Message size={300} />}
 
                 {!isLoading && !fetchError && (aluno.totalElements > 0 ?
                     <div className="table-responsive">
@@ -51,7 +54,7 @@ function TableAluno() {
                             </thead>
                             <tbody>
                                 {aluno.content?.map(item => (
-                                    <tr className={`${item.ativo ? "":"text-muted"}`}key={item.id} onClick={() => handleClick!(item)}>
+                                    <tr className={`${item.ativo ? "" : "text-muted"}`} key={item.id} onClick={() => handleClick!(item)}>
                                         <td className="align-middle" height="50px">{item.nomeCompleto}</td>
                                         <td className="align-middle">{item.cpf}</td>
                                         <td className="align-middle">{item.matricula}</td>
@@ -72,9 +75,9 @@ function TableAluno() {
                             </tbody>
                         </table>
                     </div>
-                    : 
-                    <EmptyMessage text="Sem aluno para mostrar"/>
-                    )}
+                    :
+                    <EmptyMessage text="Sem aluno para mostrar" />
+                )}
             </div>
             <Pagination page={aluno} onPageChange={changePage} />
         </>

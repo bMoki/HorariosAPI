@@ -8,8 +8,10 @@ import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { CursoPage } from "types/curso";
 
-
-function TableCurso() {
+type IProps = {
+    search: string;
+}
+function TableCurso({ search }: IProps) {
 
     const { handleClick } = useContext(CursoContext);
     const { activePage, changePage } = usePage();
@@ -21,7 +23,7 @@ function TableCurso() {
         totalPages: 0
     });
 
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/curso?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/curso?page=${activePage}&search=${search}`);
 
 
     useEffect(() => {
@@ -34,9 +36,9 @@ function TableCurso() {
             <div className="row">
                 {isLoading &&
                     <div className="d-flex justify-content-center">
-                        <LoadingSpinner margin="mt-5 mb-5"/>
+                        <LoadingSpinner margin="mt-5 mb-5" />
                     </div>}
-                {fetchError && <Error504Message size={300}/>}
+                {fetchError && <Error504Message size={300} />}
                 {!isLoading && !fetchError && (curso.content?.length ?
                     <div className="table-responsive">
                         <table className="table table-hover align-middle">

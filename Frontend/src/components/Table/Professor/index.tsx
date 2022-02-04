@@ -8,12 +8,16 @@ import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { ProfPage } from "types/prof";
 
-function TableProf() {
+type IProps={
+    search:string;
+}
+
+function TableProf({search}:IProps) {
 
     const { handleClick } = useContext(ProfessorContext);
-
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/professor?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/professor?page=${activePage}&search=${search}`);
+
     const [professor, setProfessor] = useState<ProfPage>({
         first: true,
         last: true,
@@ -32,9 +36,9 @@ function TableProf() {
             <div className="row">
                 {isLoading &&
                     <div className="d-flex justify-content-center">
-                       <LoadingSpinner margin="mt-5 mb-5"/>
+                        <LoadingSpinner margin="mt-5 mb-5" />
                     </div>}
-                {fetchError && <Error504Message size={300}/>}
+                {fetchError && <Error504Message size={300} />}
 
                 {!isLoading && !fetchError && (professor.totalElements > 0 ?
                     <div className="table-responsive">

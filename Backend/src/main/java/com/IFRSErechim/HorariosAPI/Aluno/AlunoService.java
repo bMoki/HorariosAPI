@@ -25,8 +25,8 @@ public class AlunoService {
 
     private DisciplinaService discipinaService;
 
-    public Page<AlunoDTO> findAll(Pageable pageable){
-        Page<Aluno> result = alunoRepository.findAll(pageable);
+    public Page<AlunoDTO> findAll(Pageable pageable, String search){
+        Page<Aluno> result = alunoRepository.findAllAlunos(pageable,search);
         return result.map(x -> new AlunoDTO(x));
     }
     public AlunoDTO findById(Long id) throws NotFoundException {

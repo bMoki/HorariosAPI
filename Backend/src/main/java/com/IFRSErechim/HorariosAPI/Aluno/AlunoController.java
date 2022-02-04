@@ -25,10 +25,11 @@ public class AlunoController {
 
     @GetMapping
     public ResponseEntity<Page<AlunoDTO>> findAll(@RequestParam(value = "paged", defaultValue = "true", required = false) Boolean paged,
-                                                  @PageableDefault(size = 6 )Pageable pageable){
+                                                  @PageableDefault(size = 6 )Pageable pageable,
+                                                  @RequestParam(value = "search",defaultValue = "",required = false)String search){
         if(!paged) pageable = Pageable.unpaged();
 
-        Page<AlunoDTO> list = alunoService.findAll(pageable);
+        Page<AlunoDTO> list = alunoService.findAll(pageable,search);
         return ResponseEntity.ok(list);
     }
 

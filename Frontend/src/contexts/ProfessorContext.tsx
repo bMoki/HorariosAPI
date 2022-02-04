@@ -14,11 +14,6 @@ interface IProfessorContext {
     id: number,
     btnOperation: boolean,
     formIsOk: boolean,
-    searchNome: string,
-    searchSobrenome: string,
-    searchCpf: string,
-    searchSiape: string,
-
 
     nomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     sobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -26,21 +21,11 @@ interface IProfessorContext {
     emailHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     siapeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
     dataNascimentoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    searchNomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    searchSobrenomeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    searchCpfHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    searchSiapeHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-    searchDataNascimentoHandler?: (event: ChangeEvent<HTMLInputElement>) => void,
-
+    
     handleSubmit?: () => void,
     handleClear?: () => void,
     handleDeleteProfessor?: () => void,
-    handleSearch?: () => void,
     handleClick?: (item: Prof) => void,
-
-
-
-
 }
 
 const defaultState = {
@@ -53,11 +38,6 @@ const defaultState = {
     id: 0,
     btnOperation: false,
     formIsOk: true,
-    searchNome: "",
-    searchSobrenome: "",
-    searchCpf: "",
-    searchSiape: "",
-
 }
 
 export const ProfessorContext = createContext<IProfessorContext>(defaultState);
@@ -72,11 +52,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
         [siape, setSiape] = useState(""),
         [id, setId] = useState(0),
         [btnOperation, setBtnOperation] = useState(false),
-        [formIsOk, setFormIsOk] = useState(true),
-        [searchNome, setSearchNome] = useState(""),
-        [searchSobrenome, setSearchSobrenome] = useState(""),
-        [searchCpf, setSearchCpf] = useState(""),
-        [searchSiape, setSearchSiape] = useState("");
+        [formIsOk, setFormIsOk] = useState(true);
 
     function nomeHandler(event: ChangeEvent<HTMLInputElement>) {
         setNome(event.target.value);
@@ -96,21 +72,7 @@ const ProfessorContextProvider: FC = ({ children }) => {
     function siapeHandler(event: ChangeEvent<HTMLInputElement>) {
         setSiape(mask(event.target.value, ['9999999']));
     }
-
-    function searchNomeHandler(event: ChangeEvent<HTMLInputElement>) {
-        setSearchNome(event.target.value);
-    }
-    function searchSobrenomeHandler(event: ChangeEvent<HTMLInputElement>) {
-        setSearchSobrenome(event.target.value);
-    }
-    function searchCpfHandler(event: ChangeEvent<HTMLInputElement>) {
-        setSearchCpf(event.target.value);
-    }
-    function searchSiapeHandler(event: ChangeEvent<HTMLInputElement>) {
-        setSearchSiape(event.target.value);
-    }
-
-
+   
     function FormValidation() {
 
         if (nome === "") {
@@ -214,10 +176,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
         setBtnOperation(false);
     }
 
-    function handleSearch() {
-
-    }
-
     return (
         <ProfessorContext.Provider value={{
             id,
@@ -227,15 +185,6 @@ const ProfessorContextProvider: FC = ({ children }) => {
             email,
             dataNascimento,
             siape,
-            searchNome,
-            searchCpf,
-            searchSiape,
-            searchSobrenome,
-            searchNomeHandler,
-            searchCpfHandler,
-            searchSiapeHandler,
-            searchSobrenomeHandler,
-            handleSearch,
             nomeHandler,
             cpfHandler,
             sobrenomeHandler,

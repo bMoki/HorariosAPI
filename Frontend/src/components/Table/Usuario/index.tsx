@@ -9,12 +9,15 @@ import { useContext, useEffect, useState } from "react";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { UserPage } from "types/user";
 
-function TableUsuario() {
+type IProps = {
+    search: string;
+}
+function TableUsuario({search}:IProps) {
 
     const { handleClick } = useContext(UsuarioContext);
 
     const { activePage, changePage } = usePage();
-    const { data, fetchError, isLoading } = useAxiosFetchPage(`/usuario/info?page=${activePage}`);
+    const { data, fetchError, isLoading } = useAxiosFetchPage(`/usuario/info?page=${activePage}&search=${search}`);
     const [userDetail, setUserDetail] = useState<UserPage>({
         first: true,
         last: true,

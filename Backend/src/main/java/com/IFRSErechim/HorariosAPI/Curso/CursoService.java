@@ -21,8 +21,8 @@ public class CursoService {
     private CursoRepository cursoRepository;
 
     @Transactional(readOnly = true)
-    public Page<CursoDTO> findAll(Pageable pageable){
-        Page<Curso> result = cursoRepository.findAll(pageable);
+    public Page<CursoDTO> findAll(Pageable pageable, String search){
+        Page<Curso> result = cursoRepository.findAllCursos(pageable, search);
         return result.map(x -> new CursoDTO(x));
     }
 

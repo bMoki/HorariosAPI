@@ -121,8 +121,8 @@ public class LoginService implements UserDetailsService {
         return usuarioRepository.findByUsername(username);
     }
 
-    public Page<UsuarioDTO> findAll(Pageable pageable) {
-        Page<Usuario> result = usuarioRepository.findAll(pageable);
+    public Page<UsuarioDTO> findAll(Pageable pageable, String search) {
+        Page<Usuario> result = usuarioRepository.findAllUsuarios(pageable, search);
         return result.map(x->new UsuarioDTO(x));
     }
 
