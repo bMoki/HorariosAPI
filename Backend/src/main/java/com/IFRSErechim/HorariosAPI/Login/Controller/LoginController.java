@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Login.Controller;
 
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
+import com.IFRSErechim.HorariosAPI.Exception.LastUserException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
@@ -76,7 +77,7 @@ public class LoginController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException {
+    public MessageResponseDTO delete (@PathVariable Long id) throws NotFoundException, LastUserException {
         return loginService.delete(id);
     }
 

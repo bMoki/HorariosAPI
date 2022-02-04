@@ -57,11 +57,10 @@ export default function useAuth() {
 
     function LogOut() {
         sessionStorage.setItem("logout", "Você saiu!");
-        handleLogout(false);
+        handleLogout();
     }
 
-    function handleLogout(exp: boolean) {
-        if (exp) { sessionStorage.setItem("logout", "Login expirado!") };
+    function handleLogout() {
         setAuthenticated(false);
         setAuthTokens(null);
         setUser(undefined);

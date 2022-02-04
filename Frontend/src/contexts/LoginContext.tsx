@@ -4,7 +4,7 @@ import { User } from "types/user";
 
 interface ILoginContext {
     handleLogin?: (username: string, password: string, history: any) => void,
-    handleLogout?: (exp: boolean) => void,
+    handleLogout?: () => void,
     LogOut?: () => void,
     authenticated: boolean,
     loading: boolean,

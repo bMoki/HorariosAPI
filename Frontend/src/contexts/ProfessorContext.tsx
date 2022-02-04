@@ -3,6 +3,7 @@ import { mask } from "remask";
 import { Prof } from "types/prof";
 import { dataFormater } from "utils/dataFormater";
 import useApi from "hooks/useApi";
+import { cpfFormater } from "utils/cpfFormater";
 
 interface IProfessorContext {
     nome: string,
@@ -87,26 +88,16 @@ const ProfessorContextProvider: FC = ({ children }) => {
             return false;
         }
 
-        if (email === "") {
-            return false;
-        }
-
-        if (dataNascimento.length < 10) {
-            return false;
-        }
-
-        if (siape === "") {
-            return false;
-        }
         return true;
 
     }
 
     function handleClick(item: Prof) {
         const data = dataFormater(item.dataNascimento);
+        const cpf = cpfFormater(item.cpf);
         setNome(item?.nome === undefined ? "" : item.nome === null ? "" : item.nome);
         setSobrenome(item?.sobrenome === undefined ? "" : item.sobrenome === null ? "" : item.sobrenome);
-        setCPF(item?.cpf === undefined ? "" : item.cpf === null ? "" : item.cpf);
+        setCPF(cpf);
         setEmail(item?.email === undefined ? "" : item.email === null ? "" : item.email);
         setDataNascimento(data === undefined ? "" : data === null ? "" : data);
         setSiape(item?.siape === undefined ? "" : item.siape === null ? "" : item.siape);

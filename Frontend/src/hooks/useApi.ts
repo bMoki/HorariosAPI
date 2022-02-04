@@ -49,7 +49,7 @@ const useApi = () => {
         
         if (response.status !== 200) {
             console.clear();
-            handleLogout!(true);
+            handleLogout!();
             throw new axios.Cancel('Not Authorized');
         }
 
@@ -67,9 +67,6 @@ const useApi = () => {
     axiosInstance.interceptors.response.use(function (response) {
         if (response.config.method !== "get") {
             sessionStorage.setItem("response", JSON.stringify(response));
-            // if(response.config.url?.search("upload")=== -1){
-            //     window.location.reload();
-            // }
             window.location.reload();
         }
         return response;

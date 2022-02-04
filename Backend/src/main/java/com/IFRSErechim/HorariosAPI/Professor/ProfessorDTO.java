@@ -35,8 +35,6 @@ public class ProfessorDTO implements Serializable {
     @CPF
     private String cpf;
 
-    @NotEmpty
-    @Email
     private String email;
 
     private LocalDate dataNascimento;

@@ -25,17 +25,13 @@ function FormAluno() {
     return (
         <>
             <form className="row g-3" >
-                <div className="col-md-6">
+                <div className="col-md-12">
                     <label htmlFor="inputName" className="form-label">Nome Completo</label>
                     <input type="text" className={formIsOk ? "form-control" : nomeCompleto !== "" ? "form-control" : "form-control is-invalid"} id="inputName" value={nomeCompleto} onChange={nomeCompletoHandler} />
                 </div>
-                <div className="col-md-6">
-                    <label htmlFor="inputCPF" className="form-label">CPF</label>
-                    <input type="text" className={formIsOk ? "form-control" : cpf.length > 13 ? "form-control" : "form-control is-invalid"} id="inputCPF" value={cpf} onChange={cpfHandler} />
-                </div>
                 <div className="col-6">
                     <label htmlFor="inputData" className="form-label">Data de inclusão</label>
-                    <input type="text" className={formIsOk ? "form-control" : dataInclusao.length > 9 ? "form-control" : "form-control is-invalid"} id="inputData" value={dataInclusao} onChange={dataInclusaoHandler} />
+                    <input type="text" className="form-control" id="inputData" value={dataInclusao} onChange={dataInclusaoHandler} />
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputData" className="form-label">Data de inativação</label>
@@ -43,13 +39,17 @@ function FormAluno() {
                 </div>
                 <div className="col-md-12">
                     <label htmlFor="inputEmail" className="form-label">Email</label>
-                    <input type="email" className={formIsOk ? "form-control" : email !== "" ? "form-control" : "form-control is-invalid"} id="inputEmail" value={email} onChange={emailHandler} />
+                    <input type="email" className="form-control" id="inputEmail" value={email} onChange={emailHandler} />
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputMatricula" className="form-label">Matricula</label>
                     <input type="text" className={formIsOk ? "form-control" : matricula !== "" ? "form-control" : "form-control is-invalid"} id="inputMatricula" value={matricula} onChange={matriculaHandler} />
                 </div>
-                <div className="col-lg-6 col-md-6">
+                <div className="col-md-6">
+                    <label htmlFor="inputCPF" className="form-label">CPF</label>
+                    <input type="text" className={formIsOk ? "form-control" : cpf.length > 13 ? "form-control" : "form-control is-invalid"} id="inputCPF" value={cpf} onChange={cpfHandler} />
+                </div>
+                <div className="col-lg-12 col-md-12">
                     <ComboBoxDisciplina Handler={selectedDisciplinaHandler} disciplinas={disciplinas}/>
                 </div>
                 <div className="col-md-6 d-flex align-items-end mb-1">

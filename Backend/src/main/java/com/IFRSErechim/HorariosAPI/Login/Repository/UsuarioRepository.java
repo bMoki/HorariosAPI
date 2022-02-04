@@ -15,6 +15,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value= "SELECT COUNT(*) FROM usuario WHERE username = ?", nativeQuery = true)
     Integer isUsernameRegistered(String username);
 
+    @Query(value = "SELECT COUNT(*) FROM usuario WHERE admin", nativeQuery = true)
+    Integer totalOfUsuarios();
+
     @Query(value = "SELECT * FROM usuario WHERE name LIKE %:search% OR username LIKE %:search%",
         countQuery = "SELECT COUNT(*) FROM usuario WHERE name LIKE %:search% OR username LIKE %:search%",
         nativeQuery = true)

@@ -44,8 +44,8 @@ function Aluno() {
                             <div className="p-1 align-self-center">
                                 <ImportBtn dataUrl="aluno"
                                     table={{
-                                        titulos: ["nome", "cpf", "matricula", "disciplina_cod", "disciplina_nome"],
-                                        exemplo: ["aluno ifrs", "123.456.789-10", "12345", "COD12", "disciplina1"]
+                                        titulos: ["nome", "cpf", "matricula", "email", "disciplina_cod", "disciplina_nome"],
+                                        exemplo: ["aluno ifrs", "123.456.789-10", "12345", "aluno@gmail.com", "COD12", "disciplina1"]
                                     }}
                                     dicas={["Para que os alunos sejam associados com a disciplina, deve-se antes importar disciplinas"]}
 

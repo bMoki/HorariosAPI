@@ -76,4 +76,17 @@ public class ExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(LastUserException.class)
+    public ResponseEntity<StandardError> lastUserException(LastUserException e, HttpServletRequest request) {
+        StandardError err = new StandardError(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "last user in database",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
 }

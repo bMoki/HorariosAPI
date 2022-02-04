@@ -72,14 +72,12 @@ public class DisciplinaService {
 
                         if(record.getString("professor_cpf") != null){
                             cpf = record.getString("professor_cpf");
-                            if(cpf.length()==11){
-                                StringBuffer cpfFormated = new StringBuffer(cpf);
-                                cpfFormated.insert(2 + 1, ".");
-                                cpfFormated.insert(6 + 1, ".");
-                                cpfFormated.insert(10 + 1, "-");
-                                cpf = cpfFormated.toString();
+                            if(cpf.length()>11){
+                                cpf = cpf.replace(".","");
+                                cpf = cpf.replace("-","");
                             }
                         }
+
                         if(record.getString("professor_nome")!=null){
                             String nomeCompleto = record.getString("professor_nome");
                             nome = nomeCompleto.substring(0, nomeCompleto.indexOf(' '));

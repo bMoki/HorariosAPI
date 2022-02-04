@@ -33,16 +33,16 @@ function FormProf() {
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputSIAPE" className="form-label">SIAPE</label>
-                    <input type="text" className={formIsOk ? "form-control" : siape !== "" ? "form-control" : "form-control is-invalid"} id="inputSIAPE" value={siape} onChange={siapeHandler} />
+                    <input type="text" className="form-control" id="inputSIAPE" value={siape} onChange={siapeHandler} />
                 </div>
                 <div className="col-md-12">
                     <label htmlFor="inputEmail" className="form-label">Email</label>
-                    <input type="email" className={formIsOk ? "form-control" : email !== "" ? "form-control" : "form-control is-invalid"} id="inputEmail" value={email} onChange={emailHandler} />
+                    <input type="email" className="form-control" id="inputEmail" value={email} onChange={emailHandler} />
                 </div>
 
                 <div className="col-7">
                     <label htmlFor="inputData" className="form-label">Data de Nascimento</label>
-                    <input type="text" className={formIsOk ? "form-control" : dataNascimento.length > 9 ? "form-control" : "form-control is-invalid"} id="inputData" value={dataNascimento} onChange={dataNascimentoHandler} />
+                    <input type="text" className="form-control" id="inputData" value={dataNascimento} onChange={dataNascimentoHandler} />
                 </div>
                 <div className="d-flex">
                     <div className="me-auto p-2">

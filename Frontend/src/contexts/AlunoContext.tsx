@@ -3,6 +3,7 @@ import { ChangeEvent, createContext, FC, useState } from "react";
 import { mask } from "remask";
 import { Aluno } from "types/aluno";
 import { options } from "types/options";
+import { cpfFormater } from "utils/cpfFormater";
 import { dataFormater } from "utils/dataFormater";
 
 interface IAlunoContext {
@@ -106,10 +107,11 @@ const AlunoContextProvider: FC = ({ children }) => {
 
     function handleClick(item: Aluno) {
         const data = dataFormater(item.dataInclusao);
+        const cpf = cpfFormater(item.cpf);
         setDataInclusao(data === undefined ? "" : data === null ? "" : data);
         setId(item?.id === undefined ? 0 : item.id === null ? 0 : item.id);
         setNomeCompleto(item?.nomeCompleto === undefined ? "" : item.nomeCompleto === null ? "" : item.nomeCompleto);
-        setCpf(item?.cpf === undefined ? "" : item.cpf === null ? "" : item.cpf);
+        setCpf(cpf);
         setMatricula(item?.matricula === undefined ? "" : item.matricula === null ? "" : item.matricula);
         setAtivo(item?.ativo === undefined ? true : item.ativo === null ? true : item.ativo);
         setBtnOperation(true);
@@ -133,6 +135,7 @@ const AlunoContextProvider: FC = ({ children }) => {
         setDataInclusao("");
         setFormIsOk(true);
         setEmail("");
+        setDisciplinas([]);
     }
 
     function FormValidation() {
@@ -146,10 +149,6 @@ const AlunoContextProvider: FC = ({ children }) => {
         }
 
         if (matricula === "") {
-            return false;
-        }
-
-        if (dataInclusao.length < 10) {
             return false;
         }
 

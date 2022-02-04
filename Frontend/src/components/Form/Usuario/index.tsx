@@ -41,12 +41,12 @@ function FormUsuario({ User }: IProps) {
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputUsername" className="form-label">Username</label>
-                    <input type="text" className="form-control" id="inputUsername" value={username} onChange={usernameHandler} />
+                    <input type="text" className={formIsOk ? "form-control" : username !== "" ? "form-control" : "form-control is-invalid"} id="inputUsername" value={username} onChange={usernameHandler} />
                 </div>
 
                 <div className="col-6">
                     <label htmlFor="inputSenha" className="form-label">Senha</label>
-                    <input type="password" className="form-control" id="inputSenha" disabled={User ? !changePassword : btnOperation} value={password} onChange={passwordHandler} />
+                    <input type="password" className={formIsOk ? "form-control" : password !== "" ? "form-control" : "form-control is-invalid"} id="inputSenha" disabled={User ? !changePassword : btnOperation} value={password} onChange={passwordHandler} />
                     {User ?
                         <div className="btn p-0" onClick={changePasswordHandler}><small className="text-muted ">{changePassword ? "Cancelar" : "Mudar senha"}</small></div>
                         :

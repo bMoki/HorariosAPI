@@ -1,6 +1,7 @@
 package com.IFRSErechim.HorariosAPI.Login.Service;
 
 import com.IFRSErechim.HorariosAPI.Exception.AlreadyExistsException;
+import com.IFRSErechim.HorariosAPI.Exception.LastUserException;
 import com.IFRSErechim.HorariosAPI.Exception.NotFoundException;
 import com.IFRSErechim.HorariosAPI.Login.DTO.UsuarioDTO;
 import com.IFRSErechim.HorariosAPI.Login.Domain.Role;
@@ -134,8 +135,11 @@ public class LoginService implements UserDetailsService {
     }
 
 
-    public MessageResponseDTO delete(Long id) throws NotFoundException {
+    public MessageResponseDTO delete(Long id) throws NotFoundException, LastUserException {
         Usuario usuarioToDelete = verifyIfExistsById(id);
+        if(usuarioRepository.totalOfUsuarios()==1){
+            throw new LastUserException();
+        }
         usuarioToDelete.setRoles(new ArrayList<>());
 
         usuarioRepository.deleteById(id);

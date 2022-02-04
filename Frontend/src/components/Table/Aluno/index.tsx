@@ -48,8 +48,7 @@ function TableAluno({ search }: IProps) {
                                     <th scope="col">Nome</th>
                                     <th scope="col">CPF</th>
                                     <th scope="col">Matricula</th>
-                                    <th scope="col" className="col-4">Disciplinas</th>
-                                    <th scope="col">Inclusão</th>
+                                    <th scope="col">Disciplinas</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,14 +59,11 @@ function TableAluno({ search }: IProps) {
                                         <td className="align-middle">{item.matricula}</td>
                                         <td className="">
                                             {item.disciplinas?.length ?
-                                                item.disciplinas.map(disciplina => (
-                                                    <span className="badge rounded-pill bg-primary p-2 px-3 mx-1 mb-1 mt-1 fw-normal fs-6" key={disciplina.id}>{disciplina.nome}</span>
-                                                ))
+                                               <span className="badge rounded-pill bg-primary fw-normal p-2 mx-1 my-1 fs-6">{item.disciplinas.length}</span>
                                                 :
                                                 <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1 fs-6"> Nenhuma </span>
                                             }
                                         </td>
-                                        <td className="align-middle">{dataFormater(item.dataInclusao)}</td>
                                     </tr>
                                 ))}
 
