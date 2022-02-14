@@ -95,7 +95,7 @@ public class LoginController {
 
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() +10 * 1000))//+20 * 60 * 1000
+                        .withExpiresAt(new Date(System.currentTimeMillis() +20 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .withClaim("admin", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()).contains("ROLE_ADMIN"))
