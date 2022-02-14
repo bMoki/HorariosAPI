@@ -94,6 +94,8 @@ public class ProfessorService {
                         errorLine.put("siape", record.getString("siape"));
                         errorLine.put("email", record.getString("email"));
                         errorLine.put("dataNascimento", record.getString("dataNascimento"));
+                        errorLine.put("motivo", "Professor não encontrado no banco de dados");
+
                         naoExistem++;
                         inseridas--;
                     }else {
@@ -116,6 +118,8 @@ public class ProfessorService {
                     errorLine.put("siape", record.getString("siape"));
                     errorLine.put("email", record.getString("email"));
                     errorLine.put("dataNascimento", record.getString("dataNascimento"));
+                    errorLine.put("motivo", "Nome ou CPF vazios");
+
                     erros++;
                 }
             }catch(IllegalArgumentException e){

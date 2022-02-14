@@ -53,7 +53,7 @@ function Disciplina() {
                         </div>
                         <div className="row">
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0   m-2 d-flex flex-column">
-                                <TableDisciplina search={search}/>
+                                <TableDisciplina search={search} />
                             </div>
                             {user?.admin &&
                                 <div className="col-lg-5 col-md-12 col-sm-12  m-2 ">
@@ -72,7 +72,8 @@ function Disciplina() {
                     { label: 'Nome', key: 'nome' },
                     { label: 'Codigo Moodle', key: 'codMoodle' },
                     { label: 'Professor Nome', key: 'professor_nome' },
-                    { label: 'Professor CPF', key: 'professor_cpf' }
+                    { label: 'Professor CPF', key: 'professor_cpf' },
+                    { label: 'Motivo', key: 'motivo' }
                 ]}
                     naoExistem="Professores não encontrados"></ImportStatus>
             </DisciplinaContextProvider>

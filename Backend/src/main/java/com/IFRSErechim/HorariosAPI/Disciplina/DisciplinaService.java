@@ -91,6 +91,7 @@ public class DisciplinaService {
                             errorLine.put("codMoodle", record.getString("codMoodle"));
                             errorLine.put("professor_nome", record.getString("professor_nome"));
                             errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                            errorLine.put("motivo", "Professor não encontrado no banco de dados");
                             naoExistem++;
                         }
                     }
@@ -99,6 +100,7 @@ public class DisciplinaService {
                         errorLine.put("codMoodle", record.getString("codMoodle"));
                         errorLine.put("professor_nome", record.getString("professor_nome"));
                         errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                        errorLine.put("motivo", "Disciplina com nome vazio");
                         inseridas--;
                     }else{
                         if(disciplinaDB!=null){
@@ -118,6 +120,7 @@ public class DisciplinaService {
                     errorLine.put("codMoodle", record.getString("codMoodle"));
                     errorLine.put("professor_nome", record.getString("professor_nome"));
                     errorLine.put("professor_cpf", record.getString("professor_cpf"));
+                    errorLine.put("motivo", "Disciplina com nome ou codigo vazio");
                     erros++;
                 }
             }catch(IllegalArgumentException e){

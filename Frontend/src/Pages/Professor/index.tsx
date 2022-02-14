@@ -80,6 +80,7 @@ function Professor() {
                                     { label: 'Siape', key: 'siape' },
                                     { label: 'Email', key: 'email'},
                                     { label: 'Data de Nascimento', key: 'dataNascimento' },
+                                    { label: 'Motivo', key: 'motivo' }
                                 ]}
                                 naoExistem="Professores não encontrados"></ImportStatus>
             </ProfessorContextProvider>
