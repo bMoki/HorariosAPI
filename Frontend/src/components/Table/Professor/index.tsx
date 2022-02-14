@@ -8,11 +8,11 @@ import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { ProfPage } from "types/prof";
 
-type IProps={
-    search:string;
+type IProps = {
+    search: string;
 }
 
-function TableProf({search}:IProps) {
+function TableProf({ search }: IProps) {
 
     const { handleClick } = useContext(ProfessorContext);
     const { activePage, changePage } = usePage();
@@ -70,7 +70,11 @@ function TableProf({search}:IProps) {
                 )
                 }
             </div>
-            <Pagination page={professor} onPageChange={changePage} />
+            <div className="d-flex justify-content-between mt-auto">
+                <Pagination page={professor} onPageChange={changePage} />
+                {professor.totalElements > 0 ? `Total: ${professor.totalElements}` : ''}
+            </div>
+
         </>
     );
 }

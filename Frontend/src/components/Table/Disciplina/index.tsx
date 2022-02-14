@@ -78,7 +78,11 @@ function TableDisciplina({ search }: IProps) {
                 )}
 
             </div>
-            <Pagination page={disciplina} onPageChange={changePage} />
+            <div className="d-flex justify-content-between mt-auto">
+                <Pagination page={disciplina} onPageChange={changePage} />
+                {disciplina.totalElements > 0 ? `Total: ${disciplina.totalElements}` : ''}
+            </div>
+
         </>
     );
 }

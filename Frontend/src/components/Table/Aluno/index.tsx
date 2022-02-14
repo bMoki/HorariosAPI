@@ -7,7 +7,6 @@ import { useAxiosFetchPage } from "hooks/useAxiosFetch";
 import { usePage } from "hooks/usePage";
 import { useContext, useEffect, useState } from "react";
 import { AlunoPage } from "types/aluno";
-import { dataFormater } from "utils/dataFormater";
 
 type IProps = {
     search: string;
@@ -59,7 +58,7 @@ function TableAluno({ search }: IProps) {
                                         <td className="align-middle">{item.matricula}</td>
                                         <td className="">
                                             {item.disciplinas?.length ?
-                                               <span className="badge rounded-pill bg-primary fw-normal p-2 mx-1 my-1 fs-6">{item.disciplinas.length}</span>
+                                                <span className="badge rounded-pill bg-primary fw-normal p-2 mx-1 my-1 fs-6">{item.disciplinas.length}</span>
                                                 :
                                                 <span className="badge rounded-pill bg-secondary fw-normal p-2 mx-1 my-1 fs-6"> Nenhuma </span>
                                             }
@@ -75,7 +74,12 @@ function TableAluno({ search }: IProps) {
                     <EmptyMessage text="Sem aluno para mostrar" />
                 )}
             </div>
-            <Pagination page={aluno} onPageChange={changePage} />
+            <div className="d-flex justify-content-between mt-auto">
+                <Pagination page={aluno} onPageChange={changePage} />
+                {aluno.totalElements > 0 ? `Total: ${aluno.totalElements}` : ''}
+            </div>
+
+
         </>
     );
 }

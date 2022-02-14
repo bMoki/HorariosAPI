@@ -21,7 +21,7 @@ public class Disciplina {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nome;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -32,7 +32,7 @@ public class Disciplina {
     )
     private List<Professor> professores = new ArrayList<>();
 
-    @Column
+    @Column(unique = true)
     private String codMoodle;
 
     public Disciplina(DisciplinaDTO entity) {

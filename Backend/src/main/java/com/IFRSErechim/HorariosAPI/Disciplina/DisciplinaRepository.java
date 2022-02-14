@@ -18,9 +18,6 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina,Long> {
             ") THEN true ELSE false END Result",nativeQuery = true)
     Integer DisciplinaHasReference(Long id);
 
-    @Query(value = "SELECT COUNT(nome) FROM disciplina WHERE UPPER(nome) = UPPER(?)",nativeQuery = true)
-    Integer findByNome(String nome);
-
     @Query("SELECT d FROM Disciplina d WHERE d.nome = ?1 OR d.codMoodle = ?2")
     Disciplina findByNomeOrCodMoodle(String nome,String codMoodle);
 
@@ -28,5 +25,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina,Long> {
             countQuery = "SELECT COUNT(*) FROM disciplina WHERE nome LIKE %:search% OR cod_moodle LIKE %:search%",
             nativeQuery = true)
     Page<Disciplina> findAllDisciplinas(Pageable pageable, @Param(value = "search")String search);
+
+    Disciplina findByCodMoodle(String codMoodle);
 
 }

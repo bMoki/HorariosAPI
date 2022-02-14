@@ -12,7 +12,7 @@ import { UserPage } from "types/user";
 type IProps = {
     search: string;
 }
-function TableUsuario({search}:IProps) {
+function TableUsuario({ search }: IProps) {
 
     const { handleClick } = useContext(UsuarioContext);
 
@@ -36,7 +36,7 @@ function TableUsuario({search}:IProps) {
             <div className="row">
                 {isLoading &&
                     <div className="d-flex justify-content-center">
-                        <LoadingSpinner margin="mt-5 mb-5"/>
+                        <LoadingSpinner margin="mt-5 mb-5" />
                     </div>}
                 {fetchError && <Error504Message size={300} />}
 
@@ -72,7 +72,11 @@ function TableUsuario({search}:IProps) {
                     <EmptyMessage text="Sem usuário para mostrar" />
                 )}
             </div>
-            <Pagination page={userDetail} onPageChange={changePage} />
+            <div className="d-flex justify-content-between mt-auto">
+                <Pagination page={userDetail} onPageChange={changePage} />
+                {userDetail.totalElements > 0 ? `Total: ${userDetail.totalElements}` : ''}
+            </div>
+
         </>
     );
 }

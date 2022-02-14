@@ -9,6 +9,7 @@ import com.IFRSErechim.HorariosAPI.Response.MessageResponseImportDTO;
 import com.univocity.parsers.common.record.Record;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -86,18 +87,30 @@ public class AlunoService {
                         if(record.getString("disciplina_cod")!=null){
                             disciplina_cod = record.getString("disciplina_cod");
                         }
-                        Disciplina disciplina = discipinaService.findByNomeOrCodMoodle(disciplina_nome,disciplina_cod);
-                        if(disciplina!=null){
-                            Set<Disciplina> disciplinaSet = new HashSet<>(aluno.getDisciplinas());
-                            disciplinaSet.add(disciplina);
-                            List<Disciplina> disciplinaList = new ArrayList<>(disciplinaSet);
-                            aluno.setDisciplinas(disciplinaList);
-                        }else{
+                        Disciplina disciplina;
+                        try{
+                             disciplina = discipinaService.findByNomeOrCodMoodle(disciplina_nome,disciplina_cod);
+                            if(disciplina!=null){
+                                Set<Disciplina> disciplinaSet = new HashSet<>(aluno.getDisciplinas());
+                                disciplinaSet.add(disciplina);
+                                List<Disciplina> disciplinaList = new ArrayList<>(disciplinaSet);
+                                aluno.setDisciplinas(disciplinaList);
+                            }else{
+                                errorLine.put("nome", record.getString("nome"));
+                                errorLine.put("matricula", record.getString("matricula"));
+                                errorLine.put("cpf", record.getString("cpf"));
+                                errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
+                                errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                                errorLine.put("motivo", "Disciplina não existe");
+                                naoExistem++;
+                            }
+                        }catch (IncorrectResultSizeDataAccessException e){
                             errorLine.put("nome", record.getString("nome"));
                             errorLine.put("matricula", record.getString("matricula"));
                             errorLine.put("cpf", record.getString("cpf"));
                             errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
                             errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                            errorLine.put("motivo", "Existem mais que uma disciplina com este nome");
                             naoExistem++;
                         }
                     }
@@ -111,6 +124,7 @@ public class AlunoService {
                         errorLine.put("cpf", record.getString("cpf"));
                         errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
                         errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                        errorLine.put("motivo", "Nome vazio");
                         inseridas--;
                         erros++;
                     }else{
@@ -133,11 +147,15 @@ public class AlunoService {
                     errorLine.put("cpf", record.getString("cpf"));
                     errorLine.put("disciplina_nome", record.getString("disciplina_nome"));
                     errorLine.put("disciplina_cod", record.getString("disciplina_cod"));
+                    errorLine.put("motivo", "Nome ou CPF vazios");
                     erros++;
                 }
             }catch(IllegalArgumentException e){
                 throw new WrongCollumnsException("O arquivo deve conter as colunas nome, matricula, cpf, disciplina_cod e disciplina_nome");
+            }catch (IncorrectResultSizeDataAccessException e){
+                //Ja foi adicionado nas linhas com erro
             }
+
             if(!errorLine.isEmpty()){
                 errorFile.add(errorLine);
             }

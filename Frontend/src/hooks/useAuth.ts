@@ -65,6 +65,7 @@ export default function useAuth() {
         setAuthTokens(null);
         setUser(undefined);
         localStorage.removeItem('tokens');
+        sessionStorage.removeItem('response');
     }
 
     useEffect(() => {

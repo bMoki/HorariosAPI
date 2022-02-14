@@ -75,8 +75,11 @@ function TableCurso({ search }: IProps) {
                     <EmptyMessage text="Sem curso para mostrar" />
                 )}
             </div>
+            <div className="d-flex justify-content-between mt-auto">
+                <Pagination page={curso} onPageChange={changePage} />
+                {curso.totalElements > 0 ? `Total: ${curso.totalElements}` : ''}
+            </div>
 
-            <Pagination page={curso} onPageChange={changePage} />
 
         </>
     );

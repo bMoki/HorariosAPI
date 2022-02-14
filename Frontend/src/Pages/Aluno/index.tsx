@@ -75,7 +75,8 @@ function Aluno() {
                     { label: 'CPF', key: 'cpf' },
                     { label: 'Matricula', key: 'matricula' },
                     { label: 'Codigo Disciplina', key: 'disciplina_cod' },
-                    { label: 'Nome Disciplina', key: 'disciplina_nome' }
+                    { label: 'Nome Disciplina', key: 'disciplina_nome' },
+                    { label: 'Motivo', key: 'motivo' }
                 ]}
                     naoExistem="Disciplinas não encontradas"></ImportStatus>
             </AlunoContextProvider>

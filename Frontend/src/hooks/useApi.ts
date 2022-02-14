@@ -71,7 +71,7 @@ const useApi = () => {
         }
         return response;
     }, function (error) {
-        if (error.config.method !== "get") {
+        if (error.config?.method !== "get") {
             sessionStorage.setItem("response", JSON.stringify(error.response));
             window.location.reload();
         }

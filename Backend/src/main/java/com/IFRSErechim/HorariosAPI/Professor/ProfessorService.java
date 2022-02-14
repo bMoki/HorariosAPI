@@ -69,6 +69,9 @@ public class ProfessorService {
                         if(professor.getCpf()==null){
                             professor.setCpf(professorDB.getCpf());
                         }
+                        professor.setSIAPE(professorDB.getSIAPE());
+                        professor.setEmail(professorDB.getEmail());
+                        professor.setDataNascimento(professorDB.getDataNascimento());
                         professor.setId(professorDB.getId());
                         atualizadas++;
                     }else{

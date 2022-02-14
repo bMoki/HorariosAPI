@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.*;
 
 
@@ -55,10 +53,9 @@ public class DisciplinaService {
                         disciplina.setCodMoodle(record.getString("codMoodle"));
                     }
 
-                    Disciplina disciplinaDB = disciplinaRepository.findByNomeOrCodMoodle(disciplina.getNome(), disciplina.getCodMoodle());
+                    Disciplina disciplinaDB = disciplinaRepository.findByCodMoodle(disciplina.getCodMoodle());
                     if(disciplinaDB != null){
                         disciplina.setId(disciplinaDB.getId());
-                        disciplina.setNome(disciplinaDB.getNome());
                         disciplina.setProfessores(disciplinaDB.getProfessores());
                         atualizadas++;
                     }else{
@@ -134,7 +131,7 @@ public class DisciplinaService {
 
     }
     public MessageResponseDTO criaDisciplina (DisciplinaDTO disciplinaDTO) throws AlreadyExistsException{
-        if(disciplinaRepository.findByNome(disciplinaDTO.getNome()) > 0){
+        if(disciplinaRepository.findByCodMoodle(disciplinaDTO.getCodMoodle()) != null){
                     throw new AlreadyExistsException("Disciplina já cadastrada!");
                 }
         Disciplina salvarDisciplina = new Disciplina(disciplinaDTO);
@@ -168,7 +165,6 @@ public class DisciplinaService {
     public Disciplina findByNomeOrCodMoodle(String nome,String codMoodle){
         return disciplinaRepository.findByNomeOrCodMoodle(nome,codMoodle);
     }
-
     private Disciplina verifyIfExists(Long id) throws NotFoundException {
         return disciplinaRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Disciplina"));

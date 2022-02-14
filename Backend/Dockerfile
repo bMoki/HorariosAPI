@@ -4,6 +4,6 @@ VOLUME /tmp
 # Temporary location to run
 EXPOSE 8080
 # Provide port number
-ADD target/HorariosAPI-0.9-BETA.jar HorariosAPI-0.9-BETA.jar
-ENTRYPOINT ["java","-jar","/HorariosAPI-0.9-BETA.jar"]
+ADD target/HorariosAPI-1.0.jar HorariosAPI-1.0.jar
+ENTRYPOINT ["java","-jar","/HorariosAPI-1.0.jar"]
 # command to execute jar
