@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,14 +22,16 @@ public class HorariosApiApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-//	@Bean
-//	CommandLineRunner run (LoginService loginService){
-//		return args -> {
-//			loginService.saveRole(new Role(null,"ROLE_USER"));
-//			loginService.saveRole(new Role(null,"ROLE_ADMIN"));
-//
-//			loginService.saveUser(new UsuarioDTO(null,"First User","admin","1234",true));
-//
-//		};
-//	}
+
+	@Profile("dev")
+	@Bean
+	CommandLineRunner run (LoginService loginService){
+		return args -> {
+			loginService.saveRole(new Role(null,"ROLE_USER"));
+			loginService.saveRole(new Role(null,"ROLE_ADMIN"));
+
+			loginService.saveUser(new UsuarioDTO(null,"First User","admin","1234",true));
+
+		};
+	}
 }

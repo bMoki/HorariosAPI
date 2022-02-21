@@ -28,7 +28,7 @@ function Aluno() {
                         <div className="col-md-6 col-lg col-sm-12  pt-3 pe-2 mt-4 ">
                             <Search search={search} searchHandler={searchHandler} />
                         </div>
-                        <div className="col-lg-4 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
+                        <div className="col border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
                             <div className="p-1 align-self-center">
                                 <ExportBtn dataUrl='aluno?paged=false' fileName='AlunoReport' btnClassName='btn btn-success' id="btn-csv"
                                     headers={[
@@ -42,7 +42,8 @@ function Aluno() {
                             </div>
 
                             <div className="p-1 align-self-center">
-                                <ImportBtn dataUrl="aluno"
+                                <ImportBtn admin={user?.admin}
+                                    dataUrl="aluno"
                                     table={{
                                         titulos: ["nome", "cpf", "matricula", "email", "disciplina_cod", "disciplina_nome"],
                                         exemplo: ["aluno ifrs", "123.456.789-10", "12345", "aluno@gmail.com", "COD12", "disciplina1"]
@@ -52,6 +53,7 @@ function Aluno() {
                                 ></ImportBtn>
 
                             </div>
+
                         </div>
 
                     </div>

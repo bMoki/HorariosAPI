@@ -49,7 +49,8 @@ function Professor() {
                             </div>
 
                             <div className="p-1 align-self-center">
-                                <ImportBtn dataUrl="professor"
+                                <ImportBtn admin={user?.admin} 
+                                    dataUrl="professor"
                                     table={{
                                         titulos:["nome","cpf","siape","dataNascimento","email"],
                                         exemplo:["Will Smith","123.456.789-10","12345","1990-04-03","will@edu.br"]

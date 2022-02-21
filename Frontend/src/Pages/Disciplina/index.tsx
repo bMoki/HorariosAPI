@@ -40,7 +40,8 @@ function Disciplina() {
                                 </div>
 
                                 <div className="p-1 align-self-center">
-                                    <ImportBtn dataUrl="disciplina"
+                                    <ImportBtn admin={user?.admin}
+                                        dataUrl="disciplina"
                                         table={{
                                             titulos: ["nome", "codMoodle", "professor_cpf", "professor_nome"],
                                             exemplo: ["Matematica", "MAT123", "123.456.789-10", "Will Smith"]
