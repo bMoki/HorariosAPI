@@ -10,7 +10,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 
 function Usuario() {
     const { user } = useContext(LoginContext);
-    const { search, searchHandler } = useSearch();
+    const { search, searchHandler, value } = useSearch();
 
     return (
         <>
@@ -33,7 +33,7 @@ function Usuario() {
                         </div>
                         <div className="row">
                             <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
-                                <TableUsuario search={search} />
+                                <TableUsuario search={value} />
                             </div>
 
                             {user?.admin && <div className="col-lg-4  p-3  mt-2 m-2">

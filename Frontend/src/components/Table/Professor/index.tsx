@@ -18,6 +18,8 @@ function TableProf({ search }: IProps) {
     const { activePage, changePage } = usePage();
     const { data, fetchError, isLoading } = useAxiosFetchPage(`/professor?page=${activePage}&search=${search}`);
 
+   
+
     const [professor, setProfessor] = useState<ProfPage>({
         first: true,
         last: true,
@@ -25,7 +27,6 @@ function TableProf({ search }: IProps) {
         totalElements: 0,
         totalPages: 0
     });
-
 
     useEffect(() => {
         setProfessor(data);

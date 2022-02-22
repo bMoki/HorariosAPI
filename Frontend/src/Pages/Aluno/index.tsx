@@ -13,7 +13,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 
 function Aluno() {
     const { user } = useContext(LoginContext);
-    const { search, searchHandler } = useSearch();
+    const { search, searchHandler, value } = useSearch();
     return (
         <>
             <AlunoContextProvider>
@@ -59,7 +59,7 @@ function Aluno() {
                     </div>
                     <div className="row">
                         <div className="col-md-12 col-lg col-sm-12 border shadow-sm p-3 pb-0 m-2 d-flex flex-column">
-                            <TableAluno search={search} />
+                            <TableAluno search={value} />
                         </div>
                         {user?.admin &&
                             <div className=" col-lg-4 border shadow-sm p-3 m-2">

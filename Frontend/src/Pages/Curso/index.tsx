@@ -10,7 +10,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 
 function Curso() {
     const { user } = useContext(LoginContext);
-    const { search, searchHandler } = useSearch();
+    const { search, searchHandler, value } = useSearch();
     return (
         <>
             <CursoContextProvider>
@@ -22,7 +22,7 @@ function Curso() {
                             <div className="col-lg col-md-12 col-sm-12  p-3 pb-0  mt-4">
                                 <h2>Cursos</h2>
                             </div>
-                            
+
                             <div className="col-lg-3 col-md-12 col-sm-12  pt-4 pb-0 me-4">
                                 <div className="row">
                                     <div className="col  pt-3 ">
@@ -33,7 +33,7 @@ function Curso() {
 
                             <div className="row">
                                 <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0  mt-4 m-2 d-flex flex-column">
-                                    <TableCurso search={search} />
+                                    <TableCurso search={value} />
                                 </div>
                                 {user?.admin && <div className="col-lg-3 col-md-12 col-sm-12  p-3 m-2 ">
                                     <div className="row">

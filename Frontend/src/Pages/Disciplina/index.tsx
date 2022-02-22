@@ -12,7 +12,7 @@ import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 
 function Disciplina() {
-    const { search, searchHandler } = useSearch();
+    const { search, searchHandler,value } = useSearch();
     const { user } = useContext(LoginContext);
     return (
         <>
@@ -54,7 +54,7 @@ function Disciplina() {
                         </div>
                         <div className="row">
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0   m-2 d-flex flex-column">
-                                <TableDisciplina search={search} />
+                                <TableDisciplina search={value} />
                             </div>
                             {user?.admin &&
                                 <div className="col-lg-5 col-md-12 col-sm-12  m-2 ">
