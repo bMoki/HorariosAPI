@@ -12,7 +12,7 @@ import { useContext } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 
 function Disciplina() {
-    const { search, searchHandler,value } = useSearch();
+    const { search, searchHandler, value } = useSearch();
     const { user } = useContext(LoginContext);
     return (
         <>
@@ -29,28 +29,29 @@ function Disciplina() {
                             <div className="col-md-6 col-lg col-sm-12  pt-3 pe-2 mt-4 ">
                                 <Search search={search} searchHandler={searchHandler} />
                             </div>
-                            <div className="col-lg-5 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
-                                <div className="p-1 align-self-center">
-                                    <ExportBtn dataUrl='disciplina?paged=false' fileName='DisciplinaReport' btnClassName='btn btn-success' id="btn-csv"
-                                        headers={[
-                                            { label: 'Nome', key: 'nome' },
-                                            { label: 'Codigo Moodle', key: 'codMoodle' },
-                                        ]}
-                                    />
-                                </div>
+                            {user?.admin &&
+                                <div className="col-lg-5 border shadow-sm p-3  mt-4 m-2 d-flex justify-content-evenly">
+                                    <div className="p-1 align-self-center">
+                                        <ExportBtn dataUrl='disciplina?paged=false' fileName='DisciplinaReport' btnClassName='btn btn-success' id="btn-csv"
+                                            headers={[
+                                                { label: 'Nome', key: 'nome' },
+                                                { label: 'Codigo Moodle', key: 'codMoodle' },
+                                            ]}
+                                        />
+                                    </div>
 
-                                <div className="p-1 align-self-center">
-                                    <ImportBtn admin={user?.admin}
-                                        dataUrl="disciplina"
-                                        table={{
-                                            titulos: ["nome", "codMoodle", "professor_cpf", "professor_nome"],
-                                            exemplo: ["Matematica", "MAT123", "123.456.789-10", "Will Smith"]
-                                        }}
-                                        dicas={["Para que as disciplinas sejam associadas com o professor, deve-se antes importar professores"]}
-                                    ></ImportBtn>
+                                    <div className="p-1 align-self-center">
+                                        <ImportBtn
+                                            dataUrl="disciplina"
+                                            table={{
+                                                titulos: ["nome", "codMoodle", "professor_cpf", "professor_nome"],
+                                                exemplo: ["Matematica", "MAT123", "123.456.789-10", "Will Smith"]
+                                            }}
+                                            dicas={["Para que as disciplinas sejam associadas com o professor, deve-se antes importar professores"]}
+                                        ></ImportBtn>
+                                    </div>
                                 </div>
-                            </div>
-
+                            }
                         </div>
                         <div className="row">
                             <div className="col-lg col-md-12 col-sm-12 border shadow-sm p-3 pb-0   m-2 d-flex flex-column">

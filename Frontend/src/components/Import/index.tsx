@@ -16,9 +16,8 @@ type IProps = {
     disabled?: boolean,
     table:Table,
     dicas?: string[],
-    admin?:boolean
 }
-function ImportBtn({ dataUrl, disabled, dicas, table, admin }: IProps) {
+function ImportBtn({ dataUrl, disabled, dicas, table }: IProps) {
 
 
     const api = useApi();
@@ -53,7 +52,7 @@ function ImportBtn({ dataUrl, disabled, dicas, table, admin }: IProps) {
     return (
         <>
 
-            <button ref={btnRef} type="button" className={admin?"btn btn-primary":"btn btn-secondary"} data-bs-toggle="modal" data-bs-target="#ModalImportacao" disabled={!admin}>
+            <button ref={btnRef} type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalImportacao">
                 <div className="d-flex px-1">Importar <FaUpload className="ms-3 mt-1" /></div>
             </button>
 
