@@ -45,6 +45,7 @@ function TableDisciplina({ search }: IProps) {
                         <table className="table table-hover align-middle">
                             <thead>
                                 <tr>
+                                    <th scope="col">Cod</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Professor</th>
                                 </tr>
@@ -52,6 +53,7 @@ function TableDisciplina({ search }: IProps) {
                             <tbody>
                                 {disciplina.content?.map(item => (
                                     <tr key={item.id} onClick={() => handleClick!(item)} className="p-1">
+                                        <td className="align-middle">{item.codMoodle}</td>
                                         <td className="align-middle">{item.nome}</td>
                                         <td >
                                             {item.professores?.length ?
