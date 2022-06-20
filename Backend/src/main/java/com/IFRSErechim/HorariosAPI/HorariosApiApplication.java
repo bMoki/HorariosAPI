@@ -23,7 +23,7 @@ public class HorariosApiApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Profile("dev")
+	//@Profile("dev")
 	@Bean
 	CommandLineRunner run (LoginService loginService){
 		return args -> {
