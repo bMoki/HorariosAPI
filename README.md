@@ -1,4 +1,4 @@
-Você pode acessar o sistema pelo link: <a href="https://horariosapi-ifrs.netlify.app/Login">Site</a>
+Você pode acessar o sistema pelo link: <a href="https://horariosapi-ifrs.netlify.app/Login" target="_blank">Site</a>
 
 # HorariosAPI
   O sistema foi desenvolvido com o objetivo de manter informações de Professores, Disciplinas, Alunos e garantir um sistema de importação e exportação para o cadastro em massa destas entidades. Além destes essenciais, o sistema também cadastra Cursos e Horários.
