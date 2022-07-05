@@ -24,4 +24,4 @@
 
 ## 2. Casos de uso
   ### 2.1 Diagrama de casos
-   ![Diagrama de casos de uso](https://imgur.com/a/An6ZKJL)
+   ![Diagrama de casos de uso](https://i.imgur.com/QxCl5hZ.png)
