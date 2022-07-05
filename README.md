@@ -21,3 +21,7 @@
 
 ### Versionamento
   * Git
+
+## 2. Casos de uso
+  ### 2.1 Diagrama de casos
+   ![Diagrama de casos de uso](https://prnt.sc/AEeQwb9lSTnZ)
