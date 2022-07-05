@@ -8,16 +8,16 @@
   * Maven
 
 ### Frontend
-	* Node: 14.17.5
-	* React
-	* Yarn: Gerenciador de dependências.
-	* Bootstrap
+  * Node: 14.17.5
+  * React
+  * Yarn: Gerenciador de dependências.
+  * Bootstrap
 
 ### Banco de dados 
   * MySQL
 
 ### Deploy
-	* Docker: 20.10.12
+  * Docker: 20.10.12
 
 ### Versionamento
   * Git
