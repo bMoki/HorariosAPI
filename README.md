@@ -3,21 +3,21 @@
   Para o desenvolvimento do sistema foram utilizadas várias ferramentas e tecnologias nas quais sem elas, o sistema pode não funcionar corretamente, algumas delas são substituíveis.
 
 ### Backend - Java
-  ##### Jdk 11
-  ##### Spring boot
-  ##### Maven
+  * Jdk 11
+  * Spring boot
+  * Maven
 
 ### Frontend
-	##### Node: 14.17.5
-	##### React
-	##### Yarn: Gerenciador de dependências.
-	##### Bootstrap
+	* Node: 14.17.5
+	* React
+	* Yarn: Gerenciador de dependências.
+	* Bootstrap
 
 ### Banco de dados 
-  ##### MySQL
+  * MySQL
 
 ### Deploy
-	##### Docker: 20.10.12
+	* Docker: 20.10.12
 
 ### Versionamento
-  ##### Git
+  * Git
