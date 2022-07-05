@@ -133,7 +133,7 @@ public class ProfessorService {
     }
     public MessageResponseDTO criaProfessor (ProfessorDTO professorDTO) throws AlreadyExistsException {
 
-        if(professorRepository.findByCpf(professorDTO.getCpf()) > 0){
+        if(professorRepository.findByCpf(professorDTO.getCpf()) != null){
             throw new AlreadyExistsException("CPF já cadastrado!");
         }
 
