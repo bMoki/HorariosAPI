@@ -22,6 +22,21 @@
 ### Versionamento
   * Git
 
-## 2. Casos de uso
-  ### 2.1 Diagrama de casos
+## Casos de uso
+  ### Diagrama de casos
    ![Diagrama de casos de uso](https://i.imgur.com/QxCl5hZ.png)
+    
+  ##### Administrador
+   O administrador poderá executar toda operação CRUD de todas as entidades além de Importar e Exportar a entidade que deseja e logar e deslogar.
+  
+  ##### Usuário
+   O usuário comum poderá apenas ler todas as entidades cadastradas, logar e deslogar.
+   
+## Diagrama de classes
+  ![Diagrama de classes](https://i.imgur.com/CzBMrIX.png)
+  
+   Em amarelo estão as classes entidades do sistema, em azul as classes Enum. Os atributos em vermelho são regrados para não se repetir no banco de dados (unique = true) e os atributos que possuem o “*” (asterisco), são os que não podem estar vazios (nullable = false).
+	 As entidades usuário e role não estão relacionadas com outras por serem entidades apenas para gerenciar a autenticação no sistema. Não é possível cadastrar ou deletar roles por enquanto, existem apenas o ROLE_USER e o ROLE_ADMIN por padrão.
+  
+    
+
